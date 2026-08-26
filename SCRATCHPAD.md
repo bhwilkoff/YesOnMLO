@@ -1,4 +1,4 @@
-# Project Scratchpad — [APP NAME]
+# Project Scratchpad — YesOnMLO (Citizens for LPS Campaign Toolkit)
 
 > Active working notes. When this file exceeds ~150 lines, move
 > completed milestone detail to ARCHIVE.md and keep this lean.
@@ -12,78 +12,70 @@
 
 ## Current state
 
-- **Status**: NOT STARTED
-- **Active milestone**: M0
-- **Last session**: —
+- **Status**: M0 + M1 complete (foundation + web toolkit v1)
+- **Active milestone**: M2 — verification pass + first shareable tools
+- **Last session**: 2026-08-26
 - **Next actions**:
-  1. Decide the platform set (all five? skip tvOS?) → DECISIONS.md
-  2. Fill in CLAUDE.md project identity sections
-  3. Create the universal Xcode project at repo root (no spaces in
-     name; iPhone + iPad + Mac + Apple TV destinations — see
-     apple/README.md)
-  4. Open `android/` in Android Studio, rename `com.example.appname`
-  5. Enable GitHub Pages on main branch (+ `.nojekyll` if serving
-     `/.well-known/`)
-  6. Drop verification files in `/.well-known/` once the
-     `appID` / `package_name` / fingerprints are known
-- **Open questions**: —
+  1. **Decide repo visibility** (private recommended while the
+     campaign runs — even with `private/` gitignored, PARITY/playbook
+     docs reveal tactics; owner's call)
+  2. **Verify the ⚠️ facts** in CAMPAIGN-BRIEF.md: TABOR comment
+     deadline (call LPS DEO — likely **Sept 18 noon**, unrecoverable),
+     Arapahoe ballot-mail date, 7.05% vs 6.95% school assessment
+     rate, certified ballot measure letter, MLO term (4-year sunset
+     per LRPC minutes vs "ongoing" per press release)
+  3. Flip `verified: true` in `js/data.js` as official figures land
+     (same commit cites the source in CAMPAIGN-BRIEF.md)
+  4. Enable GitHub Pages on `main` once visibility is decided
+  5. Candidate next tools (PARITY §1 🔮 rows): myth-vs-fact card
+     generator, interactive content-calendar tracker, drop-box map
+- **Open questions**:
+  - Final tagline (steering committee deciding; contenders in
+    `private/STRATEGY.md`) — update `js/data.js` `tagline` when set
+  - Registered agent name for the footer disclaimer (ask treasurer)
+  - Does this site stay a team toolkit, or get adopted/linked by
+    citizensforlps.org? (Affects domain + OG image work)
 
 ---
 
 ## Milestones
 
-### M0 — Project setup
+### M0 — Campaign foundation ✅ (2026-08-26)
 
-- [ ] Platform set decided + logged in DECISIONS.md
-- [ ] CLAUDE.md filled in with project identity (app name, what it
-      does, tech-stack specifics, design tokens)
-- [ ] PARITY.md skeleton sections filled in with intended verbs
-- [ ] **Web** — `index.html`, `css/styles.css`, `js/app.js` first
-      render; GitHub Pages enabled
-- [ ] **Apple (universal)** — Xcode project created at repo root
-      (no spaces); iPhone + iPad + Mac + Apple TV destinations on ONE
-      target; `apple/` files moved into the Xcode group preserving
-      the Core / iOS / macOS / tvOS split; `AppVersion.xcconfig`
-      referenced by both Debug + Release configs; empty shell runs on
-      the iOS, macOS, and tvOS destinations
-- [ ] **Android** — `android/` opened in Android Studio; package
-      renamed from `com.example.appname` to your reverse-DNS;
-      `:app:assembleDebug` succeeds; smoke-test on emulator
-- [ ] **CI / submission** — `appstore-build.yml` cloud workflow (one
-      covers iOS + macOS + tvOS) with the 7 signing secrets seeded
-      (see `docs/CLOUD-SUBMISSION.md`); GH Actions `android-build.yml`
-      + `tools/submit-play.sh` for Play
-- [ ] First commit pushed
+- [x] Platform set decided: **web only** (Decision 053)
+- [x] CLAUDE.md project identity + campaign palette
+- [x] PARITY.md: platform set + toolkit feature rows
+- [x] Campaign facts data plane (`js/data.js` ← CAMPAIGN-BRIEF.md,
+      Decision 054) with ⚠️ VERIFY provenance flags
+- [x] Research corpus: campaign strategy, social media playbook,
+      Colorado compliance (docs/campaign/ + docs/research/)
+- [x] Private/public split (`git ignore/` + `private/` gitignored,
+      Decision 056)
+- [ ] GitHub Pages enabled (blocked on repo-visibility decision)
 
-### M1 — [First user-visible capability]
+### M1 — Web toolkit v1 ✅ (2026-08-26)
 
-<!-- One sentence: what can a user DO after this milestone? -->
+A voter can understand the measure, see their own cost with the math
+shown, and find how to vote; a volunteer can pull story prompts and
+facts to share.
 
-Before implementing, run the `learning-orientation-design` skill:
+Learning-orientation check (Decision 057): calculator shows all
+arithmetic and invites adjusting assumptions ✅; FAQ teaches the
+funding system ✅; share kit prompts personal stories over
+copy-paste ✅; vanilla no-framework implementation ✅.
 
-- [ ] Deepens understanding
-- [ ] Invites participation
-- [ ] Supports agency
-- [ ] Clarity over cleverness
+**Acceptance** (web): 7 views render from data plane ✅ (DOM-shim
+smoke test 10/10); unverified figures visibly labeled ✅; "Paid for
+by" on every surface ✅; real-browser + phone-width check ⏳.
 
-**Acceptance criteria** (observable by users, not developers):
+### M2 — Verification pass + shareable tools (next)
 
-- [ ] Web: …
-- [ ] iOS: …
-- [ ] tvOS: …
-- [ ] Android: …
-
-**Parity check**: update PARITY.md row(s) for this capability in
-the same change set. Reject the PR if PARITY.md is silent.
-
-### M2 — [Second user-visible capability]
-
-- Learning-orientation check passed
-- **Acceptance**:
-  - [ ] Web: …
-  - [ ] iOS: …
-  - [ ] tvOS: …
-  - [ ] Android: …
+- [ ] All ⚠️ VERIFY facts confirmed or corrected (see Current State)
+- [ ] Real-browser render check at 375px + dark mode
+- [ ] Registered agent name in footer disclaimer
+- [ ] Myth-vs-fact shareable card generator (learning-orientation
+      check before building)
+- [ ] Interactive week-by-week content calendar for the social team
 
 ---
 
@@ -170,3 +162,52 @@ false cells), and the failure-class organization for whole-platform-port
 audits; tvos-platform-patterns gained the SignInWithAppleButton-in-Form
 swallowed-click gotcha; CLAUDE.md table + README tree point at the new doc.
 Left: green.
+
+**2026-08-26 — Campaign bootstrap: template → Citizens for LPS toolkit.**
+Found: pristine multi-platform template, first commit only; four source
+PDFs in `git ignore/` (LPS $10M MLO press release, LRPC minutes + deck
+with 2010–2020 ballot history, steering-committee tagline email). Done:
+gitignored `git ignore/` + new `private/`; read all sources; ran three
+parallel research agents (campaign strategy, social media playbook,
+Colorado compliance) → `docs/research/campaign-strategy.md`,
+`docs/research/colorado-compliance.md`,
+`docs/campaign/SOCIAL-MEDIA-PLAYBOOK.md`; wrote
+`docs/campaign/CAMPAIGN-BRIEF.md` (facts + provenance + ⚠️ VERIFY
+flags) and `private/STRATEGY.md` (steering-derived targeting, never
+committed); appended Decisions 053–057 (web-only, facts-as-data-plane,
+compliance-as-architecture, private/public split, tools-teach);
+rewrote CLAUDE.md identity, README, PARITY (web-only + feature rows),
+manifest. Built web toolkit v1: `js/data.js` facts data plane,
+`index.html` 7 views (home/facts/calculator/faq/dates/involved/share),
+`css/styles.css` campaign palette (logo-derived green/slate, dark mode,
+type ramp), `js/app.js` view system + transparent 3-step tax
+calculator (7.05% school rate × 3.5 est. mills, estimate-labeled) +
+share kit (story prompts, copyable facts, Web Share API). VERIFIED:
+`node --check` clean; DOM-shim smoke test 10/10 assertions (history
+table, FAQ, pillars, calculator math $650K→~$160/yr matching research
+worked example, estimate labels, countdown, view toggling). NOT yet
+verified: real-browser render (no screenshot this session — check
+before sharing widely). Key research findings logged: TABOR pro/con
+comment deadline ~Sept 18 noon is the highest-leverage unrecoverable
+date; Meta ad authorization must start NOW (3–4 week lead); Meta
+final-week new-ad blackout ~Oct 27; citizensforlps.org already exists
+(co-chairs Amy Clark + Briana McCrumb) — this repo complements it.
+Left: green; next actions in Current State.
+
+**2026-08-26 (second pass) — brand alignment with citizensforlps.org + ship
+to Pages.** Found: v1 toolkit with placeholder branding and generic footer.
+Done: crawled citizensforlps.nationbuilder.com (home, news_and_data, three
+budget articles, volunteer, upcoming_events) — captured committee legal name
+(Citizens for Littleton Public Schools), registered agent (Lucie Stanish, →
+footer disclaimer now complete), co-chairs, PO Box, 5–0 board vote, budget
+breakdown (58.5% salaries; central admin <2%; GFOA ×32 years; FTE trend),
+real volunteer roles, and the event calendar (postcards/yard signs Sept 12,
+lit drops Oct 3–11). Sampled the official logo pixels (#90CA65 green /
+#323F49 slate) + theme fonts (Lora/Source Sans Pro) and re-tokenized
+styles.css (logo green fails AA for white text → slate CTAs, deep-green
+links); header now uses the real logo (light + dark variants copied to
+assets/). Added budget-bars section (Facts), events list (Get Involved),
+admin-cost FAQ, board-vote + GFOA share facts. VERIFIED: node --check clean;
+DOM-shim smoke test 14/14. Pushed to GitHub Pages per user: "the whole point
+of having a public repository is the ability to use github pages… as
+transparent as possible." Left: green; real-browser check still pending.

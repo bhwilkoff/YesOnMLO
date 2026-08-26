@@ -2,94 +2,289 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>App Name</title>
-  <!-- PWA / iOS Safari standalone support.
-       NO viewport-fit=cover — Safari auto-clips to safe area without it.
-       NO position:fixed overlays — they break Safari's compositor at the
-       Dynamic Island. See css/styles.css comment on body flex-column. -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="App Name">
-  <meta name="theme-color" content="#0047FF" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#080810" media="(prefers-color-scheme: dark)">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yes for LPS — Support the Littleton Public Schools Mill Levy Override</title>
+  <!-- NO viewport-fit=cover; NO position:fixed overlays — Safari compositor
+       rules, see css/styles.css body flex-column comment. -->
+  <meta name="description" content="Learn what the LPS mill levy override funds, what it costs, and how to help. Local funding that stays in LPS classrooms.">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1C1C1E" media="(prefers-color-scheme: dark)">
 
-  <!-- Open Graph — read by Discord / iMessage / Slack / Bluesky / Mastodon
-       / Threads (and every other major link-preview consumer). Mirror in
-       per-view <title> updates from js/app.js. -->
-  <meta property="og:title" content="App Name">
-  <meta property="og:description" content="Your tagline here">
+  <!-- Open Graph — link previews on Facebook / Nextdoor / iMessage / etc. -->
+  <meta property="og:title" content="Yes for LPS — Local Funding for LPS Kids">
+  <meta property="og:description" content="See what the LPS mill levy override funds, what it costs your household, and how to get involved.">
   <meta property="og:type" content="website">
-  <!-- <meta property="og:image" content="https://example.com/og-image.png"> -->
 
-  <!-- Smart App Banner — uncomment after App Store / Play Store ship.
-       iOS uses meta tag; Android uses Digital Asset Links + Chrome
-       install prompt (handled via /.well-known/assetlinks.json). -->
-  <!-- <meta name="apple-itunes-app" content="app-id=YOUR_APP_ID"> -->
+  <!-- Fonts mirror citizensforlps.org (Lora headings, Source Sans Pro body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;700&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <!-- Skip link for keyboard navigation (WCAG AA) -->
   <a href="#main-content" class="skip-link">Skip to content</a>
 
-  <!-- AUTH SCREEN — shown when no session -->
-  <div id="auth-screen" class="screen" aria-label="Sign in">
-    <div class="auth-card">
-      <h1 class="auth-title">App Name</h1>
-      <p class="auth-subtitle">Your tagline here</p>
-      <form id="auth-form" novalidate>
-        <div class="field-group">
-          <label for="auth-handle" class="field-label">Handle</label>
-          <input type="text" id="auth-handle" class="field-input" placeholder="you@example.com" required>
-        </div>
-        <div class="field-group">
-          <label for="auth-password" class="field-label">Password</label>
-          <input type="password" id="auth-password" class="field-input" required>
-        </div>
-        <div id="auth-error" class="error-banner" hidden role="alert"></div>
-        <button type="submit" class="btn btn-primary btn-full" id="auth-submit">Sign in</button>
-      </form>
-    </div>
-  </div>
+  <header class="site-header">
+    <a href="?" class="wordmark" id="wordmark-home" aria-label="Citizens for LPS home">
+      <img src="assets/citizens-for-lps-logo.png" alt="Citizens for LPS" class="logo-light">
+      <img src="assets/citizens-for-lps-logo-dark.png" alt="Citizens for LPS" class="logo-dark">
+      <span class="wordmark-cta">Vote YES this November</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <button class="nav-item active" id="nav-home" data-view="home">Home</button>
+      <button class="nav-item" id="nav-facts" data-view="facts">The Facts</button>
+      <button class="nav-item" id="nav-calculator" data-view="calculator">Your Cost</button>
+      <button class="nav-item" id="nav-faq" data-view="faq">FAQ</button>
+      <button class="nav-item" id="nav-dates" data-view="dates">Key Dates</button>
+      <button class="nav-item" id="nav-involved" data-view="involved">Get Involved</button>
+      <button class="nav-item" id="nav-share" data-view="share">Share Kit</button>
+    </nav>
+  </header>
 
-  <!-- MAIN APP — shown when authenticated -->
-  <div id="app-screen" class="screen" hidden>
+  <main id="main-content">
 
-    <!-- SIDEBAR -->
-    <aside id="channels-sidebar" class="channels-sidebar" aria-label="Navigation">
-      <div class="sidebar-header">
-        <h2 class="sidebar-title">App Name</h2>
+    <!-- HOME -->
+    <section id="view-home" class="view" aria-label="Home">
+      <div class="view-inner">
+        <div class="hero">
+          <p class="hero-kicker">November 3, 2026 · Littleton Public Schools</p>
+          <h1 class="hero-title">Local funding that stays in <span class="accent-green">LPS classrooms</span>.</h1>
+          <p class="hero-lede">
+            Littleton Public Schools faces a $10.6 million budget gap.
+            The district has already cut $6.5 million, frozen wages, and
+            scheduled an unpaid furlough day. The mill levy override on
+            this November's ballot restores what one-time cuts can't:
+            competitive teacher pay, full instructional days, and the
+            programs that make LPS a destination district.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary" data-view="calculator">See what it costs you</button>
+            <button class="btn btn-ghost" data-view="facts">Read the facts</button>
+          </div>
+        </div>
+
+        <div class="countdown-strip" id="countdown-strip" aria-live="polite"></div>
+
+        <h2 class="section-header">What your yes vote funds</h2>
+        <div id="home-pillars" class="pillar-grid"></div>
+
+        <h2 class="section-header">This community shows up for its schools</h2>
+        <p class="body">Every recent LPS funding measure has passed with 56% of the vote or more:</p>
+        <div class="table-scroll">
+          <table class="data-table" id="history-table" aria-label="LPS ballot measure history"></table>
+        </div>
+        <p class="caption">Source: LPS Long-Range Planning Committee, July 2026.</p>
       </div>
-      <nav class="sidebar-nav" aria-label="Main navigation">
-        <!-- Add nav items here. Pattern: -->
-        <!-- <button class="sidebar-nav-item active" id="nav-home-btn" data-view="home">
-          <svg>...</svg><span>Home</span>
-        </button> -->
-      </nav>
-    </aside>
+    </section>
 
-    <!-- VIEWS — one section per view, toggled by showView() -->
-    <main id="main-content">
-      <section id="view-home" class="view" aria-label="Home">
-        <div class="view-inner">
-          <h2 class="view-heading">Home</h2>
-          <p>Your first view goes here.</p>
+    <!-- THE FACTS -->
+    <section id="view-facts" class="view" aria-label="The facts" hidden>
+      <div class="view-inner">
+        <h2 class="view-heading">The Facts</h2>
+        <p class="body-strong">The gap: $10.6 million, and it's structural.</p>
+        <p class="body">
+          Four forces created it — none of them one-time events:
+        </p>
+        <ul class="fact-list" id="deficit-drivers"></ul>
+
+        <p class="body-strong">The district cut first.</p>
+        <p class="body">
+          Before asking voters for anything, LPS balanced the 2026–27
+          budget with measures that fall on staff and students:
+        </p>
+        <ul class="fact-list" id="one-time-measures"></ul>
+        <p class="body">
+          Those measures work exactly once. Without ongoing local
+          funding, they become permanent — and deepen.
+        </p>
+
+        <p class="body-strong">The ask: a $10 million mill levy override.</p>
+        <div id="facts-pillars" class="pillar-grid"></div>
+        <p class="body">
+          If voters approve, educator compensation is restored
+          retroactively to the start of the contract year and the
+          spring furlough day comes off the calendar — students get
+          that day of instruction back.
+        </p>
+
+        <p class="body-strong">Every dollar is local by law.</p>
+        <p class="body">
+          A mill levy override is collected by the county and goes
+          directly to Littleton Public Schools. The state legislature
+          cannot redirect it, and it cannot be spent outside this
+          district. That's the difference between an MLO and hoping
+          the state funding formula improves.
+        </p>
+
+        <h2 class="section-header">Where LPS money goes today</h2>
+        <p class="body">
+          The 2026–27 general fund, from the campaign's budget
+          analysis at citizensforlps.org:
+        </p>
+        <div class="budget-group">
+          <p class="body-strong">Spending</p>
+          <div id="budget-expenditures"></div>
         </div>
-      </section>
-    </main>
+        <div class="budget-group">
+          <p class="body-strong">Where the money comes from</p>
+          <div id="budget-revenue"></div>
+        </div>
+        <p class="body">
+          Two facts worth repeating to any skeptic: central
+          administration is <strong>less than 2%</strong> of the
+          operating budget — office staffing and department budgets
+          were cut first to shield classrooms — and LPS has earned the
+          Government Finance Officers Association's Certificate of
+          Achievement for Excellence in Financial Reporting for
+          <strong>32 consecutive years</strong>.
+        </p>
+        <p class="caption">
+          Sources: LPS Board of Education announcement (Aug 14, 2026);
+          LPS Long-Range Planning Committee materials (July 2026);
+          Citizens for LPS budget analysis
+          (citizensforlps.org/news_and_data). For district budget
+          detail, see the LPS "Dollars and Sense" pages.
+        </p>
+      </div>
+    </section>
 
-  </div>
+    <!-- CALCULATOR -->
+    <section id="view-calculator" class="view" aria-label="Tax impact calculator" hidden>
+      <div class="view-inner">
+        <h2 class="view-heading">What It Costs You</h2>
+        <p class="body">
+          Property-tax math is simple once you see it. Enter your home's
+          value and walk through the same three steps the county
+          assessor uses. No black box — every number is shown, and you
+          can adjust each one.
+        </p>
+        <div class="card calc-card">
+          <div class="field-group">
+            <label for="calc-home-value" class="field-label">Your home's market value</label>
+            <input type="text" inputmode="numeric" id="calc-home-value" class="field-input" value="650,000" aria-describedby="calc-est-note">
+          </div>
+          <div id="calc-steps" class="calc-steps" aria-live="polite"></div>
+          <p class="estimate-note" id="calc-est-note"></p>
+          <details class="calc-details">
+            <summary>Adjust the assumptions</summary>
+            <div class="field-group">
+              <label for="calc-mills" class="field-label">Estimated mills</label>
+              <input type="number" id="calc-mills" class="field-input" step="0.1" min="0">
+            </div>
+            <div class="field-group">
+              <label for="calc-rate" class="field-label">Residential assessment rate (%)</label>
+              <input type="number" id="calc-rate" class="field-input" step="0.01" min="0">
+            </div>
+          </details>
+        </div>
+        <p class="body" id="calc-context"></p>
+      </div>
+    </section>
 
-  <script src="js/api.js"></script>
+    <!-- FAQ -->
+    <section id="view-faq" class="view" aria-label="Frequently asked questions" hidden>
+      <div class="view-inner">
+        <h2 class="view-heading">Questions, Answered</h2>
+        <p class="body">
+          Real questions from neighbors, answered with the actual
+          mechanics of Colorado school funding — because a voter who
+          understands the system can explain it to the next neighbor.
+        </p>
+        <div id="faq-list"></div>
+      </div>
+    </section>
+
+    <!-- KEY DATES -->
+    <section id="view-dates" class="view" aria-label="Key dates" hidden>
+      <div class="view-inner">
+        <h2 class="view-heading">Key Dates</h2>
+        <p class="body">
+          Colorado votes by mail. Every registered voter in the LPS
+          boundary — Littleton, parts of Centennial, and unincorporated
+          Arapahoe County — gets a ballot automatically in mid-October.
+          Most ballots come back in the first two weeks, so the campaign
+          isn't one election day: it's a three-week return window.
+        </p>
+        <div id="dates-list"></div>
+        <p class="body">
+          Not sure you're registered at your current address? Check at
+          <a href="https://www.govotecolorado.gov" target="_blank" rel="noopener">GoVoteColorado.gov</a> —
+          it takes under a minute.
+        </p>
+      </div>
+    </section>
+
+    <!-- GET INVOLVED -->
+    <section id="view-involved" class="view" aria-label="Get involved" hidden>
+      <div class="view-inner">
+        <h2 class="view-heading">Get Involved</h2>
+        <p class="body">
+          Campaigns are won by neighbors talking to neighbors. Pick the
+          level that fits your life — every rung matters.
+        </p>
+        <div id="involvement-ladder"></div>
+
+        <h3 class="section-header">Upcoming volunteer events</h3>
+        <p class="body">
+          The campaign calendar so far — RSVP at
+          <a href="https://citizensforlps.org/upcoming_events" target="_blank" rel="noopener">citizensforlps.org/upcoming_events</a>:
+        </p>
+        <div id="events-list"></div>
+
+        <div class="card">
+          <p class="body-strong">Ready to volunteer?</p>
+          <p class="body">
+            Sign up at the official campaign site —
+            <a href="https://citizensforlps.org/join" target="_blank" rel="noopener">join</a>,
+            <a href="https://citizensforlps.org/volunteer" target="_blank" rel="noopener">volunteer</a>,
+            or <a href="https://citizensforlps.org/contribute" target="_blank" rel="noopener">contribute</a> —
+            or email <a href="mailto:citizens4lps@gmail.com">citizens4lps@gmail.com</a>
+            and tell us how you'd like to help.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHARE KIT -->
+    <section id="view-share" class="view" aria-label="Share kit" hidden>
+      <div class="view-inner">
+        <h2 class="view-heading">Share Kit</h2>
+        <p class="body-strong">Your story beats any slogan.</p>
+        <p class="body">
+          The most persuasive post about this measure is the one only
+          you can write: why LPS matters to <em>your</em> family, your
+          block, your business. Use a prompt below to start, add one
+          fact, and post it in your own words.
+        </p>
+        <h3 class="section-header">Story prompts</h3>
+        <div id="story-prompts"></div>
+        <h3 class="section-header">Facts to build from</h3>
+        <div id="share-facts"></div>
+        <h3 class="section-header">Share this site</h3>
+        <div class="card">
+          <p class="body">Send neighbors here for the facts and the calculator:</p>
+          <div class="share-row">
+            <button class="btn btn-primary" id="share-site-btn">Share</button>
+            <button class="btn btn-ghost" id="copy-link-btn">Copy link</button>
+          </div>
+          <p class="caption" id="share-feedback" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <!-- CRS 1-45-108.3 / Rule 22: non-natural-person payer names its
+         registered agent (per citizensforlps.org: Lucie Stanish). -->
+    <p class="footer-disclaimer">Paid for by Citizens for Littleton Public Schools &middot; Lucie Stanish, Registered Agent</p>
+    <p class="footer-note">P.O. Box 2231, Littleton, CO 80161 &middot; Built by volunteers. Not produced or distributed with school district resources.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
   <script src="js/app.js"></script>
-  <!-- Additive smart-TV layer + Cast sender: both self-disable off-TV
-       (tv.js adds html.tv only on a TV runtime; cast-sender no-ops when the
-       Cast framework never loads). See docs/TV-PLATFORMS.md. -->
-  <link rel="stylesheet" href="tv.css">
-  <script src="tv.js"></script>
-  <script src="js/cast-sender.js"></script>
 </body>
 </html>

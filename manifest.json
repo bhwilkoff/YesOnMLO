@@ -1,9 +1,9 @@
 {
-  "name": "App Name",
-  "short_name": "AppName",
-  "start_url": "/",
+  "name": "Yes for LPS",
+  "short_name": "YesForLPS",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#FFFFFF",
-  "theme_color": "#0047FF",
+  "theme_color": "#4C9B2F",
   "icons": []
 }

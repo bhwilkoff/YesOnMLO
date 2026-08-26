@@ -75,6 +75,13 @@ play-service-account.json
 # Native debug symbols
 native-debug-symbols.zip
 
+# Campaign source documents — private context, never committed
+git ignore/
+
+# Campaign-internal strategy (targeting, steering-committee material) —
+# never committed, even if the repo itself is private
+private/
+
 # --- Universal template additions ---
 __pycache__/
 *.pyc

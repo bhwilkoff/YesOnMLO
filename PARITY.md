@@ -1,4 +1,4 @@
-# [APP NAME] — Cross-Platform Feature Parity
+# YesOnMLO — Cross-Platform Feature Parity
 
 > **Single source of truth** for what's shipping where. Updated in
 > the SAME change set as any user-facing feature.
@@ -38,13 +38,33 @@ returning to the platform it started on.
 
 ## 0. Platform set
 
-<!-- Pin the platform decision here so it's not re-litigated. Which of
-     web / iOS / iPadOS / macOS / tvOS / Android ship, and WHY each earns
-     its place (or is 🚫 out of scope), with DECISIONS.md refs. Name the
-     LEAD platform (ships first, others mirror). tvOS earns its place when
-     content is lean-back; macOS is nearly free once the universal Apple
-     target exists; skip a platform whose idiom fights the app. A platform
-     not yet reached is ⏳ with a note, never silence. -->
+**Web is the only platform** (Decision 053). This is a ~10-week
+ballot campaign distributed through shared links — Facebook, Nextdoor,
+texts, QR codes on yard signs. Nobody installs an app to decide a
+ballot question, and store review cycles would consume the calendar.
+
+- **Web** — ✅ LEAD (and only). Shareable canonical URLs are the
+  distribution model.
+- **iOS / iPadOS / macOS / tvOS / Android / Windows / TV form
+  factors** — 🚫 all out of scope for the campaign (Decision 053).
+  The template scaffolds remain in the tree untouched. Revisit only
+  if the campaign outlives the election as a permanent organization.
+
+## 1. Campaign toolkit features (web column only)
+
+| Feature | Web | Notes |
+|---|---|---|
+| Home — the case + pillars + ballot history | ✅ | `?` |
+| The Facts — sourced deficit/cuts/uses | ✅ | `?view=facts` |
+| Tax calculator — transparent 3-step math | ✅ | `?view=calculator`; renders estimate labels until `data.js` figures flip `verified: true` |
+| FAQ — teaching answers incl. seniors + Prop NN | ✅ | `?view=faq` |
+| Key dates + countdown | ✅ | `?view=dates`; est-labeled until county calendar confirmed |
+| Get involved ladder | ✅ | `?view=involved`; routes to citizensforlps.org |
+| Share kit — story prompts + copyable facts + Web Share | ✅ | `?view=share` |
+| "Paid for by" attribution on every surface | ✅ | Shared footer; add registered agent name when confirmed |
+| Myth-vs-fact graphic generator | 🔮 | Candidate next tool — templated shareable cards |
+| Content-calendar tracker for the social team | 🔮 | Playbook week-by-week arc as an interactive checklist |
+| Drop-box map embed | ⏳ | Add when Arapahoe County publishes 2026 locations |
 
 ---
 

@@ -1,4 +1,13 @@
-# [APP NAME] — Claude Code Project Context
+# YesOnMLO — Claude Code Project Context
+
+> **This project**: the volunteer-built toolkit for the Citizens for
+> LPS campaign supporting the $10M Littleton Public Schools mill levy
+> override on the November 3, 2026 ballot. Read
+> `docs/campaign/CAMPAIGN-BRIEF.md` FIRST in any session — it is the
+> source of truth for campaign facts, and Decisions 053–057 govern
+> the platform set (web-only), fact provenance, compliance, and the
+> public/private boundary. Never commit anything from `git ignore/`
+> or `private/`.
 
 ## Why we build
 
@@ -169,13 +178,25 @@ check before "done."
 
 ## What this app does
 
-<!-- FILL IN: One paragraph on what your app does and who it's for -->
+**YesOnMLO** is the campaign toolkit for **Citizens for LPS** — the
+volunteer issue committee supporting the $10 million Littleton Public
+Schools mill levy override on the November 3, 2026 ballot. It serves
+three audiences: **voters** (understand the measure — what it funds,
+what it costs, a transparent tax calculator, an FAQ that teaches how
+Colorado school funding works), **volunteers** (the social media
+share kit, story prompts, weekly content calendar, GOTV countdown),
+and the **social media team** (content planning + rapid-response
+reference). The repo owner leads the campaign's Social Media team.
+Every tool must pass the learning-orientation test: it should make a
+supporter a more capable advocate, not a passive re-sharer. Every
+fact rendered must trace to `docs/campaign/CAMPAIGN-BRIEF.md`
+(Decision 054), and every surface carries "Paid for by Citizens for
+LPS" attribution (Decision 055).
 
-Available as a **web app**, a **native iOS/iPadOS app**, a **native
-macOS app**, a **native Apple TV (tvOS) app**, and a **native Android
-app** — five native experiences, one feature set. When adding to one
-platform, note the equivalent work in SCRATCHPAD.md and update
-PARITY.md.
+**Platform set: web only** (Decision 053) — the campaign is
+distributed by shareable links, not app installs. The native
+scaffolds below remain as template reference but receive no campaign
+work; PARITY.md carries 🚫 rows for them.
 
 **Feature parity, not design consistency.** Web feels like the web.
 iOS feels like iOS. macOS feels like a Mac (pointer + keyboard + menu
@@ -194,8 +215,9 @@ platform is a 🚫 column in PARITY.md with a reason, not a deletion.
 ## Web app
 
 **Stack**: Vanilla HTML/JS — no framework, no build step. Custom
-CSS, mobile-first. <!-- FILL IN: API / auth / hosting choices -->.
-GitHub Pages static hosting, branch `main`, root `/`.
+CSS, mobile-first. No auth, no backend: all campaign facts live in
+`js/data.js` (the facts data plane — Decision 054) and render
+client-side. GitHub Pages static hosting, branch `main`, root `/`.
 
 **Key directories**:
 - `/` — root: index.html, CLAUDE.md, SCRATCHPAD.md, DECISIONS.md
@@ -498,21 +520,25 @@ Windows (the three Apple platforms share one `Design.swift` in Core):
 | Primary | `--color-primary` in `:root` | `Color.primary` in `Design.swift` | `BrandPrimary` in `ui/theme/Color.kt` | `BrandPrimary` in `App.axaml` (+ the pinned `.accent` styles) |
 | Surface | `--color-surface` | `Color.surface` | `BrandSurface` | `BrandSurface` / `Border.card` |
 
-<!-- FILL IN your palette. Two systems, kept distinct:
-     - Brand (UI chrome only): primary CTA, accent, background, surface
-     - Semantic (content only): success / warning / error + domain-specific
-
-     The split is binding — never use a brand color for content meaning,
-     never use a semantic color for chrome. -->
+The campaign palette derives from the Citizens for LPS "Yes on 4…"
+logo (charcoal slate lettering, green accent + star, white field).
+Brand colors are UI chrome; semantic colors carry meaning (notably
+`--color-estimate` for ⚠️ unverified figures — Decision 054). The
+split is binding — never use a brand color for content meaning,
+never use a semantic color for chrome. The campaign palette is
+deliberately DISTINCT from the district's navy/orange — district
+branding is never reproduced on campaign surfaces (Decision 055).
 
 ```css
 :root {
-  --color-primary:    #FF5C35;  /* CTAs, active states */
-  --color-accent:     #0047FF;  /* links, interactive */
+  --color-primary:    #4C9B2F;  /* campaign green — CTAs, active states */
+  --color-accent:     #2F6B1D;  /* deep green — links, interactive */
+  --color-ink:        #39444A;  /* charcoal slate — headings, logo text */
   --color-bg:         #FFFFFF;
-  --color-surface:    #F7F7F7;
-  --color-text:       #0A0A0A;
-  --color-border:     #E0E0E0;
+  --color-surface:    #F4F6F4;
+  --color-text:       #212729;
+  --color-border:     #DDE3DD;
+  --color-estimate:   #8A6D1A;  /* semantic: unverified/estimate labels */
 }
 ```
 

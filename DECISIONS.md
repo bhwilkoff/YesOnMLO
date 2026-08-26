@@ -1207,3 +1207,126 @@ enforceable in review instead of tribal.
 **How to apply**: fill the Display Vocabulary section of
 `docs/DATA-CONTRACT.md` (template §5.5); reject PRs that render a
 schema name the mapping translates.
+
+---
+
+## 053 — This repo is a campaign toolkit; the platform set is web-only
+
+*Date: 2026-08-26*
+
+YesOnMLO builds tools for the Citizens for LPS campaign supporting
+the $10M Littleton Public Schools mill levy override on the
+November 3, 2026 ballot. The platform set is **web only**: iOS,
+macOS, tvOS, Android, and Windows are 🚫 in PARITY.md.
+
+**Why**: the campaign has a ~10-week life. Voters and volunteers are
+reached through shared links (Facebook, Nextdoor, text banking,
+QR codes on yard signs) — nobody installs an app to decide a ballot
+question, and store review cycles alone would consume weeks of the
+calendar. The web app's shareable canonical URLs ARE the
+distribution model. The native scaffolds stay in the tree untouched
+(they're the template's, not ours) but receive no campaign work.
+
+**How to apply**: every feature lands in `index.html` / `css/` /
+`js/`. Do not open the Xcode or Android projects for campaign work.
+Revisit only if the campaign outlives the election as a permanent
+community organization.
+
+---
+
+## 054 — Campaign facts are a data plane with provenance, and ⚠️ VERIFY is a render-honest state
+
+*Date: 2026-08-26*
+
+Every fact any tool displays (deficit size, tax impact, election
+dates, vote history) lives in `js/data.js`, and each traces to a row
+in `docs/campaign/CAMPAIGN-BRIEF.md` naming its source. Facts not
+yet officially published carry a `verified: false` flag, and the UI
+must visibly label them as estimates — a campaign that publishes a
+wrong number once loses the credibility argument permanently.
+
+**Why**: a school-funding campaign's core asset is trust. The
+opposition's cheapest attack is "their numbers are wrong." Making
+provenance structural (data file + brief row + on-screen estimate
+labels) means no goodwill-driven volunteer can accidentally publish
+an unverified figure as fact.
+
+**How to apply**: to change a number, update CAMPAIGN-BRIEF.md with
+the source first, then `js/data.js`. The tax calculator reads ONLY
+from `data.js`. When the district publishes official tax-impact
+figures, flip `verified: true` in the same commit that cites the
+source.
+
+---
+
+## 055 — Compliance is architecture: attribution is baked in, and the two tracks never mix
+
+*Date: 2026-08-26*
+
+Every page footer renders the "Paid for by Citizens for LPS"
+attribution from one shared component. Nothing in this repo is
+built, hosted, or distributed with district resources, and district
+communications are never reproduced as advocacy — they are linked or
+cited. Colorado FCPA (CRS 1-45-117) bars public funds from campaign
+advocacy; volunteers who also serve on district committees (as the
+repo owner does, on the LRPC) do campaign work strictly on personal
+time with personal resources.
+
+**Why**: a compliance mistake doesn't just risk a complaint — it
+becomes the story, displacing the campaign's message. Baking the
+disclaimer into the shared shell (rather than remembering it
+per-page) and keeping the district/campaign boundary explicit in
+docs makes the safe path the default path.
+
+**How to apply**: new views inherit the footer automatically; never
+add a page outside the shared shell. Before publishing any new
+surface (site page, paid ad, printable), check it against
+`docs/research/colorado-compliance.md`.
+
+---
+
+## 056 — Strategy is private; tools are public
+
+*Date: 2026-08-26*
+
+Source documents (`git ignore/`) and campaign-internal strategy
+(`private/`) are gitignored and never committed. The committed repo
+contains only public-safe facts, tools, and research syntheses from
+published literature.
+
+**Why**: the repo's tools are meant to be shared — with volunteers,
+and as a model for other communities — but audience targeting and
+steering-committee deliberations published in a repo become
+opposition research. Separating the two at the directory level means
+"can I commit this?" has a structural answer instead of a judgment
+call per file.
+
+**How to apply**: anything derived from steering-committee email or
+internal deliberation goes in `private/`. Anything derived from
+district publications, public meetings, or published research may be
+committed. When unsure, it goes in `private/`.
+
+---
+
+## 057 — Campaign tools teach; they don't just tell
+
+*Date: 2026-08-26*
+
+Applied `learning-orientation-design` to the toolkit as a whole: the
+tax calculator shows its arithmetic (home value → assessed value →
+mills → dollars) instead of printing a bare number; the FAQ teaches
+how Colorado school funding actually works instead of only rebutting
+attacks; the share kit hands volunteers story *prompts* and facts to
+build from, not just copy-paste captions.
+
+**Why**: a voter who understands WHY the district is short $10.6M
+can persuade a neighbor; a voter handed a slogan cannot. The
+campaign's stated goal is coalition- and community-building — tools
+that make supporters more capable advocates compound; broadcast-only
+tools don't. This is the repo's "why we build" applied: deepen
+engagement, don't replace it.
+
+**How to apply**: before adding any tool or view, run the four
+questions (deepens understanding / invites participation / supports
+agency / clarity over cleverness). A surface that only broadcasts
+gets redesigned to also explain or invite.
