@@ -12,27 +12,27 @@
 
 ## Current state
 
-- **Status**: M0 + M1 complete (foundation + web toolkit v1)
+- **Status**: LIVE at https://bhwilkoff.github.io/YesOnMLO/ —
+  public repo by owner decision ("transparent as possible"); brand
+  aligned with citizensforlps.org
 - **Active milestone**: M2 — verification pass + first shareable tools
 - **Last session**: 2026-08-26
 - **Next actions**:
-  1. **Decide repo visibility** (private recommended while the
-     campaign runs — even with `private/` gitignored, PARITY/playbook
-     docs reveal tactics; owner's call)
-  2. **Verify the ⚠️ facts** in CAMPAIGN-BRIEF.md: TABOR comment
+  1. **Verify the ⚠️ facts** in CAMPAIGN-BRIEF.md: TABOR comment
      deadline (call LPS DEO — likely **Sept 18 noon**, unrecoverable),
      Arapahoe ballot-mail date, 7.05% vs 6.95% school assessment
      rate, certified ballot measure letter, MLO term (4-year sunset
      per LRPC minutes vs "ongoing" per press release)
-  3. Flip `verified: true` in `js/data.js` as official figures land
+  2. Flip `verified: true` in `js/data.js` as official figures land
      (same commit cites the source in CAMPAIGN-BRIEF.md)
-  4. Enable GitHub Pages on `main` once visibility is decided
-  5. Candidate next tools (PARITY §1 🔮 rows): myth-vs-fact card
+  3. Real-browser check of the live site at 375px + dark mode
+  4. Candidate next tools (PARITY §1 🔮 rows): myth-vs-fact card
      generator, interactive content-calendar tracker, drop-box map
+  5. Keep `events` in `js/data.js` in sync with
+     citizensforlps.org/upcoming_events
 - **Open questions**:
   - Final tagline (steering committee deciding; contenders in
     `private/STRATEGY.md`) — update `js/data.js` `tagline` when set
-  - Registered agent name for the footer disclaimer (ask treasurer)
   - Does this site stay a team toolkit, or get adopted/linked by
     citizensforlps.org? (Affects domain + OG image work)
 
