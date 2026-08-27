@@ -12,29 +12,31 @@
 
 ## Current state
 
-- **Status**: v2 rebuild (storytelling toolkit) staged locally; v1
-  LIVE at https://bhwilkoff.github.io/YesOnMLO/ pending v2 push
-- **Active milestone**: M3 — the storytelling toolkit (Decisions
-  058–060: truth-in-labeling, narrow scope, social-first)
+- **Status**: v2 (the storytelling toolkit) LIVE at
+  https://bhwilkoff.github.io/YesOnMLO/ — fact-checked, sourced,
+  truthful footer, verified share intents
+- **Active milestone**: M3 shipped; M4 = certification updates +
+  team tools
 - **Last session**: 2026-08-26 (evening)
 - **Next actions**:
-  1. **Verify the ⚠️ facts** in CAMPAIGN-BRIEF.md: TABOR comment
-     deadline (call LPS DEO — likely **Sept 18 noon**, unrecoverable),
-     Arapahoe ballot-mail date, 7.05% vs 6.95% school assessment
-     rate, certified ballot measure letter, MLO term (4-year sunset
-     per LRPC minutes vs "ongoing" per press release)
-  2. Flip `verified: true` in `js/data.js` as official figures land
-     (same commit cites the source in CAMPAIGN-BRIEF.md)
-  3. Real-browser check of the live site at 375px + dark mode
-  4. Candidate next tools (PARITY §1 🔮 rows): myth-vs-fact card
-     generator, interactive content-calendar tracker, drop-box map
-  5. Keep `events` in `js/data.js` in sync with
-     citizensforlps.org/upcoming_events
+  1. **When Arapahoe certifies ballot content (~early Sept)**: add
+     the measure letter (single find-and-replace), the certified mill
+     figure (flip `estimatedMills.verified` in `js/data.js`), and the
+     term — cite the certified language in CAMPAIGN-BRIEF.md
+  2. **TABOR pro/con comment deadline** (~Sept 18 noon, unrecoverable)
+     — campaign task, not site task; flagged to the team
+  3. Watch for LPS's FY2025 GFOA announcement → bump 31 → 32 only
+     with the new LPS source (fact-check claim 8)
+  4. Candidate team tools (PARITY 🔮): local-FB-group directory with
+     copy-caption flow (needs the team's group list), client-side QR
+     generator, per-channel UTM links
+  5. Real-device check of share intents (sms:, Nextdoor ShareKit,
+     Web Share files) — desktop headless can't exercise these
 - **Open questions**:
   - Final tagline (steering committee deciding; contenders in
-    `private/STRATEGY.md`) — update `js/data.js` `tagline` when set
-  - Does this site stay a team toolkit, or get adopted/linked by
-    citizensforlps.org? (Affects domain + OG image work)
+    `private/STRATEGY.md`)
+  - Mention the site to the registered agent (in-kind determination
+    is the committee's call — compliance addendum §9)
 
 ---
 
