@@ -12,11 +12,11 @@
 
 ## Current state
 
-- **Status**: LIVE at https://bhwilkoff.github.io/YesOnMLO/ —
-  public repo by owner decision ("transparent as possible"); brand
-  aligned with citizensforlps.org
-- **Active milestone**: M2 — verification pass + first shareable tools
-- **Last session**: 2026-08-26
+- **Status**: v2 rebuild (storytelling toolkit) staged locally; v1
+  LIVE at https://bhwilkoff.github.io/YesOnMLO/ pending v2 push
+- **Active milestone**: M3 — the storytelling toolkit (Decisions
+  058–060: truth-in-labeling, narrow scope, social-first)
+- **Last session**: 2026-08-26 (evening)
 - **Next actions**:
   1. **Verify the ⚠️ facts** in CAMPAIGN-BRIEF.md: TABOR comment
      deadline (call LPS DEO — likely **Sept 18 noon**, unrecoverable),
@@ -211,3 +211,30 @@ admin-cost FAQ, board-vote + GFOA share facts. VERIFIED: node --check clean;
 DOM-shim smoke test 14/14. Pushed to GitHub Pages per user: "the whole point
 of having a public repository is the ability to use github pages… as
 transparent as possible." Left: green; real-browser check still pending.
+
+**2026-08-26 (evening) — v2: the storytelling toolkit.** Found: v1 live with a
+FALSE footer ("Paid for by Citizens for Littleton Public Schools" — the
+committee didn't pay for the site), template-y AI design and copy, scope
+overlapping citizensforlps.org, and share tools limited to copy/paste. User
+directed: never claim untrue things; verify every claim; align look/feel with
+the official site; narrow scope to storytelling; social-first tools; no
+X/Twitter. Done: Decisions 058–060; full rebuild to 5 views (Start / Your
+Story / Share Studio / The Cost / Playbook) in a warm-editorial design (Lora +
+Source Sans Pro on warm paper, logo green as highlighter accent, star bullets,
+staggered reveal); truthful footer; two research agents → verified share-intent
+templates (docs/research/share-intents.md — Nextdoor ShareKit prefill!,
+threads.com intent, LinkedIn shareActive, RFC-5724 sms:?body=, Web Share files
+for Instagram, Contact Picker Android-only) and a full fact-check audit
+(docs/research/fact-check-2026-08-26.md) that CORRECTED the site: GFOA is 31
+years not 32 (cflps site's own 32 is unverifiable), $25/$100K is LPS's OWN
+official estimate (May 29 letter), 7.05% 2026 school rate VERIFIED, Arapahoe
+mails ballots Oct 2 (not "mid-Oct"), 2010–2020 results verified from county
+PDFs, dead URLs replaced, "ongoing" not "four years." Data plane now: every
+fact carries a sourceId → live-fetched URL; on-page source links everywhere;
+sources index in Playbook. New tools: canvas share-card generator (3 sizes,
+download + Web Share file path), per-network compose intents, person-to-person
+SMS/WhatsApp + Contact Picker, calculator→draft handoff, draft persistence.
+OG image (1200×630, PIL + real Lora) + og tags (the only "prefill"
+FB/LinkedIn/Nextdoor allow). VERIFIED: node --check clean; DOM smoke 20/20;
+headless-Chrome screenshots light+dark, true-375px probe (early clipping was
+headless 500px window clamp, not a bug). Left: green; pushed to Pages.

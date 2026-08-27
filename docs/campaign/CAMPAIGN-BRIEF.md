@@ -18,9 +18,12 @@
 | What | $10 million mill levy override (MLO) | LPS press release, 2026-08-14 |
 | Election | November 3, 2026 coordinated election (Arapahoe County) | LPS press release |
 | Board approval | August 13, 2026 regular meeting — **5–0 unanimous** | LPS press release; citizensforlps.org news, 2026-08-19 |
-| Ballot measure letter/number | ⚠️ VERIFY — assigned at county ballot certification (prior campaign was "4C") | — |
-| Term | ⚠️ VERIFY — LRPC minutes describe ~$10.3M annually **for four years**; press release describes "ongoing" funding. Confirm sunset language from certified ballot text | LRPC minutes 2026-07-29 vs. press release |
-| Tax impact per household | ⚠️ VERIFY — district to publish official estimates; calculator uses clearly-labeled estimates until then | LPS press release ("in the coming weeks") |
+| Ballot measure letter/number | ⚠️ VERIFY — not yet assigned as of 8/26 (prior LPS labels: 3A '10, 3B '13, 4A '18, 4C '20); certification ~early Sept | Fact-check 2026-08-26, claim 10 |
+| Term | Say "**ongoing**" (LPS's own repeated wording, two sources); the LRPC-minutes "four years" language is NOT publicly verifiable — never state a term until certified ballot language exists | Fact-check 2026-08-26, claim 11 |
+| Tax impact per household | **~$25/year per $100,000 of home value — the district's own official estimate** (Superintendent's letter, May 29, 2026); mills still estimated (~3.5) until certification | littletonpublicschools.net/article/2950007 |
+| 2026 school residential assessment rate | **7.05% — verified** | dpt.colorado.gov/residential-school-assessment-rate |
+| Ballots mailed | **Starting October 2, 2026** (Arapahoe County official) | arapahoeco.gov FAQ |
+| GFOA award streak | **31 consecutive years** (FY2024) — NOT the "32" on citizensforlps.org; use 31 until LPS announces FY2025 | Fact-check 2026-08-26, claim 8 |
 
 ## Why the district says it's needed
 

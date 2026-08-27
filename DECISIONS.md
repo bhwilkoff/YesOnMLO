@@ -1330,3 +1330,90 @@ engagement, don't replace it.
 questions (deepens understanding / invites participation / supports
 agency / clarity over cleverness). A surface that only broadcasts
 gets redesigned to also explain or invite.
+
+---
+
+## 058 — The site claims nothing that is not true, starting with its own attribution
+
+*Date: 2026-08-26*
+
+This site is built and hosted by volunteers at no cost. It is NOT
+paid for by the Citizens for LPS committee or anyone else, and the
+footer must say exactly that — never a "Paid for by" line naming a
+committee that didn't pay for it. The same truth-in-labeling rule
+covers every sentence on the site: a claim either carries a source a
+reader can check, or it is phrased as opinion/experience, or it
+doesn't ship.
+
+**Why**: the user's correction, verbatim: "The site was not paid for
+by Citizens for Littleton Public Schools. It isn't paid for by
+anyone... We should never claim things that aren't true within the
+website." A false disclaimer is worse than a missing one — it
+misstates campaign finance facts on a site whose entire argument is
+trust. (Colorado's disclaimer rule, CRS 1-45-108.3, attaches to paid
+communications; an unpaid volunteer site requires none.)
+
+**How to apply**: footer states the true provenance (volunteer-built,
+unpaid, not district resources, official campaign at
+citizensforlps.org). If the committee ever formally adopts or pays
+for this site, revisit attribution with the registered agent THEN.
+Every fact in `js/data.js` carries a `sourceId` resolving to a real
+URL in the sources registry; facts without a checkable source get cut
+or reworded as personal experience.
+
+---
+
+## 059 — Narrow scope: this is a storytelling toolkit, not a second campaign site
+
+*Date: 2026-08-26*
+
+citizensforlps.org is the campaign's home — join, volunteer, donate,
+events, FAQ, news all live there and are LINKED, never duplicated.
+This site does one job: help the social media team (and any
+supporter) tell the story of what a yes vote means for kids, and get
+that story in front of the neighbors who can vote. Views that
+duplicated the official site (standalone FAQ, events listing,
+get-involved ladder) were cut in favor of Story, Share Studio, Cost,
+and Team Playbook.
+
+**Why**: the user, verbatim: "This site should not duplicate things
+that the Citizens for LPS site does... It should have a narrow focus
+for helping my team of people... to tell the stories of how voting
+Yes will help our kids." Duplicated content drifts out of sync and
+splits the canonical-home principle the social media research says
+wins campaigns.
+
+**How to apply**: before adding any view or section, ask "does this
+directly help someone tell or spread a story?" If it's voter
+services, campaign operations, or committee business, link to
+citizensforlps.org or the county instead.
+
+---
+
+## 060 — Social-first: every tool ends in a post, a message, or a conversation
+
+*Date: 2026-08-26*
+
+The toolkit's features are built backwards from the moment of
+sharing: platform-specific compose flows (Facebook, Instagram,
+Nextdoor, LinkedIn, WhatsApp, Messenger, SMS, Threads, Bluesky,
+email — deliberately NO X/Twitter, per the team lead), a
+client-side share-card image generator, and relational tools for
+reaching people you actually know in Littleton and Centennial.
+Platform mechanics (share intents, prefill rules, image specs) live
+in one `SHARE_TARGETS` config validated against current platform
+docs — not folklore.
+
+**Why**: the user leads the social media team; the goal "is to build
+support on Social Media specifically... having strategies and
+approaches for social networks and not just story prompts," including
+"direct instant/text messages" and tools that "help folks to connect
+directly with people they know who live in Littleton/Centennial."
+Personal-network sharing is also what the GOTV research says moves
+local votes.
+
+**How to apply**: a new feature must shorten the path from "I have
+something to say" to "the right people saw it." Verify every share
+intent against current platform documentation before shipping it
+(they deprecate quietly); respect each platform's prefill policies —
+never fake organic reach.

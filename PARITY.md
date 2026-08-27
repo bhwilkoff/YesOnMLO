@@ -50,21 +50,26 @@ ballot question, and store review cycles would consume the calendar.
   The template scaffolds remain in the tree untouched. Revisit only
   if the campaign outlives the election as a permanent organization.
 
-## 1. Campaign toolkit features (web column only)
+## 1. Storytelling toolkit features (web column only)
+
+Rebuilt 2026-08-26 around the narrow scope (Decision 059): help
+supporters tell and spread stories; link to citizensforlps.org for
+everything else.
 
 | Feature | Web | Notes |
 |---|---|---|
-| Home — the case + pillars + ballot history | ✅ | `?` |
-| The Facts — sourced deficit/cuts/uses | ✅ | `?view=facts` |
-| Tax calculator — transparent 3-step math | ✅ | `?view=calculator`; renders estimate labels until `data.js` figures flip `verified: true` |
-| FAQ — teaching answers incl. seniors + Prop NN | ✅ | `?view=faq` |
-| Key dates + countdown | ✅ | `?view=dates`; est-labeled until county calendar confirmed |
-| Get involved ladder | ✅ | `?view=involved`; routes to citizensforlps.org |
-| Share kit — story prompts + copyable facts + Web Share | ✅ | `?view=share` |
-| "Paid for by" attribution on every surface | ✅ | Shared footer; add registered agent name when confirmed |
-| Myth-vs-fact graphic generator | 🔮 | Candidate next tool — templated shareable cards |
-| Content-calendar tracker for the social team | 🔮 | Playbook week-by-week arc as an interactive checklist |
-| Drop-box map embed | ⏳ | Add when Arapahoe County publishes 2026 locations |
+| Start — what this is + sourced ballot summary | ✅ | `?` |
+| Your Story — prompts by voice + writing guidance | ✅ | `?view=story`; prompts seed the studio draft |
+| Share Studio — draft + sourced facts + per-network intents | ✅ | `?view=studio`; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG copy-then-open (prefill banned by Meta policy); native share sheet on mobile |
+| Share-card generator (canvas → PNG, 3 sizes) | ✅ | Square/story/wide; Web Share file path into Instagram on mobile |
+| Person-to-person tools (SMS/WhatsApp/Contact Picker) | ✅ | Contact Picker is Android-Chrome-only progressive enhancement |
+| The Cost — transparent calculator with on-page sources | ✅ | `?view=cost`; estimate-labeled until official figures; "put this number in a post" seeds the draft |
+| Team Playbook — per-network digests + pushback etiquette + sources index | ✅ | `?view=playbook`; no X/Twitter by decision |
+| Truthful footer (volunteer-made, unpaid, not committee-published) | ✅ | Decision 058 — no false "paid for by" |
+| Facts duplicated from citizensforlps.org (FAQ/events/donate) | 🚫 | Decision 059 — linked, never duplicated |
+| Group-link directory (local FB groups w/ copy-caption flow) | 🔮 | Needs the team's curated list of groups they belong to |
+| QR generator for tabling/yard-sign → share page | 🔮 | Client-side lib, vendored |
+| Per-channel UTM links + lightweight analytics | 🔮 | Decide analytics stance first (privacy) |
 
 ---
 

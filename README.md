@@ -1,112 +1,97 @@
-# YesOnMLO — The Citizens for LPS Campaign Toolkit
+# Tell the Story of Our Schools
 
-**Volunteer-built tools supporting the $10 million Littleton Public
-Schools mill levy override on the November 3, 2026 ballot.**
+**A storytelling toolkit for volunteers supporting the Littleton
+Public Schools mill levy override — November 3, 2026.**
 
-Littleton Public Schools faces a $10.6M structural budget gap. Before
-asking voters for anything, the district cut $6.5M, froze every
-employee's wages, and scheduled an unpaid furlough day. The MLO
-restores what one-time cuts can't: competitive teacher pay, full
-instructional days, intact class sizes, and safe schools. LPS voters
-have passed every recent funding measure with 56%+ of the vote — this
-toolkit exists to help this community do it again.
+Live at **https://bhwilkoff.github.io/YesOnMLO/**
 
-> **Paid for by Citizens for LPS.** Built by volunteers on personal
-> time. Not produced or distributed with school district resources.
+The campaign's official home is
+[citizensforlps.org](https://citizensforlps.org) — join, volunteer,
+donate, and events all live there. This toolkit does one narrower
+thing: it helps supporters tell their own story about these schools
+and get it in front of the neighbors who can vote.
+
+> Made by volunteers. Nobody paid for this site and it costs nothing
+> to run. It is not published by any campaign committee and was not
+> produced with school district resources.
 
 ---
 
-## What's here
+## What the toolkit does
 
-### The web app (`index.html`, `css/`, `js/`)
+- **Your Story** — prompts organized by who you are (parent, teacher
+  on personal time, alum, longtime neighbor, business owner), with
+  plain guidance: one true moment, one fact, one ask.
+- **Share Studio** — draft once, then hand your words to each
+  network with the least friction the platform allows: Nextdoor's
+  official composer prefill, SMS and WhatsApp with the message
+  staged, LinkedIn/Threads/Bluesky compose intents, honest
+  copy-then-open flows for Facebook and Instagram (Meta forbids
+  prefill), and the phone's native share sheet. Plus a share-card
+  generator (canvas → PNG in feed, story, and link-preview sizes)
+  and person-to-person tools for texting people you actually know in
+  the district.
+- **The Cost** — a calculator that shows the county assessor's
+  actual three-step math, with every assumption adjustable and every
+  source linked on the page. Estimates are labeled as estimates
+  until the district publishes official figures.
+- **Team Playbook** — how we show up on each network (Facebook
+  groups, Instagram, Nextdoor's rules, LinkedIn, texts and DMs,
+  Threads/Bluesky — no X), how to handle pushback kindly, and the
+  sources for every number on the site.
 
-A mobile-first, no-framework site with shareable URLs for every view:
+## Ground rules (DECISIONS.md 053–060)
 
-| View | URL | What it does |
-|---|---|---|
-| Home | `?` | The case in 30 seconds: the gap, the three pillars, the ballot history, countdowns |
-| The Facts | `?view=facts` | The sourced story: deficit drivers, cuts already made, what the MLO funds |
-| Your Cost | `?view=calculator` | A transparent tax calculator that **shows every step of the math** — and labels every unverified number as an estimate |
-| FAQ | `?view=faq` | Answers that teach how Colorado school funding actually works |
-| Key Dates | `?view=dates` | The all-mail-ballot calendar, registration links, return deadlines |
-| Get Involved | `?view=involved` | The involvement ladder, from two minutes to ongoing |
-| Share Kit | `?view=share` | Story prompts + copyable facts for volunteers — your story beats any slogan |
+1. **Nothing untrue, ever** (058). The footer states the site's real
+   provenance. Every fact carries a source a reader can check —
+   facts without sources get cut, not shipped.
+2. **Narrow scope** (059). We complement citizensforlps.org, never
+   duplicate it. Every feature must help someone tell or spread a
+   story.
+3. **Social-first** (060). Every tool ends in a post, a message, or
+   a conversation. Share mechanics are verified against current
+   platform docs (`docs/research/share-intents.md`), and we never
+   fake organic reach.
+4. **Facts are a data plane** (054). Every number lives in
+   `js/data.js` with a `sourceId`, traced through
+   `docs/campaign/CAMPAIGN-BRIEF.md`. Unverified figures render with
+   visible estimate labels.
+5. **Web only** (053), **strategy private** (056), **tools teach**
+   (057).
 
-**Run locally**: `python3 -m http.server 8080` → http://localhost:8080.
-**Deploy**: push to `main`; GitHub Pages serves it.
+## The research behind it
 
-### The campaign docs (`docs/campaign/`)
-
-- **`CAMPAIGN-BRIEF.md`** — the single source of truth for verified
-  campaign facts. Every number the tools display traces here, with its
-  source. Unofficial figures carry ⚠️ VERIFY flags.
-- **`SOCIAL-MEDIA-PLAYBOOK.md`** — the full platform strategy: where
-  to spend effort (Facebook groups > everything), Nextdoor's rules,
-  the Amplifier Corps volunteer model, rapid-response protocol, paid
-  ads (including Meta's final-week blackout), and a week-by-week
-  content arc from September 1 to Election Day.
-
-### The research (`docs/research/`)
-
-- **`campaign-strategy.md`** — why school tax measures pass or fail
-  (the political-science literature + Colorado's 2023–2025 record),
-  messaging that works and messaging that backfires with suburban
-  swing voters, coalition tactics, and case studies from Douglas
-  County, Cherry Creek, Thompson, Brighton 27J, and Jeffco.
-- **`colorado-compliance.md`** — the legal reference: issue-committee
-  registration and TRACER reporting, "Paid for by" disclaimer rules,
-  the district/campaign firewall (CRS 1-45-117), the TABOR-notice
-  comment deadline (**~September 18 — hard and unrecoverable**), MLO
-  law, the 2026 tax math, and a full deadlines table.
-
-## Ground rules (Decisions 053–057 in DECISIONS.md)
-
-1. **Web only.** Voters are reached by shared links, not app installs.
-2. **Every fact has provenance.** Numbers live in `js/data.js` and
-   trace to `CAMPAIGN-BRIEF.md`; unverified figures are visibly
-   labeled as estimates. A campaign that publishes one wrong number
-   loses the trust argument permanently.
-3. **Compliance is baked in.** Attribution renders on every page from
-   one shared footer; nothing here uses district resources; district
-   materials are linked, never reproduced as advocacy.
-4. **Strategy is private; tools are public.** `git ignore/` and
-   `private/` never leave this machine.
-5. **Tools teach.** The calculator shows its arithmetic; the FAQ
-   explains the funding system; the share kit prompts your own story.
-   A supporter who understands the measure can persuade a neighbor —
-   that's the theory of change.
+- `docs/research/campaign-strategy.md` — why school-funding measures
+  pass or fail; Colorado's 2023–2025 record; messaging that works
+  and backfires.
+- `docs/campaign/SOCIAL-MEDIA-PLAYBOOK.md` — the team's full
+  platform strategy and week-by-week arc.
+- `docs/research/colorado-compliance.md` — issue-committee law, the
+  district/campaign firewall, hard deadlines.
+- `docs/research/share-intents.md` — the verified 2026 share-intent
+  templates the studio is built on.
 
 ## Contributing
 
-This repo is built to welcome campaign volunteers, not just
-developers:
+Volunteers first, developers welcome:
 
-- **Not a developer?** The highest-value contributions are facts and
-  stories: corrections to `docs/campaign/CAMPAIGN-BRIEF.md`, new FAQ
-  questions you've heard from real neighbors, and story prompts for
-  the share kit. Open an issue or email the committee.
-- **Developer?** Read `CLAUDE.md` for conventions. The short version:
-  vanilla HTML/CSS/JS, no build step, mobile-first, WCAG AA, every
-  fact from `js/data.js`, every view inside the shared shell.
-- **Before anything ships**: does it make a supporter more capable —
-  or just louder? We build the first kind.
-
-The official campaign lives at
-[citizensforlps.org](https://citizensforlps.org) — this toolkit
-complements it and routes voters there.
+- **Not a developer?** The best contributions are true stories, real
+  questions you've heard from neighbors, and corrections. Open an
+  issue or email citizens4lps@gmail.com.
+- **Developer?** Vanilla HTML/CSS/JS, no build step, mobile-first,
+  WCAG AA. Read `CLAUDE.md`. Facts only enter through
+  `docs/campaign/CAMPAIGN-BRIEF.md` → `js/data.js`, with sources.
+- Run locally: `python3 -m http.server 8080`.
 
 ## For other communities
 
-Everything here except the LPS-specific facts is reusable: the
-research syntheses, the compliance reference structure, the
-provenance-flagged data plane, the calculator, and the share-kit
-pattern. If your district is facing the same fight, fork it, replace
-`js/data.js` and `docs/campaign/`, and run. Public education is worth
-it everywhere.
+Fork it. Everything except the LPS facts is reusable: the sourced
+data plane, the share studio and its verified intent templates, the
+card generator, the research. If your district is fighting for
+funding too, replace `js/data.js` and `docs/campaign/` and go.
 
 ---
 
-*This repository was scaffolded from a multi-platform app template;
-`CLAUDE.md`, `DECISIONS.md` (entries 001–052), and the `apple/`,
-`android/`, `windows/`, `tv/` directories carry the template's
-reference material and receive no campaign work.*
+*Scaffolded from a multi-platform app template; the `apple/`,
+`android/`, `windows/`, `tv/` directories and DECISIONS 001–052 are
+template reference and receive no campaign work.*

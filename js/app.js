@@ -1,11 +1,11 @@
 /**
- * Yes for LPS — Main Application Logic
+ * Tell the Story of Our Schools — Main Application Logic
  *
- * Architecture: single IIFE. Views are <section> elements toggled by
- * showView(); URL state via ?view= (shareable canonical URLs). All
- * campaign facts come from CAMPAIGN (js/data.js) — nothing rendered
- * here may carry a number that isn't in the data plane (Decision 054).
- * Facts with verified:false must render with an estimate label.
+ * Vanilla JS, single IIFE. Views toggled by showView(); URL state via
+ * ?view= (shareable). All facts come from js/data.js and every fact
+ * renders WITH its source (Decisions 054, 058). The share studio's
+ * platform intents live in SHARE_TARGETS below — verify against
+ * current platform docs before changing (Decision 060).
  */
 (function () {
   'use strict';
@@ -22,30 +22,26 @@
     n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: digits, minimumFractionDigits: digits });
   const fmtNum = (n) => n.toLocaleString('en-US');
 
+  const srcLink = (sourceId) => {
+    const s = SOURCES[sourceId];
+    if (!s) return '';
+    return `<span class="src-link">Source: <a href="${s.url}" target="_blank" rel="noopener">${escHtml(s.label)}</a></span>`;
+  };
+
   /* ================================================================
      VIEW SYSTEM
   ================================================================ */
-  const VIEW_NAMES = ['home', 'facts', 'calculator', 'faq', 'dates', 'involved', 'share'];
+  const VIEW_NAMES = ['home', 'story', 'studio', 'cost', 'playbook'];
   const VIEW_TITLES = {
-    home: 'Yes for LPS',
-    facts: 'The Facts — Yes for LPS',
-    calculator: 'What It Costs You — Yes for LPS',
-    faq: 'FAQ — Yes for LPS',
-    dates: 'Key Dates — Yes for LPS',
-    involved: 'Get Involved — Yes for LPS',
-    share: 'Share Kit — Yes for LPS',
+    home: 'Tell the Story of Our Schools',
+    story: 'Your Story — Tell the Story of Our Schools',
+    studio: 'Share Studio — Tell the Story of Our Schools',
+    cost: 'What It Costs — Tell the Story of Our Schools',
+    playbook: 'Team Playbook — Tell the Story of Our Schools',
   };
 
-  function showView(name, fromHistory = false) {
+  function showView(name, fromHistory = false, anchor = null) {
     if (!VIEW_NAMES.includes(name)) name = 'home';
-    if (document.startViewTransition) {
-      document.startViewTransition(() => applyViewSwap(name, fromHistory));
-    } else {
-      applyViewSwap(name, fromHistory);
-    }
-  }
-
-  function applyViewSwap(name, fromHistory) {
     VIEW_NAMES.forEach((n) => {
       const view = $(`view-${n}`);
       if (view) view.hidden = n !== name;
@@ -55,18 +51,22 @@
         btn.setAttribute('aria-current', n === name ? 'page' : 'false');
       }
     });
-    $('main-content').scrollTop = 0;
     if (!fromHistory) {
       const url = name === 'home' ? '?' : `?view=${name}`;
       history.pushState({ view: name }, '', url);
     }
     document.title = VIEW_TITLES[name];
+    const main = $('main-content');
+    if (anchor && $(anchor)) {
+      $(anchor).scrollIntoView({ block: 'start' });
+    } else {
+      main.scrollTop = 0;
+    }
   }
 
-  // Any element with data-view navigates (nav items + in-page CTAs).
   document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-view]');
-    if (target) showView(target.dataset.view);
+    if (target) showView(target.dataset.view, false, target.dataset.anchor || null);
   });
   $('wordmark-home').addEventListener('click', (e) => {
     e.preventDefault();
@@ -75,117 +75,475 @@
   window.addEventListener('popstate', (e) => {
     showView(e.state?.view || initialViewFromURL(), true);
   });
-
   function initialViewFromURL() {
     return new URLSearchParams(window.location.search).get('view') || 'home';
   }
 
   /* ================================================================
-     HOME — countdown, pillars, history
+     HOME — the sourced ballot summary
   ================================================================ */
-  function daysUntil(iso) {
-    const now = new Date();
-    const target = new Date(`${iso}T12:00:00`);
-    return Math.max(0, Math.ceil((target - now) / 86400000));
-  }
-
-  function renderCountdown() {
-    const el = $('countdown-strip');
-    const e = CAMPAIGN.election;
-    const cells = [
-      { num: daysUntil(e.ballotsMailed.value), label: 'days until ballots mail', est: !e.ballotsMailed.verified },
-      { num: daysUntil(e.day.value), label: 'days until Election Day', est: !e.day.verified },
-    ];
-    el.innerHTML = cells.map((c) => `
-      <div class="countdown-cell">
-        <div class="countdown-num">${c.num}</div>
-        <div class="countdown-label">${escHtml(c.label)}${c.est ? ' (est.)' : ''}</div>
+  function renderBallotSummary() {
+    $('ballot-summary').innerHTML = CAMPAIGN.ballotSummary.map((item) => `
+      <div class="ballot-item">
+        <p>${escHtml(item.text)}</p>
+        ${srcLink(item.sourceId)}
       </div>`).join('');
-  }
-
-  function renderPillars(containerId) {
-    $(containerId).innerHTML = CAMPAIGN.pillars.map((p) => `
-      <div class="pillar">
-        <div class="pillar-title">${escHtml(p.title)}</div>
-        <div class="pillar-detail">${escHtml(p.detail)}</div>
-      </div>`).join('');
-  }
-
-  function renderHistory() {
-    const rows = CAMPAIGN.history.map((h) => `
-      <tr>
-        <td class="tabular">${h.year}</td>
-        <td>${escHtml(h.kind)}</td>
-        <td>${escHtml(h.amount)}</td>
-        <td class="pct-yes">${h.yesPct.toFixed(1)}% yes</td>
-        <td class="tabular">${fmtNum(h.totalVotes)}</td>
-      </tr>`).join('');
-    $('history-table').innerHTML = `
-      <thead><tr><th>Year</th><th>Measure</th><th>Amount</th><th>Result</th><th>Votes cast</th></tr></thead>
-      <tbody>${rows}</tbody>`;
   }
 
   /* ================================================================
-     FACTS
+     YOUR STORY — prompts seed the studio draft
   ================================================================ */
-  function renderFacts() {
-    $('deficit-drivers').innerHTML = CAMPAIGN.deficitDrivers
-      .map((d) => `<li>${escHtml(d)}</li>`).join('');
-    $('one-time-measures').innerHTML = CAMPAIGN.oneTimeMeasures.map((m) => {
-      const amt = m.amount ? ` — ${fmtUSD(m.amount)}` : '';
-      return `<li>${escHtml(m.label)}${amt}</li>`;
-    }).join('');
-  }
+  function renderPrompts() {
+    $('prompt-groups').innerHTML = CAMPAIGN.storyPrompts.map((group, gi) => `
+      <div class="prompt-group">
+        <p class="prompt-voice">${escHtml(group.voice)}</p>
+        ${group.prompts.map((p, pi) => `
+          <div class="prompt-card" data-prompt="${gi}:${pi}" role="button" tabindex="0"
+               aria-label="Use this prompt in the share studio">
+            &ldquo;${escHtml(p.text)}&rdquo;
+            <span class="prompt-hint">${escHtml(p.hint)} Tap to start writing.</span>
+          </div>`).join('')}
+      </div>`).join('');
 
-  function renderBudget() {
-    const renderBars = (containerId, rows) => {
-      $(containerId).innerHTML = rows.map((r) => `
-        <div class="budget-row">
-          <div class="budget-row-head">
-            <span class="budget-row-label">${escHtml(r.label)}</span>
-            <span class="budget-row-pct">${r.pct.toFixed(1)}%</span>
-          </div>
-          <div class="budget-bar"><div class="budget-bar-fill" style="width:${r.pct}%"></div></div>
-        </div>`).join('');
+    const usePrompt = (key) => {
+      const [gi, pi] = key.split(':').map(Number);
+      const prompt = CAMPAIGN.storyPrompts[gi]?.prompts[pi];
+      if (!prompt) return;
+      setDraft(prompt.text + ' ');
+      showView('studio');
+      $('studio-draft').focus();
     };
-    renderBars('budget-expenditures', CAMPAIGN.budget.expenditures);
-    renderBars('budget-revenue', CAMPAIGN.budget.revenue);
+    $('prompt-groups').addEventListener('click', (e) => {
+      const card = e.target.closest('[data-prompt]');
+      if (card) usePrompt(card.dataset.prompt);
+    });
+    $('prompt-groups').addEventListener('keydown', (e) => {
+      const card = e.target.closest('[data-prompt]');
+      if (card && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        usePrompt(card.dataset.prompt);
+      }
+    });
   }
 
   /* ================================================================
-     CALCULATOR — shows every step of the math (Decision 057)
+     STUDIO — draft, facts, card maker, share targets, relational
+  ================================================================ */
+  const DRAFT_KEY = 'ymlo_draft';
+
+  function getDraft() { return $('studio-draft').value; }
+  function setDraft(text) {
+    $('studio-draft').value = text;
+    draftChanged();
+  }
+  function draftChanged() {
+    $('draft-count').textContent = fmtNum(getDraft().length);
+    try { localStorage.setItem(DRAFT_KEY, getDraft()); } catch { /* private mode */ }
+  }
+
+  function initDraft() {
+    try {
+      const saved = localStorage.getItem(DRAFT_KEY);
+      if (saved) $('studio-draft').value = saved;
+    } catch { /* private mode */ }
+    $('studio-draft').addEventListener('input', draftChanged);
+    $('draft-clear').addEventListener('click', () => setDraft(''));
+    draftChanged();
+  }
+
+  function renderFactList() {
+    $('fact-list').innerHTML = CAMPAIGN.facts.map((f, i) => `
+      <div class="fact-row">
+        <div class="fact-text">
+          ${escHtml(f.text)}
+          ${srcLink(f.sourceId)}
+        </div>
+        <button class="fact-add" data-fact="${i}">add</button>
+      </div>`).join('');
+
+    $('fact-list').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-fact]');
+      if (!btn) return;
+      const fact = CAMPAIGN.facts[Number(btn.dataset.fact)];
+      const draft = getDraft();
+      setDraft(draft + (draft && !draft.endsWith('\n') ? '\n\n' : '') + fact.share);
+      btn.textContent = 'added';
+      setTimeout(() => { btn.textContent = 'add'; }, 1500);
+    });
+  }
+
+  /* ---- Card maker (canvas → PNG) ---- */
+  const CARD_SIZES = {
+    square: { w: 1080, h: 1080 },
+    story: { w: 1080, h: 1920 },
+    wide: { w: 1200, h: 630 },
+  };
+
+  function drawCard(canvas, size) {
+    const { w, h } = CARD_SIZES[size];
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    const text = $('card-text').value.trim() || 'I’m voting yes on the LPS mill levy override.';
+
+    // Warm paper ground + slate ink + green accents (brand palette)
+    ctx.fillStyle = '#FBFAF7';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#90CA65';
+    ctx.fillRect(0, 0, w, Math.round(h * 0.012));
+
+    const pad = Math.round(w * 0.09);
+    const maxWidth = w - pad * 2;
+
+    // Star (the logo's motif, not the logo itself — this card is the
+    // sharer's own voice, not a committee production; Decision 058)
+    ctx.fillStyle = '#90CA65';
+    const starSize = Math.round(w * 0.045);
+    drawStar(ctx, pad + starSize / 2, Math.round(h * 0.16), 5, starSize / 2, starSize / 4.4);
+
+    // Main text, wrapped, in Lora
+    const fontSize = size === 'wide' ? Math.round(w * 0.052) : Math.round(w * 0.062);
+    ctx.fillStyle = '#323F49';
+    ctx.font = `700 ${fontSize}px Lora, Georgia, serif`;
+    ctx.textBaseline = 'top';
+    const lines = wrapText(ctx, text, maxWidth);
+    const lineHeight = Math.round(fontSize * 1.28);
+    let y = Math.round(h * 0.16) + starSize + Math.round(h * 0.045);
+    lines.forEach((line) => {
+      ctx.fillText(line, pad, y);
+      y += lineHeight;
+    });
+
+    // Footer rule + pointer to the campaign's official home
+    const footY = h - Math.round(h * (size === 'wide' ? 0.16 : 0.1));
+    ctx.strokeStyle = '#E3E2DC';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(pad, footY);
+    ctx.lineTo(w - pad, footY);
+    ctx.stroke();
+    ctx.fillStyle = '#5A6772';
+    ctx.font = `600 ${Math.round(w * 0.026)}px "Source Sans Pro", sans-serif`;
+    ctx.fillText('Learn more: citizensforlps.org', pad, footY + Math.round(h * 0.02));
+  }
+
+  function drawStar(ctx, cx, cy, points, outer, inner) {
+    ctx.beginPath();
+    for (let i = 0; i < points * 2; i++) {
+      const r = i % 2 === 0 ? outer : inner;
+      const a = (Math.PI / points) * i - Math.PI / 2;
+      const x = cx + Math.cos(a) * r;
+      const y = cy + Math.sin(a) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function wrapText(ctx, text, maxWidth) {
+    const words = text.split(/\s+/);
+    const lines = [];
+    let line = '';
+    words.forEach((word) => {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function initCardMaker() {
+    const canvas = $('card-canvas');
+    const redraw = () => {
+      // Wait for the webfonts so the preview matches the download
+      document.fonts.ready.then(() => drawCard(canvas, $('card-size').value));
+    };
+    $('card-text').addEventListener('input', redraw);
+    $('card-size').addEventListener('change', redraw);
+    $('card-download').addEventListener('click', () => {
+      drawCard(canvas, $('card-size').value);
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `lps-share-card-${$('card-size').value}.png`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }, 'image/png');
+    });
+
+    // Mobile: hand the PNG straight to the share sheet (this is the
+    // real route into Instagram — image attached, caption pasted).
+    const shareBtn = $('card-share');
+    const probe = new File([new Blob(['x'], { type: 'image/png' })], 'x.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [probe] })) {
+      shareBtn.hidden = false;
+      shareBtn.addEventListener('click', async () => {
+        await copyDraft();
+        drawCard(canvas, $('card-size').value);
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          const file = new File([blob], 'lps-share-card.png', { type: 'image/png' });
+          try {
+            await navigator.share({ files: [file] });
+          } catch { /* user cancelled */ }
+        }, 'image/png');
+      });
+    }
+    redraw();
+  }
+
+  /* ---- Share targets ----
+   * Each target: how a static site can hand the volunteer's words to
+   * that platform with the least friction. mode:
+   *   'url'  — open an intent URL with the text/link prefilled
+   *   'copy' — copy the draft, then open the platform (no prefill API)
+   * Templates verified against current platform documentation — see
+   * docs/research/share-intents.md. Never fake organic reach.
+   */
+  const SITE_URL = 'https://citizensforlps.org';
+
+  /*
+   * Ordered by friction (lowest first), per the verified research in
+   * docs/research/share-intents.md. Nextdoor leads: it has an
+   * official prefill URL AND it's this campaign's local-persuasion
+   * channel. Facebook/Instagram forbid prefill by policy — those use
+   * the copy-then-open flow, honestly labeled.
+   */
+  const SHARE_TARGETS = [
+    {
+      id: 'nextdoor', name: 'Nextdoor',
+      tip: 'Your actual neighbors. Opens Nextdoor’s composer with your words already in place — you pick the neighborhood and post. One genuine post per phase; never on repeat.',
+      mode: 'url',
+      url: (text) => `https://nextdoor.com/sharekit/?source=lps-storyteller&body=${encodeURIComponent(text + '\n' + SITE_URL)}`,
+      button: 'Open with your words',
+    },
+    {
+      id: 'sms', name: 'Text message',
+      tip: 'The channel that moves votes most. Opens your messages app with your words staged — you choose who gets it.',
+      mode: 'url',
+      url: (text) => `sms:?body=${encodeURIComponent(text + ' ' + SITE_URL)}`,
+      button: 'Open with your words',
+    },
+    {
+      id: 'whatsapp', name: 'WhatsApp',
+      tip: 'Opens WhatsApp with your words ready to send — pick the person or the group chat.',
+      mode: 'url',
+      url: (text) => `https://wa.me/?text=${encodeURIComponent(text + '\n' + SITE_URL)}`,
+      button: 'Open with your words',
+    },
+    {
+      id: 'facebook', name: 'Facebook',
+      tip: 'Facebook doesn’t let websites prefill your post, so this copies your words first, then opens the share box — paste and post. Even better: paste it straight into a local group you belong to.',
+      mode: 'copy-open',
+      url: () => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`,
+      button: 'Copy words + open',
+    },
+    {
+      id: 'instagram', name: 'Instagram',
+      tip: 'Instagram can’t be prefilled from the web at all. Download your share card above, then this copies your caption and opens Instagram — attach the card, paste, post. In a story, add the link sticker.',
+      mode: 'copy-open',
+      url: () => 'https://www.instagram.com/',
+      button: 'Copy caption + open',
+    },
+    {
+      id: 'linkedin', name: 'LinkedIn',
+      tip: 'Opens the LinkedIn composer with your words in place. The professional angle lands here: schools are part of why families and employers choose a town.',
+      mode: 'url',
+      url: (text) => `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(text + '\n' + SITE_URL)}`,
+      button: 'Open with your words',
+    },
+    {
+      id: 'email', name: 'Email',
+      tip: 'For the neighbor, the book club, the HOA thread. Opens a draft with your words.',
+      mode: 'url',
+      url: (text) => `mailto:?subject=${encodeURIComponent('Why I’m voting yes for LPS')}&body=${encodeURIComponent(text + '\n\n' + SITE_URL)}`,
+      button: 'Open a draft',
+    },
+    {
+      id: 'threads', name: 'Threads',
+      tip: 'Opens the Threads composer with your words in place.',
+      mode: 'url',
+      url: (text) => `https://www.threads.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(SITE_URL)}`,
+      button: 'Open with your words',
+    },
+    {
+      id: 'bluesky', name: 'Bluesky',
+      tip: 'Opens the Bluesky composer with your words in place. Bluesky posts cap at 300 characters — keep it short here.',
+      mode: 'url',
+      url: (text) => `https://bsky.app/intent/compose?text=${encodeURIComponent((text.length > 260 ? text.slice(0, 257) + '…' : text) + '\n' + SITE_URL)}`,
+      button: 'Open with your words',
+    },
+  ];
+
+  async function copyDraft() {
+    const text = getDraft().trim();
+    if (!text) return false;
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function renderShareTargets() {
+    // Mobile fast path: the native share sheet reaches Messages,
+    // WhatsApp, Messenger, Instagram, and more in one tap.
+    let nativeRow = '';
+    if (navigator.share) {
+      nativeRow = `
+      <div class="share-target">
+        <div class="share-target-info">
+          <p class="share-target-name">Your phone's share sheet</p>
+          <p class="share-target-tip">One tap to everything installed on your phone — Messages, WhatsApp, Messenger, Instagram, and the rest.</p>
+        </div>
+        <button class="share-target-btn" id="native-share">Share&hellip;</button>
+      </div>`;
+    }
+    $('share-targets').innerHTML = nativeRow + SHARE_TARGETS.map((t, i) => `
+      <div class="share-target">
+        <div class="share-target-info">
+          <p class="share-target-name">${escHtml(t.name)}</p>
+          <p class="share-target-tip">${escHtml(t.tip)}</p>
+        </div>
+        <button class="share-target-btn" data-target="${i}">${escHtml(t.button)}</button>
+      </div>`).join('');
+
+    const nativeBtn = $('native-share');
+    if (nativeBtn) {
+      nativeBtn.addEventListener('click', async () => {
+        const text = getDraft().trim();
+        if (!text) {
+          $('studio-draft').focus();
+          return;
+        }
+        try {
+          await navigator.share({ text, url: SITE_URL });
+        } catch { /* user cancelled */ }
+      });
+    }
+
+    $('share-targets').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-target]');
+      if (!btn) return;
+      const target = SHARE_TARGETS[Number(btn.dataset.target)];
+      const text = getDraft().trim();
+      if (!text) {
+        showView('studio');
+        $('studio-draft').focus();
+        $('studio-draft').placeholder = 'Write a few words first — even one sentence.';
+        return;
+      }
+      if (target.mode === 'copy-open') {
+        const copied = await copyDraft();
+        btn.textContent = copied ? 'Copied — opening…' : 'Opening…';
+        setTimeout(() => { btn.textContent = target.button; }, 2500);
+        window.open(target.url(text), '_blank', 'noopener');
+      } else {
+        window.open(target.url(text), '_blank', 'noopener');
+      }
+    });
+  }
+
+  /* ---- Person to person ---- */
+  function renderRelationalTools() {
+    const el = $('relational-tools');
+    const personalNote = () =>
+      getDraft().trim() ||
+      'Hey — you live in the LPS area, right? The schools have a mill levy override on the November ballot and it matters a lot to our family. Can I tell you about it?';
+
+    let html = `
+      <div class="share-target">
+        <div class="share-target-info">
+          <p class="share-target-name">Text someone you know</p>
+          <p class="share-target-tip">Opens your messages with a note ready — your draft if you’ve written one, a friendly opener if you haven’t. Edit it to sound like you before sending.</p>
+        </div>
+        <button class="share-target-btn" id="rel-sms">Open messages</button>
+      </div>
+      <div class="share-target">
+        <div class="share-target-info">
+          <p class="share-target-name">WhatsApp someone you know</p>
+          <p class="share-target-tip">Same idea, for the group chat or the friend abroad in your neighborhood WhatsApp.</p>
+        </div>
+        <button class="share-target-btn" id="rel-wa">Open WhatsApp</button>
+      </div>`;
+
+    // Contact Picker API — progressive: only where supported
+    if ('contacts' in navigator && 'select' in navigator.contacts) {
+      html += `
+      <div class="share-target">
+        <div class="share-target-info">
+          <p class="share-target-name">Pick from your contacts</p>
+          <p class="share-target-tip">Choose a person from your own contacts and we’ll open a text to them. Nothing is uploaded anywhere — the picking happens on your phone.</p>
+        </div>
+        <button class="share-target-btn" id="rel-contacts">Choose a person</button>
+      </div>`;
+    }
+    el.innerHTML = html;
+
+    $('rel-sms').addEventListener('click', () => {
+      window.open(`sms:?body=${encodeURIComponent(personalNote())}`, '_self');
+    });
+    $('rel-wa').addEventListener('click', () => {
+      window.open(`https://wa.me/?text=${encodeURIComponent(personalNote())}`, '_blank', 'noopener');
+    });
+    const contactsBtn = $('rel-contacts');
+    if (contactsBtn) {
+      contactsBtn.addEventListener('click', async () => {
+        try {
+          const picked = await navigator.contacts.select(['tel', 'name'], { multiple: false });
+          const tel = picked?.[0]?.tel?.[0];
+          if (tel) {
+            window.open(`sms:${encodeURIComponent(tel)}?body=${encodeURIComponent(personalNote())}`, '_self');
+          }
+        } catch { /* user cancelled */ }
+      });
+    }
+  }
+
+  /* ================================================================
+     THE COST — transparent calculator, sourced
   ================================================================ */
   function parseHomeValue() {
     const raw = $('calc-home-value').value.replace(/[^0-9.]/g, '');
     return parseFloat(raw) || 0;
   }
 
-  function renderCalculator() {
+  function calcNumbers() {
     const homeValue = parseHomeValue();
     const rate = parseFloat($('calc-rate').value) / 100 || 0;
     const mills = parseFloat($('calc-mills').value) || 0;
     const assessed = homeValue * rate;
     const annual = assessed * (mills / 1000);
-    const monthly = annual / 12;
+    return { homeValue, rate, mills, assessed, annual, monthly: annual / 12 };
+  }
 
+  function renderCalculator() {
+    const { homeValue, rate, mills, assessed, annual, monthly } = calcNumbers();
     $('calc-steps').innerHTML = `
       <div class="calc-step">
         <div>
-          <div class="calc-step-label">1. Assessed value</div>
-          <div class="calc-step-math">${fmtUSD(homeValue)} × ${(rate * 100).toFixed(2)}% assessment rate</div>
+          <div class="calc-step-label">1. The county assesses your home</div>
+          <div class="calc-step-math">${fmtUSD(homeValue)} &times; ${(rate * 100).toFixed(2)}% assessment rate</div>
         </div>
         <div class="calc-step-value">${fmtUSD(assessed)}</div>
       </div>
       <div class="calc-step">
         <div>
-          <div class="calc-step-label">2. MLO tax</div>
-          <div class="calc-step-math">${fmtUSD(assessed)} × ${mills} mills ÷ 1,000</div>
+          <div class="calc-step-label">2. The override applies its mills</div>
+          <div class="calc-step-math">${fmtUSD(assessed)} &times; ${mills} mills &divide; 1,000</div>
         </div>
         <div class="calc-step-value">${fmtUSD(annual, 0)} / year</div>
       </div>
       <div class="calc-step calc-result">
-        <div class="calc-step-label">What that means monthly</div>
-        <div class="calc-step-value">${fmtUSD(monthly, 2)} / month</div>
+        <div class="calc-step-label">For your household, that's about</div>
+        <div class="calc-step-value">${fmtUSD(monthly, 2)} a month</div>
       </div>`;
   }
 
@@ -196,11 +554,15 @@
 
     const unverified = !tc.estimatedMills.verified || !tc.residentialAssessmentRate.verified;
     $('calc-est-note').textContent = unverified
-      ? '⚠️ Estimate only. The district will publish official tax-impact figures; this page will be updated the day they arrive. Until then, the mill and assessment-rate numbers below are our clearly-labeled best estimates — adjust them yourself and watch the math change.'
-      : 'Figures reflect the district’s published official estimates.';
+      ? 'The assessment rate and the $25-per-$100,000 estimate are the state’s and the district’s own published figures. The mill number is derived from them and stays an estimate until the county certifies the ballot language this fall — this page will be updated the day the certified figure exists.'
+      : 'Figures reflect the certified ballot language and published official rates.';
 
-    $('calc-context').textContent =
-      'A "mill" is one dollar of tax per $1,000 of assessed value — and for school levies, assessed value is only about 7% of what your home is worth on the market. The district’s early estimate works out to roughly $25 per year for every $100,000 of home value — about the cost of a streaming subscription per month for a typical household.';
+    $('calc-sources').innerHTML = `
+      Assessment rate (7.05% for 2026): <a href="${SOURCES[tc.residentialAssessmentRate.sourceId].url}" target="_blank" rel="noopener">${escHtml(SOURCES[tc.residentialAssessmentRate.sourceId].label)}</a>.
+      The district's own estimate — "approximately $25 annually for every $100,000 of home value":
+      <a href="${SOURCES[tc.perHundredK.sourceId].url}" target="_blank" rel="noopener">${escHtml(SOURCES[tc.perHundredK.sourceId].label)}</a>.
+      The mill figure here (${tc.estimatedMills.value}) is derived from those two numbers; the certified ballot language will set the final figure.
+      The formula is the county assessor's: home value &times; assessment rate &times; mills &divide; 1,000.`;
 
     ['calc-home-value', 'calc-mills', 'calc-rate'].forEach((id) => {
       $(id).addEventListener('input', renderCalculator);
@@ -209,134 +571,49 @@
       const v = parseHomeValue();
       if (v) $('calc-home-value').value = fmtNum(v);
     });
+    $('calc-share').addEventListener('click', () => {
+      const { monthly } = calcNumbers();
+      setDraft(
+        `I did the math for our house: the LPS mill levy override works out to about ${fmtUSD(monthly, 2)} a month for us. ` +
+        `For that, teachers keep competitive pay, class sizes hold, and kids get their furlough day back as a school day. I’m voting yes.`
+      );
+      showView('studio');
+    });
     renderCalculator();
   }
 
   /* ================================================================
-     FAQ
+     PLAYBOOK + SOURCES
   ================================================================ */
-  function renderFaq() {
-    $('faq-list').innerHTML = CAMPAIGN.faq.map((item) => `
-      <details class="faq-item">
-        <summary>${escHtml(item.q)}</summary>
-        <div class="faq-answer">${escHtml(item.a)}</div>
-      </details>`).join('');
-  }
-
-  /* ================================================================
-     DATES
-  ================================================================ */
-  function renderDates() {
-    const e = CAMPAIGN.election;
-    const rows = [
-      { when: 'Mid-October', what: 'Ballots mailed to every registered voter in the LPS boundary', est: !e.ballotsMailed.verified },
-      { when: 'Mid–late Oct', what: 'Return your ballot early — drop boxes are open 24/7 and most LPS neighbors vote in the first two weeks', est: false },
-      { when: 'Late October', what: 'Last safe day to return by MAIL — after this, use a drop box', est: true },
-      { when: 'Nov 3, 2026', what: `Election Day — ballots must be RECEIVED by ${CAMPAIGN.election.ballotsDueTime} (postmarks don't count)`, est: false },
-    ];
-    $('dates-list').innerHTML = rows.map((r) => `
-      <div class="date-row">
-        <div class="date-when">${escHtml(r.when)}${r.est ? ' <span class="date-est">(est.)</span>' : ''}</div>
-        <div class="date-what">${escHtml(r.what)}</div>
+  function renderPlaybook() {
+    $('playbook-list').innerHTML = CAMPAIGN.playbook.map((p) => `
+      <div class="play-item">
+        <p class="play-name">${escHtml(p.name)}<span class="play-role">${escHtml(p.role)}</span></p>
+        <p class="play-how">${escHtml(p.how)}</p>
       </div>`).join('');
   }
 
-  /* ================================================================
-     GET INVOLVED
-  ================================================================ */
-  function renderInvolvement() {
-    $('involvement-ladder').innerHTML = CAMPAIGN.involvement.map((rung) => `
-      <div class="ladder-rung">
-        <div class="ladder-level">${escHtml(rung.level)}</div>
-        <ul>${rung.actions.map((a) => `<li>${escHtml(a)}</li>`).join('')}</ul>
-      </div>`).join('');
-
-    $('events-list').innerHTML = CAMPAIGN.events.map((ev) => `
-      <div class="event-row">
-        <div class="event-when">${escHtml(ev.when)}</div>
-        <div class="event-what">${escHtml(ev.what)}</div>
-      </div>`).join('');
-  }
-
-  /* ================================================================
-     SHARE KIT — prompts + facts + Web Share API
-  ================================================================ */
-  const STORY_PROMPTS = [
-    'The teacher who changed things for my kid was…',
-    'We chose this neighborhood because of the schools. Here’s what that’s been worth to us…',
-    'I don’t have kids in LPS anymore, but I’m voting yes because…',
-    'A furlough day sounds small until you’re the family arranging childcare for it. Here’s ours…',
-    'I asked my LPS student what their favorite class is. Here’s what they said, and here’s who teaches it…',
-  ];
-
-  function shareFacts() {
-    const m = CAMPAIGN.measure;
-    const b = CAMPAIGN.budget;
-    return [
-      `LPS already cut ${fmtUSD(6500000)} before asking voters for anything — including a wage freeze and a furlough day.`,
-      `The ${fmtUSD(m.amount)} mill levy override is local by law: collected here, spent here, and the state can never redirect it.`,
-      `The LPS Board of Education voted ${m.boardVote} to put this measure on the ballot.`,
-      `Central administration is ${b.centralAdminPct} of the LPS budget — and LPS has earned the national excellence-in-financial-reporting award ${b.gfoaYears} years running.`,
-      `If it passes, LPS educators get their negotiated pay restored retroactively — and students get their furlough day back as a school day.`,
-      `LPS voters have passed every recent school funding measure with at least 56% support. This community shows up for its schools.`,
-      `Every registered voter in the LPS boundary gets a mail ballot in mid-October. No polling place needed — vote from your kitchen table.`,
-    ];
-  }
-
-  function renderShareKit() {
-    $('story-prompts').innerHTML = STORY_PROMPTS.map((p) => `
-      <div class="prompt-card">"${escHtml(p)}"</div>`).join('');
-
-    $('share-facts').innerHTML = shareFacts().map((f, i) => `
-      <div class="share-fact">
-        <span>${escHtml(f)}</span>
-        <button class="btn btn-ghost" data-fact="${i}">Copy</button>
-      </div>`).join('');
-
-    $('share-facts').addEventListener('click', async (e) => {
-      const btn = e.target.closest('[data-fact]');
-      if (!btn) return;
-      await navigator.clipboard.writeText(shareFacts()[Number(btn.dataset.fact)]);
-      const original = btn.textContent;
-      btn.textContent = 'Copied!';
-      setTimeout(() => { btn.textContent = original; }, 1500);
-    });
-
-    const siteURL = `${location.origin}${location.pathname}`;
-    const shareData = {
-      title: 'Yes for LPS',
-      text: 'See what the LPS mill levy override funds, what it costs, and how to help.',
-      url: siteURL,
-    };
-    $('share-site-btn').addEventListener('click', async () => {
-      if (navigator.share) {
-        try { await navigator.share(shareData); } catch { /* user cancelled */ }
-      } else {
-        await navigator.clipboard.writeText(siteURL);
-        $('share-feedback').textContent = 'Link copied — paste it anywhere.';
-      }
-    });
-    $('copy-link-btn').addEventListener('click', async () => {
-      await navigator.clipboard.writeText(siteURL);
-      $('share-feedback').textContent = 'Link copied — paste it anywhere.';
-    });
+  function renderSources() {
+    $('sources-list').innerHTML = `<ul class="sources-list">` +
+      Object.values(SOURCES).map((s) =>
+        `<li><a href="${s.url}" target="_blank" rel="noopener">${escHtml(s.label)}</a></li>`).join('') +
+      `</ul>`;
   }
 
   /* ================================================================
      BOOT
   ================================================================ */
   function init() {
-    renderCountdown();
-    renderPillars('home-pillars');
-    renderPillars('facts-pillars');
-    renderHistory();
-    renderFacts();
-    renderBudget();
+    renderBallotSummary();
+    renderPrompts();
+    initDraft();
+    renderFactList();
+    initCardMaker();
+    renderShareTargets();
+    renderRelationalTools();
     initCalculator();
-    renderFaq();
-    renderDates();
-    renderInvolvement();
-    renderShareKit();
+    renderPlaybook();
+    renderSources();
     showView(initialViewFromURL(), true);
   }
 

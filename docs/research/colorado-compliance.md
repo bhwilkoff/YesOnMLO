@@ -192,3 +192,24 @@ Sources: Meta — https://www.facebook.com/business/help/208949576550051 · Goog
 4. **Stamp "Paid for by Citizens for LPS" (plus registered agent name) on everything** — signs, site footer, ad templates — at 8-pt/15% minimum.
 5. **Build the two-hat firewall**: separate campaign email, no district resources ever, LRPC title used only "for identification," no advocacy in LRPC settings, campaign data from public sources/CORA only.
 6. **Verify before publishing the tax calculator as final**: the 2026 school residential assessment rate (7.05% vs. possible 6.95%) with the Division of Property Taxation, and the final mill figure from the certified ballot language.
+
+---
+
+## 9. Addendum (2026-08-26): this toolkit's own attribution
+
+The storytelling toolkit at bhwilkoff.github.io/YesOnMLO is built and
+hosted by volunteers at zero cost. It is NOT paid for by the Citizens
+for LPS committee or anyone else. Consequences:
+
+- The CRS 1-45-108.3 disclaimer regime attaches to communications
+  placed **for a fee** / committee spending — an unpaid volunteer
+  site requires no "Paid for by" statement, and displaying one naming
+  a committee that didn't pay would be false. The footer states the
+  true provenance instead (Decision 058).
+- If the committee ever formally adopts, funds, or takes over the
+  site, revisit attribution with the registered agent at that time.
+- Volunteer-donated services coordinated with a committee can
+  constitute reportable in-kind contributions — whether this applies
+  is the registered agent's call, not this repo's; the repo owner
+  should mention the site's existence to the registered agent so the
+  committee can make that determination.
