@@ -40,7 +40,6 @@
     </div>
     <nav class="site-nav" aria-label="Main navigation">
       <button class="nav-item active" id="nav-home" data-view="home">Start</button>
-      <button class="nav-item" id="nav-story" data-view="story">Your story</button>
       <button class="nav-item" id="nav-studio" data-view="studio">Share studio</button>
       <button class="nav-item" id="nav-cost" data-view="cost">The cost</button>
       <button class="nav-item" id="nav-playbook" data-view="playbook">Playbook</button>
@@ -73,7 +72,7 @@
             <div>
               <p class="step-title">Find your story</p>
               <p class="step-body">A moment you remember. A teacher who mattered. A reason you stayed. We'll help you find it and write it down.</p>
-              <button class="link-btn" data-view="story">Start with a prompt &rarr;</button>
+              <button class="link-btn" data-view="studio" data-wstep="1">Start with a prompt &rarr;</button>
             </div>
           </div>
           <div class="step">
@@ -81,7 +80,7 @@
             <div>
               <p class="step-title">Make it easy to share</p>
               <p class="step-body">Add one sourced fact if you want, make a share card, and get a version shaped for each place you post.</p>
-              <button class="link-btn" data-view="studio">Open the share studio &rarr;</button>
+              <button class="link-btn" data-view="studio" data-wstep="2">Open the share studio &rarr;</button>
             </div>
           </div>
           <div class="step">
@@ -89,7 +88,7 @@
             <div>
               <p class="step-title">Bring it to the people who can vote</p>
               <p class="step-body">The neighbors, group chats, and old friends who live here. A message from you means more than anything a campaign can buy.</p>
-              <button class="link-btn" data-view="studio" data-anchor="studio-friends">Reach your people &rarr;</button>
+              <button class="link-btn" data-view="studio" data-wstep="4">Reach your people &rarr;</button>
             </div>
           </div>
         </div>
@@ -110,88 +109,114 @@
       </div>
     </section>
 
-    <!-- YOUR STORY -->
-    <section id="view-story" class="view" aria-label="Your story" hidden>
-      <div class="view-inner">
-        <p class="eyebrow">Step one</p>
-        <h1 class="view-heading">Start with what's true for you</h1>
-        <p class="lede">
-          Nobody needs you to explain school finance. The post that
-          reaches a neighbor is the one only you could write: one true
-          moment, told plainly. If it helps, add one fact. End with
-          what you're asking.
-        </p>
-
-        <h2 class="section-title">Prompts, depending on who you are</h2>
-        <div id="prompt-groups"></div>
-
-        <h2 class="section-title">A few things that help</h2>
-        <ul class="star-list">
-          <li>Write the way you talk. Read it out loud once before you post it.</li>
-          <li>Name the school. "Field Elementary" lands; "our schools" floats away.</li>
-          <li>One number at most. The story carries the post; the fact anchors it.</li>
-          <li>Say the ask: "I'm voting yes on the LPS mill levy override, and I hope you will too."</li>
-          <li>Ask before you name your kid, someone else's kid, or a teacher. Teachers can share their own stories on their own time — never from work.</li>
-        </ul>
-
-        <p class="cta-row">
-          <button class="btn" data-view="studio">Take it to the share studio &rarr;</button>
-        </p>
-      </div>
-    </section>
-
-    <!-- SHARE STUDIO -->
+    <!-- SHARE STUDIO — a four-step guided flow -->
     <section id="view-studio" class="view" aria-label="Share studio" hidden>
       <div class="view-inner">
-        <p class="eyebrow">Step two</p>
-        <h1 class="view-heading">The share studio</h1>
-        <p class="lede">
-          Draft once, then send it where your people are. Each button
-          below opens the real app with your words ready to go —
-          nothing posts without you.
-        </p>
+        <p class="eyebrow">The share studio</p>
+        <h1 class="view-heading">Four small steps, and your story is out there</h1>
 
-        <label class="field-label" for="studio-draft">Your words</label>
-        <textarea id="studio-draft" class="draft-box" rows="6"
-          placeholder="Start typing, or pick a prompt from Your Story. Example: When our youngest started at Hopkins, her teacher learned every kid's name by the end of day one. That's the kind of thing the mill levy override protects. I'm voting yes, and I hope you will too."></textarea>
-        <p class="draft-meta"><span id="draft-count">0</span> characters &middot; <button class="link-btn-inline" id="draft-clear">clear</button></p>
+        <nav class="stepper" aria-label="Share studio steps">
+          <button class="stepper-item current" id="stepper-1" data-wstep="1"><span class="stepper-num">1</span><span class="stepper-label">Who you are</span></button>
+          <button class="stepper-item" id="stepper-2" data-wstep="2"><span class="stepper-num">2</span><span class="stepper-label">Your words</span></button>
+          <button class="stepper-item" id="stepper-3" data-wstep="3"><span class="stepper-num">3</span><span class="stepper-label">A picture</span></button>
+          <button class="stepper-item" id="stepper-4" data-wstep="4"><span class="stepper-num">4</span><span class="stepper-label">Send it</span></button>
+        </nav>
 
-        <h2 class="section-title">Add a fact, if you want one</h2>
-        <p class="body">Each is sourced — tap the source to check it yourself, tap <em>add</em> to drop it into your draft.</p>
-        <div id="fact-list"></div>
-
-        <h2 class="section-title">Make a share card</h2>
-        <p class="body">
-          A card gives your post something to see. Pick a line, pick a
-          shape, and download it — then attach it wherever you post.
-        </p>
-        <div class="card-maker">
-          <label class="field-label" for="card-text">Card text</label>
-          <textarea id="card-text" class="draft-box" rows="3" maxlength="220">I'm voting yes on the LPS mill levy override.</textarea>
-          <div class="card-controls">
-            <label class="field-label" for="card-size">Shape</label>
-            <select id="card-size" class="select">
-              <option value="square">Square — feed (1080 &times; 1080)</option>
-              <option value="story">Tall — story (1080 &times; 1920)</option>
-              <option value="wide">Wide — link preview (1200 &times; 630)</option>
-            </select>
-            <button class="btn" id="card-download">Download card</button>
-            <button class="btn btn-quiet" id="card-share" hidden>Share card&hellip;</button>
+        <!-- STEP 1 — pick a voice, get a prompt -->
+        <div class="wstep" id="wstep-1">
+          <h2 class="wstep-title">Who's telling this story?</h2>
+          <p class="body">
+            Nobody needs you to explain school finance. The post that
+            reaches a neighbor is the one only you could write — so
+            start with who you are, and we'll offer a first line.
+          </p>
+          <div class="voice-grid" id="voice-grid"></div>
+          <div id="voice-prompts" class="voice-prompts"></div>
+          <div class="wstep-nav">
+            <span></span>
+            <button class="link-btn" data-wstep="2">I'll just write my own &rarr;</button>
           </div>
-          <canvas id="card-canvas" class="card-preview" width="540" height="540" aria-label="Share card preview"></canvas>
         </div>
 
-        <h2 class="section-title" id="studio-networks">Choose where</h2>
-        <div id="share-targets"></div>
+        <!-- STEP 2 — the draft -->
+        <div class="wstep" id="wstep-2" hidden>
+          <h2 class="wstep-title">Say it the way you'd say it at pickup</h2>
+          <label class="field-label" for="studio-draft">Your words</label>
+          <textarea id="studio-draft" class="draft-box" rows="6"
+            placeholder="Example: When our youngest started at Hopkins, her teacher learned every kid's name by the end of day one. That's the kind of thing the mill levy override protects. I'm voting yes, and I hope you will too."></textarea>
+          <p class="draft-meta"><span id="draft-count">0</span> characters &middot; <button class="link-btn-inline" id="draft-clear">start over</button></p>
 
-        <h2 class="section-title" id="studio-friends">Or go person to person</h2>
-        <p class="body">
-          The most effective thing you can do all fall: think of five
-          people who live in the LPS boundary — Littleton, Centennial,
-          the neighborhoods in between — and message them yourself.
-          Not a broadcast. A note from you.
-        </p>
-        <div id="relational-tools"></div>
+          <details class="helper-details">
+            <summary>Add one sourced fact (optional)</summary>
+            <p class="body">One number anchors a story; two turn it into a lecture. Tap <em>add</em> and it drops in below your words — tap the source to check it yourself.</p>
+            <div id="fact-list"></div>
+          </details>
+
+          <details class="helper-details">
+            <summary>A few things that help</summary>
+            <ul class="star-list">
+              <li>Write the way you talk. Read it out loud once before you post it.</li>
+              <li>Name the school. "Field Elementary" lands; "our schools" floats away.</li>
+              <li>End with the ask: "I'm voting yes on the LPS mill levy override, and I hope you will too."</li>
+              <li>Ask before you name your kid, someone else's kid, or a teacher. Teachers: share on your own time, never from work.</li>
+            </ul>
+          </details>
+
+          <div class="wstep-nav">
+            <button class="link-btn" data-wstep="1">&larr; Back</button>
+            <button class="btn" id="to-step-3" data-wstep="3">Next: add a picture &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 — the card (optional) -->
+        <div class="wstep" id="wstep-3" hidden>
+          <h2 class="wstep-title">Give it something to see <span class="wstep-optional">(optional)</span></h2>
+          <p class="body">
+            Posts with a picture travel further. This makes you a
+            clean, simple card — save it now, attach it when you post.
+          </p>
+          <div class="card-maker">
+            <label class="field-label" for="card-text">The line on the card</label>
+            <textarea id="card-text" class="draft-box" rows="2" maxlength="220">I'm voting yes on the LPS mill levy override.</textarea>
+            <div class="card-controls">
+              <label class="field-label" for="card-size">Shape</label>
+              <select id="card-size" class="select">
+                <option value="square">Square &mdash; for a feed post</option>
+                <option value="story">Tall &mdash; for a story</option>
+                <option value="wide">Wide &mdash; for a link preview</option>
+              </select>
+              <button class="btn btn-quiet" id="card-download">Save the card</button>
+              <button class="btn btn-quiet" id="card-share" hidden>Share the card&hellip;</button>
+            </div>
+            <canvas id="card-canvas" class="card-preview" width="540" height="540" aria-label="Share card preview"></canvas>
+          </div>
+          <div class="wstep-nav">
+            <button class="link-btn" data-wstep="2">&larr; Back</button>
+            <button class="btn" data-wstep="4">Next: send it &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 — send it -->
+        <div class="wstep" id="wstep-4" hidden>
+          <h2 class="wstep-title">Where do your people talk?</h2>
+          <div class="draft-review">
+            <p class="draft-review-label">You're sharing:</p>
+            <p class="draft-review-text" id="draft-review-text"></p>
+            <button class="link-btn-inline" data-wstep="2">edit</button>
+          </div>
+          <p class="body">
+            Pick a place — we'll walk you through it. Nothing posts
+            without you, and each one only takes a minute. Start with
+            wherever the people who know you actually are.
+          </p>
+          <div class="target-grid" id="target-grid"></div>
+          <div class="target-detail" id="target-detail" hidden></div>
+          <p class="sent-tally" id="sent-tally" hidden></p>
+          <div class="wstep-nav">
+            <button class="link-btn" data-wstep="3">&larr; Back</button>
+            <span></span>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -59,8 +59,7 @@ everything else.
 | Feature | Web | Notes |
 |---|---|---|
 | Start — what this is + sourced ballot summary | ✅ | `?` |
-| Your Story — prompts by voice + writing guidance | ✅ | `?view=story`; prompts seed the studio draft |
-| Share Studio — draft + sourced facts + per-network intents | ✅ | `?view=studio`; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG copy-then-open (prefill banned by Meta policy); native share sheet on mobile |
+| Share Studio — four-step guided wizard (who you are → your words → a picture → send it) | ✅ | `?view=studio`; voice prompts seed the draft; per-network guided panels with micro-steps; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG copy-then-open (prefill banned by Meta policy); native share sheet on mobile; sent-state tally |
 | Share-card generator (canvas → PNG, 3 sizes) | ✅ | Square/story/wide; Web Share file path into Instagram on mobile |
 | Person-to-person tools (SMS/WhatsApp/Contact Picker) | ✅ | Contact Picker is Android-Chrome-only progressive enhancement |
 | The Cost — transparent calculator with on-page sources | ✅ | `?view=cost`; estimate-labeled until official figures; "put this number in a post" seeds the draft |

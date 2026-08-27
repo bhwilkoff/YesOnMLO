@@ -3,9 +3,13 @@
  *
  * Vanilla JS, single IIFE. Views toggled by showView(); URL state via
  * ?view= (shareable). All facts come from js/data.js and every fact
- * renders WITH its source (Decisions 054, 058). The share studio's
- * platform intents live in SHARE_TARGETS below — verify against
- * current platform docs before changing (Decision 060).
+ * renders WITH its source (Decisions 054, 058).
+ *
+ * The share studio is a four-step wizard (who you are → your words →
+ * a picture → send it) so people who don't normally post have one
+ * clear next move at every moment. Platform intents in SHARE_TARGETS
+ * are verified against current platform docs — see
+ * docs/research/share-intents.md (Decision 060).
  */
 (function () {
   'use strict';
@@ -31,16 +35,15 @@
   /* ================================================================
      VIEW SYSTEM
   ================================================================ */
-  const VIEW_NAMES = ['home', 'story', 'studio', 'cost', 'playbook'];
+  const VIEW_NAMES = ['home', 'studio', 'cost', 'playbook'];
   const VIEW_TITLES = {
     home: 'Tell the Story of Our Schools',
-    story: 'Your Story — Tell the Story of Our Schools',
     studio: 'Share Studio — Tell the Story of Our Schools',
     cost: 'What It Costs — Tell the Story of Our Schools',
     playbook: 'Team Playbook — Tell the Story of Our Schools',
   };
 
-  function showView(name, fromHistory = false, anchor = null) {
+  function showView(name, fromHistory = false) {
     if (!VIEW_NAMES.includes(name)) name = 'home';
     VIEW_NAMES.forEach((n) => {
       const view = $(`view-${n}`);
@@ -56,17 +59,18 @@
       history.pushState({ view: name }, '', url);
     }
     document.title = VIEW_TITLES[name];
-    const main = $('main-content');
-    if (anchor && $(anchor)) {
-      $(anchor).scrollIntoView({ block: 'start' });
-    } else {
-      main.scrollTop = 0;
-    }
+    $('main-content').scrollTop = 0;
   }
 
   document.addEventListener('click', (e) => {
+    const stepBtn = e.target.closest('[data-wstep]');
+    if (stepBtn) {
+      if ($('view-studio').hidden) showView('studio');
+      gotoStep(Number(stepBtn.dataset.wstep));
+      return;
+    }
     const target = e.target.closest('[data-view]');
-    if (target) showView(target.dataset.view, false, target.dataset.anchor || null);
+    if (target) showView(target.dataset.view);
   });
   $('wordmark-home').addEventListener('click', (e) => {
     e.preventDefault();
@@ -91,33 +95,78 @@
   }
 
   /* ================================================================
-     YOUR STORY — prompts seed the studio draft
+     THE WIZARD — shared state
   ================================================================ */
-  function renderPrompts() {
-    $('prompt-groups').innerHTML = CAMPAIGN.storyPrompts.map((group, gi) => `
-      <div class="prompt-group">
-        <p class="prompt-voice">${escHtml(group.voice)}</p>
-        ${group.prompts.map((p, pi) => `
-          <div class="prompt-card" data-prompt="${gi}:${pi}" role="button" tabindex="0"
-               aria-label="Use this prompt in the share studio">
-            &ldquo;${escHtml(p.text)}&rdquo;
-            <span class="prompt-hint">${escHtml(p.hint)} Tap to start writing.</span>
-          </div>`).join('')}
-      </div>`).join('');
+  let currentStep = 1;
+  let maxStepReached = 1;
+  const sentTo = new Set();
 
+  function gotoStep(n) {
+    currentStep = n;
+    maxStepReached = Math.max(maxStepReached, n);
+    for (let i = 1; i <= 4; i++) {
+      $(`wstep-${i}`).hidden = i !== n;
+      const item = $(`stepper-${i}`);
+      item.classList.toggle('current', i === n);
+      item.classList.toggle('done', i < n && stepIsDone(i));
+      item.setAttribute('aria-current', i === n ? 'step' : 'false');
+    }
+    if (n === 3) seedCardText();
+    if (n === 4) renderDraftReview();
+    $('main-content').scrollTop = 0;
+  }
+
+  function stepIsDone(i) {
+    if (i === 1) return true;                 // visiting counts — a voice is optional
+    if (i === 2) return getDraft().trim().length > 0;
+    if (i === 3) return true;                 // the picture is optional
+    return sentTo.size > 0;
+  }
+
+  /* ================================================================
+     STEP 1 — who's telling this story
+  ================================================================ */
+  function renderVoices() {
+    $('voice-grid').innerHTML = CAMPAIGN.storyPrompts.map((g, gi) => `
+      <button class="voice-tile" data-voice="${gi}">${escHtml(g.voice)}</button>`).join('');
+
+    $('voice-grid').addEventListener('click', (e) => {
+      const tile = e.target.closest('[data-voice]');
+      if (!tile) return;
+      document.querySelectorAll('.voice-tile').forEach((t) =>
+        t.classList.toggle('selected', t === tile));
+      renderVoicePrompts(Number(tile.dataset.voice));
+    });
+  }
+
+  function renderVoicePrompts(gi) {
+    const group = CAMPAIGN.storyPrompts[gi];
+    $('voice-prompts').innerHTML = `
+      <p class="body">Tap the one that stirs something — it becomes your first line, and you finish it.</p>` +
+      group.prompts.map((p, pi) => `
+        <div class="prompt-card" data-prompt="${gi}:${pi}" role="button" tabindex="0">
+          &ldquo;${escHtml(p.text)}&rdquo;
+          <span class="prompt-hint">${escHtml(p.hint)}</span>
+        </div>`).join('');
+  }
+
+  function initPromptClicks() {
     const usePrompt = (key) => {
       const [gi, pi] = key.split(':').map(Number);
       const prompt = CAMPAIGN.storyPrompts[gi]?.prompts[pi];
       if (!prompt) return;
       setDraft(prompt.text + ' ');
-      showView('studio');
+      gotoStep(2);
       $('studio-draft').focus();
+      // put the cursor at the end, ready to continue the sentence
+      const box = $('studio-draft');
+      box.setSelectionRange(box.value.length, box.value.length);
     };
-    $('prompt-groups').addEventListener('click', (e) => {
+    $('voice-prompts').addEventListener('click', (e) => {
       const card = e.target.closest('[data-prompt]');
       if (card) usePrompt(card.dataset.prompt);
     });
-    $('prompt-groups').addEventListener('keydown', (e) => {
+    $('voice-prompts').addEventListener('keydown', (e) => {
       const card = e.target.closest('[data-prompt]');
       if (card && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
@@ -127,7 +176,7 @@
   }
 
   /* ================================================================
-     STUDIO — draft, facts, card maker, share targets, relational
+     STEP 2 — your words
   ================================================================ */
   const DRAFT_KEY = 'ymlo_draft';
 
@@ -172,12 +221,28 @@
     });
   }
 
-  /* ---- Card maker (canvas → PNG) ---- */
+  /* ================================================================
+     STEP 3 — a picture (canvas → PNG)
+  ================================================================ */
   const CARD_SIZES = {
     square: { w: 1080, h: 1080 },
     story: { w: 1080, h: 1920 },
     wide: { w: 1200, h: 630 },
   };
+
+  let cardTextTouched = false;
+
+  function seedCardText() {
+    if (cardTextTouched) return;
+    const draft = getDraft().trim();
+    if (!draft) return;
+    // First sentence, trimmed to card length — the author can rewrite it.
+    const firstSentence = draft.split(/(?<=[.!?])\s/)[0] || draft;
+    $('card-text').value = firstSentence.length > 160
+      ? firstSentence.slice(0, 157) + '…'
+      : firstSentence;
+    redrawCard();
+  }
 
   function drawCard(canvas, size) {
     const { w, h } = CARD_SIZES[size];
@@ -186,7 +251,6 @@
     const ctx = canvas.getContext('2d');
     const text = $('card-text').value.trim() || 'I’m voting yes on the LPS mill levy override.';
 
-    // Warm paper ground + slate ink + green accents (brand palette)
     ctx.fillStyle = '#FBFAF7';
     ctx.fillRect(0, 0, w, h);
     ctx.fillStyle = '#90CA65';
@@ -195,13 +259,12 @@
     const pad = Math.round(w * 0.09);
     const maxWidth = w - pad * 2;
 
-    // Star (the logo's motif, not the logo itself — this card is the
-    // sharer's own voice, not a committee production; Decision 058)
+    // The logo's star motif — not the committee's logo: this card is
+    // the sharer's own voice, not a committee production (Decision 058)
     ctx.fillStyle = '#90CA65';
     const starSize = Math.round(w * 0.045);
     drawStar(ctx, pad + starSize / 2, Math.round(h * 0.16), 5, starSize / 2, starSize / 4.4);
 
-    // Main text, wrapped, in Lora
     const fontSize = size === 'wide' ? Math.round(w * 0.052) : Math.round(w * 0.062);
     ctx.fillStyle = '#323F49';
     ctx.font = `700 ${fontSize}px Lora, Georgia, serif`;
@@ -214,7 +277,6 @@
       y += lineHeight;
     });
 
-    // Footer rule + pointer to the campaign's official home
     const footY = h - Math.round(h * (size === 'wide' ? 0.16 : 0.1));
     ctx.strokeStyle = '#E3E2DC';
     ctx.lineWidth = 2;
@@ -257,14 +319,17 @@
     return lines;
   }
 
+  function redrawCard() {
+    document.fonts.ready.then(() => drawCard($('card-canvas'), $('card-size').value));
+  }
+
   function initCardMaker() {
     const canvas = $('card-canvas');
-    const redraw = () => {
-      // Wait for the webfonts so the preview matches the download
-      document.fonts.ready.then(() => drawCard(canvas, $('card-size').value));
-    };
-    $('card-text').addEventListener('input', redraw);
-    $('card-size').addEventListener('change', redraw);
+    $('card-text').addEventListener('input', () => {
+      cardTextTouched = true;
+      redrawCard();
+    });
+    $('card-size').addEventListener('change', redrawCard);
     $('card-download').addEventListener('click', () => {
       drawCard(canvas, $('card-size').value);
       canvas.toBlob((blob) => {
@@ -277,8 +342,8 @@
       }, 'image/png');
     });
 
-    // Mobile: hand the PNG straight to the share sheet (this is the
-    // real route into Instagram — image attached, caption pasted).
+    // Mobile: hand the PNG straight to the share sheet (the real
+    // route into Instagram — image attached, caption pasted).
     const shareBtn = $('card-share');
     const probe = new File([new Blob(['x'], { type: 'image/png' })], 'x.png', { type: 'image/png' });
     if (navigator.canShare && navigator.canShare({ files: [probe] })) {
@@ -295,89 +360,115 @@
         }, 'image/png');
       });
     }
-    redraw();
+    redrawCard();
   }
 
-  /* ---- Share targets ----
-   * Each target: how a static site can hand the volunteer's words to
-   * that platform with the least friction. mode:
-   *   'url'  — open an intent URL with the text/link prefilled
-   *   'copy' — copy the draft, then open the platform (no prefill API)
-   * Templates verified against current platform documentation — see
-   * docs/research/share-intents.md. Never fake organic reach.
-   */
+  /* ================================================================
+     STEP 4 — send it
+     Templates verified against current platform documentation —
+     docs/research/share-intents.md. Never fake organic reach.
+  ================================================================ */
   const SITE_URL = 'https://citizensforlps.org';
 
-  /*
-   * Ordered by friction (lowest first), per the verified research in
-   * docs/research/share-intents.md. Nextdoor leads: it has an
-   * official prefill URL AND it's this campaign's local-persuasion
-   * channel. Facebook/Instagram forbid prefill by policy — those use
-   * the copy-then-open flow, honestly labeled.
-   */
   const SHARE_TARGETS = [
     {
-      id: 'nextdoor', name: 'Nextdoor',
-      tip: 'Your actual neighbors. Opens Nextdoor’s composer with your words already in place — you pick the neighborhood and post. One genuine post per phase; never on repeat.',
-      mode: 'url',
-      url: (text) => `https://nextdoor.com/sharekit/?source=lps-storyteller&body=${encodeURIComponent(text + '\n' + SITE_URL)}`,
-      button: 'Open with your words',
-    },
-    {
-      id: 'sms', name: 'Text message',
-      tip: 'The channel that moves votes most. Opens your messages app with your words staged — you choose who gets it.',
+      id: 'sms', name: 'Text a friend', role: 'means the most',
+      steps: [
+        'Think of one person who lives around here.',
+        'The button opens your Messages app with your words staged.',
+        'Address it, make it sound like you, send.',
+      ],
       mode: 'url',
       url: (text) => `sms:?body=${encodeURIComponent(text + ' ' + SITE_URL)}`,
-      button: 'Open with your words',
+      button: 'Open Messages',
+      contactPicker: true,
     },
     {
-      id: 'whatsapp', name: 'WhatsApp',
-      tip: 'Opens WhatsApp with your words ready to send — pick the person or the group chat.',
+      id: 'nextdoor', name: 'Nextdoor', role: 'your actual neighbors',
+      steps: [
+        'The button opens Nextdoor’s composer with your words already in it.',
+        'Pick your neighborhood, look it over, post.',
+        'One genuine post is plenty — Nextdoor removes repeat campaigning, and neighbors tune it out anyway.',
+      ],
       mode: 'url',
-      url: (text) => `https://wa.me/?text=${encodeURIComponent(text + '\n' + SITE_URL)}`,
-      button: 'Open with your words',
+      url: (text) => `https://nextdoor.com/sharekit/?source=lps-storyteller&body=${encodeURIComponent(text + '\n' + SITE_URL)}`,
+      button: 'Open Nextdoor',
     },
     {
-      id: 'facebook', name: 'Facebook',
-      tip: 'Facebook doesn’t let websites prefill your post, so this copies your words first, then opens the share box — paste and post. Even better: paste it straight into a local group you belong to.',
+      id: 'facebook', name: 'Facebook', role: 'groups beat feeds',
+      steps: [
+        'We just copied your words (Facebook doesn’t let sites pre-fill posts).',
+        'The share box opens — paste, look it over, post.',
+        'Even better: open a local group you belong to and paste it there instead.',
+      ],
       mode: 'copy-open',
       url: () => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`,
-      button: 'Copy words + open',
+      button: 'Copy + open Facebook',
     },
     {
-      id: 'instagram', name: 'Instagram',
-      tip: 'Instagram can’t be prefilled from the web at all. Download your share card above, then this copies your caption and opens Instagram — attach the card, paste, post. In a story, add the link sticker.',
+      id: 'whatsapp', name: 'WhatsApp', role: 'the group chat',
+      steps: [
+        'The button opens WhatsApp with your words ready.',
+        'Pick the person or the group chat.',
+        'Send it — the link preview comes along automatically.',
+      ],
+      mode: 'url',
+      url: (text) => `https://wa.me/?text=${encodeURIComponent(text + '\n' + SITE_URL)}`,
+      button: 'Open WhatsApp',
+    },
+    {
+      id: 'instagram', name: 'Instagram', role: 'card + caption',
+      steps: [
+        'Go back one step and save the share card — that’s your picture.',
+        'This button copies your words and opens Instagram.',
+        'New post → add the card → paste your caption. In a story, add the link sticker.',
+      ],
       mode: 'copy-open',
       url: () => 'https://www.instagram.com/',
-      button: 'Copy caption + open',
+      button: 'Copy + open Instagram',
     },
     {
-      id: 'linkedin', name: 'LinkedIn',
-      tip: 'Opens the LinkedIn composer with your words in place. The professional angle lands here: schools are part of why families and employers choose a town.',
+      id: 'linkedin', name: 'LinkedIn', role: 'the professional case',
+      steps: [
+        'The button opens LinkedIn’s composer with your words in place.',
+        'The angle that lands here: schools are why families and employers choose a town.',
+        'Look it over, post.',
+      ],
       mode: 'url',
       url: (text) => `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(text + '\n' + SITE_URL)}`,
-      button: 'Open with your words',
+      button: 'Open LinkedIn',
     },
     {
-      id: 'email', name: 'Email',
-      tip: 'For the neighbor, the book club, the HOA thread. Opens a draft with your words.',
+      id: 'email', name: 'Email', role: 'the neighbor thread',
+      steps: [
+        'For the book club, the HOA thread, the family list.',
+        'The button opens a draft with your words in the body.',
+        'Address it and send.',
+      ],
       mode: 'url',
       url: (text) => `mailto:?subject=${encodeURIComponent('Why I’m voting yes for LPS')}&body=${encodeURIComponent(text + '\n\n' + SITE_URL)}`,
       button: 'Open a draft',
     },
     {
-      id: 'threads', name: 'Threads',
-      tip: 'Opens the Threads composer with your words in place.',
+      id: 'threads', name: 'Threads', role: 'if you’re there',
+      steps: [
+        'The button opens the Threads composer with your words in place.',
+        'Look it over, post.',
+      ],
       mode: 'url',
       url: (text) => `https://www.threads.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(SITE_URL)}`,
-      button: 'Open with your words',
+      button: 'Open Threads',
     },
     {
-      id: 'bluesky', name: 'Bluesky',
-      tip: 'Opens the Bluesky composer with your words in place. Bluesky posts cap at 300 characters — keep it short here.',
+      id: 'bluesky', name: 'Bluesky', role: 'if you’re there',
+      steps: [
+        'Bluesky posts cap at 300 characters, so we’ll trim if needed.',
+        'The button opens the composer with your words in place.',
+        'Look it over, post.',
+      ],
       mode: 'url',
       url: (text) => `https://bsky.app/intent/compose?text=${encodeURIComponent((text.length > 260 ? text.slice(0, 257) + '…' : text) + '\n' + SITE_URL)}`,
-      button: 'Open with your words',
+      button: 'Open Bluesky',
     },
   ];
 
@@ -392,115 +483,118 @@
     }
   }
 
-  function renderShareTargets() {
-    // Mobile fast path: the native share sheet reaches Messages,
-    // WhatsApp, Messenger, Instagram, and more in one tap.
-    let nativeRow = '';
+  function renderDraftReview() {
+    const draft = getDraft().trim();
+    $('draft-review-text').textContent = draft
+      ? (draft.length > 220 ? draft.slice(0, 217) + '…' : draft)
+      : 'Nothing yet — tap edit and give it one honest sentence. That’s enough.';
+  }
+
+  function renderTargetGrid() {
+    let tiles = '';
     if (navigator.share) {
-      nativeRow = `
-      <div class="share-target">
-        <div class="share-target-info">
-          <p class="share-target-name">Your phone's share sheet</p>
-          <p class="share-target-tip">One tap to everything installed on your phone — Messages, WhatsApp, Messenger, Instagram, and the rest.</p>
-        </div>
-        <button class="share-target-btn" id="native-share">Share&hellip;</button>
-      </div>`;
+      tiles += `
+      <button class="target-tile" data-target="native">
+        <span class="target-tile-name">Your phone</span>
+        <span class="target-tile-role">one tap to everything</span>
+      </button>`;
     }
-    $('share-targets').innerHTML = nativeRow + SHARE_TARGETS.map((t, i) => `
-      <div class="share-target">
-        <div class="share-target-info">
-          <p class="share-target-name">${escHtml(t.name)}</p>
-          <p class="share-target-tip">${escHtml(t.tip)}</p>
-        </div>
-        <button class="share-target-btn" data-target="${i}">${escHtml(t.button)}</button>
-      </div>`).join('');
+    tiles += SHARE_TARGETS.map((t, i) => `
+      <button class="target-tile" data-target="${i}">
+        <span class="target-tile-name">${escHtml(t.name)}</span>
+        <span class="target-tile-role">${escHtml(t.role)}</span>
+      </button>`).join('');
+    $('target-grid').innerHTML = tiles;
 
-    const nativeBtn = $('native-share');
-    if (nativeBtn) {
-      nativeBtn.addEventListener('click', async () => {
-        const text = getDraft().trim();
-        if (!text) {
-          $('studio-draft').focus();
-          return;
-        }
-        try {
-          await navigator.share({ text, url: SITE_URL });
-        } catch { /* user cancelled */ }
-      });
-    }
-
-    $('share-targets').addEventListener('click', async (e) => {
-      const btn = e.target.closest('[data-target]');
-      if (!btn) return;
-      const target = SHARE_TARGETS[Number(btn.dataset.target)];
-      const text = getDraft().trim();
-      if (!text) {
-        showView('studio');
-        $('studio-draft').focus();
-        $('studio-draft').placeholder = 'Write a few words first — even one sentence.';
-        return;
-      }
-      if (target.mode === 'copy-open') {
-        const copied = await copyDraft();
-        btn.textContent = copied ? 'Copied — opening…' : 'Opening…';
-        setTimeout(() => { btn.textContent = target.button; }, 2500);
-        window.open(target.url(text), '_blank', 'noopener');
+    $('target-grid').addEventListener('click', (e) => {
+      const tile = e.target.closest('[data-target]');
+      if (!tile) return;
+      document.querySelectorAll('.target-tile').forEach((t) =>
+        t.classList.toggle('selected', t === tile));
+      if (tile.dataset.target === 'native') {
+        renderNativeDetail();
       } else {
-        window.open(target.url(text), '_blank', 'noopener');
+        renderTargetDetail(Number(tile.dataset.target));
       }
     });
   }
 
-  /* ---- Person to person ---- */
-  function renderRelationalTools() {
-    const el = $('relational-tools');
-    const personalNote = () =>
-      getDraft().trim() ||
-      'Hey — you live in the LPS area, right? The schools have a mill levy override on the November ballot and it matters a lot to our family. Can I tell you about it?';
+  function markSent(id, tileSelector) {
+    sentTo.add(id);
+    const tile = document.querySelector(tileSelector);
+    if (tile) tile.classList.add('sent');
+    const n = sentTo.size;
+    const tally = $('sent-tally');
+    tally.hidden = false;
+    tally.textContent = n === 1
+      ? 'One down. Each place you share reaches people the others don’t — pick another?'
+      : `You’ve taken your story to ${n} places. That’s real reach — thank you.`;
+  }
 
-    let html = `
-      <div class="share-target">
-        <div class="share-target-info">
-          <p class="share-target-name">Text someone you know</p>
-          <p class="share-target-tip">Opens your messages with a note ready — your draft if you’ve written one, a friendly opener if you haven’t. Edit it to sound like you before sending.</p>
-        </div>
-        <button class="share-target-btn" id="rel-sms">Open messages</button>
-      </div>
-      <div class="share-target">
-        <div class="share-target-info">
-          <p class="share-target-name">WhatsApp someone you know</p>
-          <p class="share-target-tip">Same idea, for the group chat or the friend abroad in your neighborhood WhatsApp.</p>
-        </div>
-        <button class="share-target-btn" id="rel-wa">Open WhatsApp</button>
-      </div>`;
+  function renderNativeDetail() {
+    const detail = $('target-detail');
+    detail.hidden = false;
+    detail.innerHTML = `
+      <p class="target-detail-name">Your phone's share sheet</p>
+      <ol class="micro-steps">
+        <li>The button opens your phone's own share menu — Messages, WhatsApp, Messenger, Instagram, everything installed.</li>
+        <li>Pick the app, pick the person or audience.</li>
+        <li>Your words and the campaign link ride along.</li>
+      </ol>
+      <button class="btn" id="target-action">Share&hellip;</button>`;
+    $('target-action').addEventListener('click', async () => {
+      const text = getDraft().trim();
+      if (!text) { gotoStep(2); $('studio-draft').focus(); return; }
+      try {
+        await navigator.share({ text, url: SITE_URL });
+        markSent('native', '[data-target="native"]');
+      } catch { /* user cancelled */ }
+    });
+  }
 
-    // Contact Picker API — progressive: only where supported
-    if ('contacts' in navigator && 'select' in navigator.contacts) {
-      html += `
-      <div class="share-target">
-        <div class="share-target-info">
-          <p class="share-target-name">Pick from your contacts</p>
-          <p class="share-target-tip">Choose a person from your own contacts and we’ll open a text to them. Nothing is uploaded anywhere — the picking happens on your phone.</p>
-        </div>
-        <button class="share-target-btn" id="rel-contacts">Choose a person</button>
+  function renderTargetDetail(i) {
+    const t = SHARE_TARGETS[i];
+    const detail = $('target-detail');
+    detail.hidden = false;
+
+    let extra = '';
+    if (t.contactPicker && 'contacts' in navigator && 'select' in navigator.contacts) {
+      extra = `<div class="target-detail-extra">
+        <button class="btn btn-quiet" id="target-contacts">Or pick straight from your contacts</button>
+        <p class="fine">The picking happens on your phone — nothing is uploaded anywhere.</p>
       </div>`;
     }
-    el.innerHTML = html;
 
-    $('rel-sms').addEventListener('click', () => {
-      window.open(`sms:?body=${encodeURIComponent(personalNote())}`, '_self');
+    detail.innerHTML = `
+      <p class="target-detail-name">${escHtml(t.name)}</p>
+      <ol class="micro-steps">${t.steps.map((s) => `<li>${escHtml(s)}</li>`).join('')}</ol>
+      <button class="btn" id="target-action">${escHtml(t.button)}</button>
+      ${extra}`;
+
+    $('target-action').addEventListener('click', async () => {
+      const text = getDraft().trim();
+      if (!text) { gotoStep(2); $('studio-draft').focus(); return; }
+      if (t.mode === 'copy-open') {
+        const copied = await copyDraft();
+        const btn = $('target-action');
+        btn.textContent = copied ? 'Copied — opening…' : 'Opening…';
+        setTimeout(() => { btn.textContent = t.button; }, 2500);
+      }
+      window.open(t.url(text), t.id === 'sms' ? '_self' : '_blank', 'noopener');
+      markSent(t.id, `[data-target="${i}"]`);
     });
-    $('rel-wa').addEventListener('click', () => {
-      window.open(`https://wa.me/?text=${encodeURIComponent(personalNote())}`, '_blank', 'noopener');
-    });
-    const contactsBtn = $('rel-contacts');
+
+    const contactsBtn = $('target-contacts');
     if (contactsBtn) {
       contactsBtn.addEventListener('click', async () => {
         try {
           const picked = await navigator.contacts.select(['tel', 'name'], { multiple: false });
           const tel = picked?.[0]?.tel?.[0];
+          const text = getDraft().trim() ||
+            'Hey — you live in the LPS area, right? The schools have a mill levy override on the November ballot and it matters a lot to our family. Can I tell you about it?';
           if (tel) {
-            window.open(`sms:${encodeURIComponent(tel)}?body=${encodeURIComponent(personalNote())}`, '_self');
+            window.open(`sms:${encodeURIComponent(tel)}?body=${encodeURIComponent(text)}`, '_self');
+            markSent('sms', `[data-target="${i}"]`);
           }
         } catch { /* user cancelled */ }
       });
@@ -577,7 +671,9 @@
         `I did the math for our house: the LPS mill levy override works out to about ${fmtUSD(monthly, 2)} a month for us. ` +
         `For that, teachers keep competitive pay, class sizes hold, and kids get their furlough day back as a school day. I’m voting yes.`
       );
+      cardTextTouched = false;
       showView('studio');
+      gotoStep(4);
     });
     renderCalculator();
   }
@@ -605,16 +701,17 @@
   ================================================================ */
   function init() {
     renderBallotSummary();
-    renderPrompts();
+    renderVoices();
+    initPromptClicks();
     initDraft();
     renderFactList();
     initCardMaker();
-    renderShareTargets();
-    renderRelationalTools();
+    renderTargetGrid();
     initCalculator();
     renderPlaybook();
     renderSources();
     showView(initialViewFromURL(), true);
+    gotoStep(1);
   }
 
   init();

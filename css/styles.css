@@ -137,12 +137,14 @@ a:hover { text-decoration-thickness: 2px; }
 .view:not([hidden]) { display: block; }
 .view-inner { max-width: 720px; margin: 0 auto; }
 
-/* Staggered arrival — one quiet reveal per view, CSS only */
-.view:not([hidden]) .view-inner > * { animation: rise 0.45s ease both; }
-.view:not([hidden]) .view-inner > *:nth-child(2) { animation-delay: 0.05s; }
-.view:not([hidden]) .view-inner > *:nth-child(3) { animation-delay: 0.10s; }
-.view:not([hidden]) .view-inner > *:nth-child(4) { animation-delay: 0.15s; }
-.view:not([hidden]) .view-inner > *:nth-child(n+5) { animation-delay: 0.2s; }
+/* Staggered arrival — one quiet reveal per view, CSS only.
+   Wizard steps (.wstep) are excluded: they animate on their own with
+   NO delay, so switching steps never flashes blank. */
+.view:not([hidden]) .view-inner > :not(.wstep) { animation: rise 0.45s ease both; }
+.view:not([hidden]) .view-inner > :not(.wstep):nth-child(2) { animation-delay: 0.05s; }
+.view:not([hidden]) .view-inner > :not(.wstep):nth-child(3) { animation-delay: 0.10s; }
+.view:not([hidden]) .view-inner > :not(.wstep):nth-child(4) { animation-delay: 0.15s; }
+.view:not([hidden]) .view-inner > :not(.wstep):nth-child(n+5) { animation-delay: 0.2s; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* ---- Type ---- */
@@ -230,11 +232,6 @@ a:hover { text-decoration-thickness: 2px; }
 .src-link a:hover { color: var(--green-deep); }
 
 /* ---- Story prompts ---- */
-.prompt-group { margin-bottom: var(--s6); }
-.prompt-voice {
-  font-weight: 700; font-size: 0.85rem; text-transform: uppercase;
-  letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: var(--s3);
-}
 .prompt-card {
   font-family: var(--serif); font-style: italic; font-size: 1.05rem;
   border-left: 3px solid var(--green);
@@ -285,21 +282,6 @@ a:hover { text-decoration-thickness: 2px; }
   width: 100%; max-width: 380px; height: auto; background: #fff;
 }
 
-/* ---- Share targets ---- */
-.share-target {
-  display: flex; gap: var(--s4); align-items: center;
-  padding: var(--s4) 0; border-bottom: 1px solid var(--hairline);
-}
-.share-target-info { flex: 1; min-width: 0; }
-.share-target-name { font-weight: 700; }
-.share-target-tip { font-size: 0.88rem; color: var(--ink-soft); max-width: 52ch; }
-.share-target-btn {
-  flex-shrink: 0; border: 1px solid var(--ink); background: none;
-  border-radius: 6px; padding: 8px 16px; font-weight: 700;
-  font-size: 0.88rem; cursor: pointer; color: var(--ink);
-  white-space: nowrap;
-}
-.share-target-btn:hover { background: var(--ink); color: var(--paper); }
 
 /* ---- Calculator ---- */
 .calc-card {
@@ -357,3 +339,105 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .footer-line a { color: var(--ink-soft); }
 .footer-line a:hover { color: var(--green-deep); }
+
+/* ================================================================
+   Share studio wizard — one step at a time, always a next move
+================================================================ */
+
+/* Stepper */
+.stepper {
+  display: flex; gap: 0; margin: var(--s6) 0 var(--s8);
+  border-bottom: 1px solid var(--hairline);
+}
+.stepper-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 0 4px 12px; border: none; background: none;
+  cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px;
+  color: var(--ink-soft);
+}
+.stepper-num {
+  font-family: var(--serif); font-weight: 700; font-size: 1.3rem;
+  line-height: 1.2; color: inherit;
+}
+.stepper-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em; }
+.stepper-item.current { color: var(--ink); border-bottom-color: var(--green); }
+.stepper-item.done { color: var(--green-deep); }
+.stepper-item.done .stepper-num::after { content: " \2713"; font-size: 0.8em; }
+.stepper-item:hover:not(.current) { color: var(--ink); }
+
+.wstep[hidden] { display: none; }
+.wstep { animation: rise 0.35s ease both; }
+.wstep-title {
+  font-family: var(--serif); font-weight: 600; font-size: 1.35rem;
+  color: var(--ink); margin-bottom: var(--s3);
+}
+.wstep-optional { font-family: var(--sans); font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); }
+.wstep-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: var(--s8); padding-top: var(--s4);
+  border-top: 1px solid var(--hairline);
+}
+
+/* Step 1: voice tiles */
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-bottom: var(--s4); }
+@media (min-width: 560px) { .voice-grid { grid-template-columns: repeat(3, 1fr); } }
+.voice-tile {
+  padding: var(--s4); border: 1px solid var(--hairline); border-radius: 8px;
+  background: var(--paper-raised); cursor: pointer; text-align: left;
+  font-weight: 600; font-size: 0.92rem; line-height: 1.35; color: var(--ink);
+}
+.voice-tile:hover { border-color: var(--green); }
+.voice-tile.selected { border-color: var(--green); background: var(--hl-wash); }
+.voice-prompts { margin-top: var(--s2); }
+
+/* Step 2: helper accordions */
+.helper-details {
+  border: 1px solid var(--hairline); border-radius: 8px;
+  padding: var(--s3) var(--s4); margin-top: var(--s4);
+  background: var(--paper-raised);
+}
+.helper-details summary { cursor: pointer; font-weight: 700; font-size: 0.92rem; color: var(--green-deep); }
+.helper-details[open] summary { margin-bottom: var(--s3); }
+
+/* Step 4: draft review + target tiles */
+.draft-review {
+  border-left: 3px solid var(--green); background: var(--paper-raised);
+  border-radius: 0 8px 8px 0; padding: var(--s3) var(--s4);
+  margin-bottom: var(--s4);
+}
+.draft-review-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: var(--s1); }
+.draft-review-text { font-family: var(--serif); font-style: italic; margin-bottom: var(--s1); }
+
+.target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-bottom: var(--s4); }
+@media (min-width: 560px) { .target-grid { grid-template-columns: repeat(3, 1fr); } }
+.target-tile {
+  padding: var(--s4); border: 1px solid var(--hairline); border-radius: 8px;
+  background: var(--paper-raised); cursor: pointer; text-align: left;
+}
+.target-tile:hover { border-color: var(--green); }
+.target-tile.selected { border-color: var(--green); background: var(--hl-wash); }
+.target-tile.sent { border-color: var(--green); }
+.target-tile-name { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
+.target-tile-role { font-size: 0.78rem; color: var(--ink-soft); }
+.target-tile.sent .target-tile-name::after { content: " \2713"; color: var(--green-deep); }
+
+.target-detail {
+  border: 1px solid var(--green); border-radius: 10px;
+  background: var(--paper-raised); padding: var(--s6);
+  margin-bottom: var(--s4); animation: rise 0.3s ease both;
+}
+.target-detail-name { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--ink); margin-bottom: var(--s3); }
+.micro-steps { list-style: none; counter-reset: micro; margin-bottom: var(--s4); }
+.micro-steps li {
+  counter-increment: micro; position: relative;
+  padding-left: 2em; margin-bottom: var(--s2); font-size: 0.95rem;
+}
+.micro-steps li::before {
+  content: counter(micro); position: absolute; left: 0; top: 0.1em;
+  width: 1.4em; height: 1.4em; border-radius: 50%;
+  background: var(--hl-wash); color: var(--green-deep);
+  font-weight: 700; font-size: 0.85em; display: flex;
+  align-items: center; justify-content: center;
+}
+.target-detail-extra { margin-top: var(--s3); }
+.sent-tally { font-weight: 600; color: var(--green-deep); margin-bottom: var(--s3); }

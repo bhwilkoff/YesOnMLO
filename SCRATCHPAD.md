@@ -240,3 +240,26 @@ OG image (1200×630, PIL + real Lora) + og tags (the only "prefill"
 FB/LinkedIn/Nextdoor allow). VERIFIED: node --check clean; DOM smoke 20/20;
 headless-Chrome screenshots light+dark, true-375px probe (early clipping was
 headless 500px window clamp, not a bug). Left: green; pushed to Pages.
+
+**2026-08-27 — The share studio becomes a guided wizard, tested in real
+Chrome.** Found: studio was "a long list of items that don't seem to be
+leading anywhere" (user). Done: rebuilt as a four-step flow — 1 Who you are
+(voice tiles → prompts that become your first line) · 2 Your words (draft +
+optional fact/tips accordions) · 3 A picture (card line auto-seeded from the
+draft's first sentence, live canvas preview) · 4 Send it (draft review with
+edit link, platform tiles with plain-language roles, per-network guided
+panels with numbered micro-steps, sent-state ✓ + encouragement tally).
+Folded the separate Your Story view into step 1 (nav is now 4 items); home
+CTAs deep-link to wizard steps (data-wstep); calculator's "put this number
+in a post" seeds the draft and lands on Send It. Fixed a real UX bug found
+by testing: the view-level staggered animation re-ran on step changes with
+0.2s delay → blank flash; wizard steps now excluded from the stagger.
+VERIFIED IN REAL CHROME (claude-in-chrome): full click-through of all four
+steps; prompt → draft seeding; draft persistence across reload; card
+auto-seed + live preview; **Nextdoor ShareKit confirmed end-to-end — the
+opened tab's composer URL carried the complete story prefilled**; Facebook
+copy-then-open flow + sharer.php; sent-state ✓ and tally ("You've taken
+your story to 2 places"); calculator→step-4 handoff. Physical-click flakes
+during testing were CDP click-delivery races (worked on retry/JS click),
+not app bugs. Also verified: 375px wizard layout via iframe probe; DOM
+smoke test rewritten for wizard IA, 20/20. Left: green; pushed.
