@@ -510,3 +510,12 @@ a:hover { text-decoration-thickness: 2px; }
 .card-control .field-label { margin-bottom: var(--s1); }
 .card-preview-col { display: grid; gap: var(--s2); justify-items: start; }
 .card-actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s4); }
+
+/* ---- Step 4: the picture travels with the words ---- */
+.draft-review { display: grid; gap: var(--s4); }
+@media (min-width: 560px) { .draft-review { grid-template-columns: 1fr auto; align-items: start; } }
+.draft-review-card { display: grid; gap: var(--s2); justify-items: start; }
+.review-card-img { width: 120px; height: auto; border: 1px solid var(--hairline); border-radius: 4px; }
+.review-card-toggle { font-size: 0.85rem; font-weight: 600; display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.card-send-row { margin-top: var(--s3); }
+.card-send-row .fine { margin-top: var(--s2); margin-bottom: 0; }

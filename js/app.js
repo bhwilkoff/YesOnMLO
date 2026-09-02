@@ -196,7 +196,7 @@
       item.setAttribute('aria-current', i === n ? 'step' : 'false');
     }
     if (n === 3) seedCardText();
-    if (n === 4) { renderDraftReview(); refreshTargetDetail(); }
+    if (n === 4) { seedCardText(); renderDraftReview(); refreshTargetDetail(); }
     $('main-content').scrollTop = 0;
   }
 
@@ -282,6 +282,10 @@
     $('draft-count').textContent = fmtNum(getDraft().length);
     try { localStorage.setItem(DRAFT_KEY, getDraft()); } catch { /* private mode */ }
     renderChecklist();
+  }
+
+  function initIncludeCard() {
+    $('include-card').addEventListener('change', refreshTargetDetail);
   }
 
   function initDraft() {
@@ -462,7 +466,7 @@
   }
 
   function drawCard(canvas, shape = cardState.shape) {
-    const { w, h, safe } = CARD_SIZES[shape];
+    const { w, h, safe } = CARD_SIZES[shape] || CARD_SIZES.square;
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext('2d');
@@ -485,7 +489,7 @@
     // Type — shrink until the block fits the safe area
     const pad = Math.round(w * 0.09);
     const maxWidth = w - pad * 2;
-    const base = (shape === 'wide' ? w * 0.052 : w * 0.062) * type.scale * CARD_SIZE_SCALE[cardState.size];
+    const base = (shape === 'wide' ? w * 0.052 : w * 0.062) * type.scale * (CARD_SIZE_SCALE[cardState.size] || 1);
     const footerH = Math.round(h * (shape === 'wide' ? 0.16 : 0.1));
     const starSize = Math.round(w * 0.045);
     const top = safe + Math.round(h * 0.08);
@@ -498,7 +502,7 @@
       lineHeight = Math.round(fontSize * type.lineHeight);
       signSize = Math.round(fontSize * 0.55);
       blockH = starSize + Math.round(h * 0.035) + lines.length * lineHeight + (sign ? signSize * 1.9 : 0);
-      if (blockH <= bottom - top || fontSize <= 22) break;
+      if (blockH <= bottom - top || !(fontSize > 22)) break;
       fontSize = Math.round(fontSize * 0.92);
     }
     const y0 = cardState.position === 'top' ? top
@@ -829,17 +833,16 @@
         'Instagram will not take words from a website, so the picture does the talking. Your card already has your line on it.',
         canShareFiles
           ? 'The button sends the card to your share sheet. Pick Instagram, then Feed or Story.'
-          : 'Save the card in step 3, then open Instagram and start a post with it.',
+          : 'Save the picture below, then open Instagram and start a post with it.',
         'Your words are copied. Hold the caption box and tap Paste. In a story, add the link sticker: citizensforlps.org.',
       ] : [
         'Instagram posts start from a phone. Send this to yours with “Pass it along” below, or:',
-        'Save the card (step 3) and copy your words; then on instagram.com choose Create, pick the saved card, and paste the caption.',
-        'Or text the card to yourself and post from the app. The story sticker can carry the link.',
+        'Save the picture below and copy your words. Then on instagram.com choose Create, pick the saved picture, and paste the caption.',
+        'Or text the picture to yourself and post from the app. The story sticker can carry the link.',
       ],
       mode: 'copy-open', shareCard: true,
       url: () => 'https://www.instagram.com/',
       button: IS_MOBILE && canShareFiles ? 'Send the card to Instagram' : 'Copy words + open Instagram',
-      secondary: IS_MOBILE ? null : { label: 'Save the card', action: 'download' },
       fallback: { label: 'instagram.com', url: 'https://www.instagram.com/' },
       soft: 2200, softNote: 'Instagram captions cap at 2,200 characters.',
     },
@@ -938,11 +941,79 @@
     return text ? copyText(text) : Promise.resolve(false);
   }
 
-  function renderDraftReview() {
+  async function renderDraftReview() {
     const draft = getDraft().trim();
     $('draft-review-text').textContent = draft
       ? (draft.length > 220 ? draft.slice(0, 217) + '…' : draft)
       : 'Nothing yet. Tap edit and write one sentence. That is enough.';
+    await redrawCard();
+    const img = $('review-card-img');
+    try {
+      img.src = $('card-canvas').toDataURL('image/jpeg', 0.85);
+      img.hidden = false;
+    } catch { img.hidden = true; }
+  }
+
+  const includeCard = () => !!$('include-card')?.checked;
+
+  /*
+   * The picture has to travel with the words. Compose intents can't
+   * carry a file, so: on a phone the share sheet takes the PNG
+   * (Messages, WhatsApp, Facebook, Instagram all accept it); on a
+   * computer the card goes onto the clipboard as an image and gets
+   * pasted into the composer, with the saved file as the fallback.
+   */
+  const canCopyImage = !!(navigator.clipboard && navigator.clipboard.write && window.ClipboardItem);
+
+  async function copyCardImage() {
+    if (!canCopyImage) return false;
+    try {
+      // Safari wants the promise inside the gesture; Chrome accepts it too.
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': cardBlob() })]);
+      return true;
+    } catch {
+      try {
+        const blob = await cardBlob();
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        return true;
+      } catch { return false; }
+    }
+  }
+
+  function cardSendRow(t) {
+    if (!includeCard()) return '';
+    const phone = IS_MOBILE && canShareFiles;
+    const via = t.id === 'sms' ? 'Messages' : t.name;
+    return `<div class="card-send-row">
+      <div class="target-actions">
+        ${phone ? `<button class="btn btn-quiet" id="target-card-share">Send the picture to ${escHtml(via)}…</button>` : ''}
+        ${!phone && canCopyImage ? `<button class="btn btn-quiet" id="target-card-copy">Copy the picture</button>` : ''}
+        <button class="btn btn-quiet" id="target-card-save">Save the picture</button>
+      </div>
+      <p class="fine">${phone
+        ? 'The share sheet opens with the picture attached. Pick the app, then the person or the post.'
+        : canCopyImage
+          ? 'Copy it, then paste it into the post box the same way you paste text. If pasting does not work there, save it and attach the file.'
+          : 'Save it, then attach the file to the post.'}</p>
+    </div>`;
+  }
+
+  function wireCardSendRow(text) {
+    $('target-card-share')?.addEventListener('click', () => {
+      copyText(text);
+      shareCardFile(text);
+    });
+    $('target-card-copy')?.addEventListener('click', () => {
+      const btn = $('target-card-copy');
+      btn.textContent = 'Copying…';
+      // Some browsers leave the clipboard promise hanging instead of
+      // rejecting; a volunteer should never be left staring at "Copying…".
+      Promise.race([copyCardImage(), new Promise((r) => setTimeout(() => r(false), 4000))]).then((ok) => {
+        btn.textContent = ok ? 'Picture copied. Now paste it.' : 'Could not copy here. Save it instead.';
+        setTimeout(() => { const b = $('target-card-copy'); if (b) b.textContent = 'Copy the picture'; }, 3000);
+      });
+    });
+    $('target-card-save')?.addEventListener('click', () => $('card-download').click());
   }
 
   let selectedTarget = null;
@@ -1016,14 +1087,21 @@
       <ol class="micro-steps">
         <li>${IS_MOBILE ? 'The button opens your phone’s own share menu: Messages, WhatsApp, Messenger, Instagram, whatever is installed.' : 'The button opens the system share menu. On a Mac that is Messages, Mail, AirDrop, and whatever else is installed. On Windows, the apps you have set up.'}</li>
         <li>Pick the app, pick the person or audience.</li>
-        <li>Your words and the campaign link go with it. Facebook and Instagram drop the words, so they are also on your clipboard. Paste them.</li>
+        <li>Your words and the campaign link go with it${includeCard() && canShareFiles ? ', and so does the picture' : ''}. Facebook and Instagram drop the words, so they are also on your clipboard. Paste them.</li>
       </ol>
       <button class="btn" id="target-action">Share&hellip;</button>
       <p class="fallback-line" id="target-fallback" hidden></p>`;
     $('target-action').addEventListener('click', async () => {
       copyText(text);
       try {
-        await navigator.share({ title: 'Why I’m voting yes for LPS', text, url: SITE_URL });
+        if (includeCard() && canShareFiles) {
+          const blob = await cardBlob();
+          const file = new File([blob], 'lps-story-card.png', { type: 'image/png' });
+          const payload = { title: 'Why I’m voting yes for LPS', text: text + '\n' + SITE_URL, files: [file] };
+          await navigator.share(navigator.canShare(payload) ? payload : { title: payload.title, text, url: SITE_URL });
+        } else {
+          await navigator.share({ title: 'Why I’m voting yes for LPS', text, url: SITE_URL });
+        }
         markSent('native');
       } catch {
         showFallback('The share menu did not open. Your words are copied. Pick a network below and paste.');
@@ -1073,10 +1151,6 @@
       extra += `<div class="target-detail-extra">
         <a class="btn btn-quiet target-secondary" href="${escAttr(t.secondary.url)}" target="_blank" rel="noopener">${escHtml(t.secondary.label)}</a>
       </div>`;
-    } else if (t.secondary && t.secondary.action === 'download') {
-      extra += `<div class="target-detail-extra">
-        <button class="btn btn-quiet" id="target-download">${escHtml(t.secondary.label)}</button>
-      </div>`;
     }
 
     const primary = t.shareCard && canShareFiles && IS_MOBILE
@@ -1093,7 +1167,9 @@
         <button class="btn btn-quiet" id="target-copy">Copy my words</button>
       </div>
       ${extra}
+      ${t.shareCard && IS_MOBILE && canShareFiles ? '' : cardSendRow(t)}
       <p class="fallback-line" id="target-fallback" hidden></p>`;
+    wireCardSendRow(text);
 
     const fallbackHtml = () => {
       const open = t.fallback
@@ -1124,8 +1200,6 @@
         setTimeout(() => { $('target-copy').textContent = 'Copy my words'; }, 2000);
       });
     });
-
-    $('target-download')?.addEventListener('click', () => $('card-download').click());
 
     document.querySelector('.target-secondary')?.addEventListener('click', () => {
       copyText(text);
@@ -1337,6 +1411,7 @@
     renderVoices();
     initPromptClicks();
     initDraft();
+    initIncludeCard();
     renderFactList();
     initCardMaker();
     renderTargetGrid();

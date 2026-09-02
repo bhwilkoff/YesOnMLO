@@ -234,9 +234,16 @@
         <div class="wstep" id="wstep-4" hidden>
           <h2 class="wstep-title">Where are your people?</h2>
           <div class="draft-review">
-            <p class="draft-review-label">You're sharing:</p>
-            <p class="draft-review-text" id="draft-review-text"></p>
-            <button class="link-btn-inline" data-wstep="2">edit</button>
+            <div class="draft-review-words">
+              <p class="draft-review-label">You're sharing:</p>
+              <p class="draft-review-text" id="draft-review-text"></p>
+              <button class="link-btn-inline" data-wstep="2">edit the words</button>
+            </div>
+            <div class="draft-review-card">
+              <img id="review-card-img" class="review-card-img" alt="Your picture" hidden>
+              <label class="review-card-toggle"><input type="checkbox" id="include-card" checked> Send the picture too</label>
+              <button class="link-btn-inline" data-wstep="3">change the picture</button>
+            </div>
           </div>
           <p class="body">
             Pick a place and we'll walk you through it. Nothing posts

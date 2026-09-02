@@ -368,3 +368,22 @@ app.js — removed em-dash pivots, "X, not Y" reframes, aphorism closers, and
 the tics ("honest," "actually," "real," "lands," "travels," "genuine"). Code
 comments and page titles keep their dashes. Smoke 128/128; node --check
 clean. Not re-rendered in Chrome (string-only changes). Left: green; pushed.
+
+**2026-09-02 (sixth pass) — the picture travels to step 4.** User: "the
+image/picture step doesn't seem to travel through to the 'send it' phase…
+you have to save it first." Done: step 4 review shows the card thumbnail
+(seeded from the draft even if step 3 was skipped) with a "Send the picture
+too" toggle and "change the picture"; every network panel gets a picture
+row: phones get "Send the picture to {app}…" (share sheet with the PNG +
+words), desktops get "Copy the picture" (ClipboardItem image/png, pasted
+into the composer) and "Save the picture"; the native share sheet now carries
+the file when the toggle is on. Instagram's one-off download button folded
+into the common row. Also hardened drawCard's font-fit loop (a NaN size
+scale would loop forever; observed a frozen tab, guarded with `|| 1` and
+`!(fontSize > 22)`). VERIFIED IN CHROME: thumbnail renders (JPEG data URL),
+Facebook/Instagram panels show the picture row, toggle hides it, no
+horizontal issues. NOT VERIFIED: copy-as-image. In driven Chrome
+`navigator.clipboard.write()` neither resolves nor rejects (same hang as
+readText earlier), so the button now races a 4s timeout and falls back to
+"Save it instead." Needs a check in a normal browser and on phones (share
+sheet with file). Left: green; pushed.

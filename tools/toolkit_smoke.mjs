@@ -73,7 +73,7 @@ const app = read('js/app.js');
 const ids = new Set([...app.matchAll(/\$\('([a-z0-9-]+)'\)/g)].map((m) => m[1]));
 for (const id of ids) {
   if (/^(wstep|stepper|view|nav)-/.test(id)) continue;   // templated ids checked below
-  const dynamic = ['target-action', 'target-copy', 'target-contacts', 'target-fallback', 'target-download', 'handoff-copy', 'handoff-link', 'handoff-share', 'draft-restore'];
+  const dynamic = ['target-action', 'target-copy', 'target-contacts', 'target-fallback', 'target-card-share', 'target-card-copy', 'target-card-save', 'handoff-copy', 'handoff-link', 'handoff-share', 'draft-restore'];
   if (dynamic.includes(id)) continue;                      // rendered by app.js itself
   check(html.includes(`id="${id}"`), `index.html has #${id}`);
 }
