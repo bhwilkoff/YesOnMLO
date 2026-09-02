@@ -142,7 +142,7 @@
     const upcoming = upcomingForums();
     const src = srcLink(CAMPAIGN.forums.sourceId);
     if (!upcoming.length) {
-      list.innerHTML = `<p class="body">The district's fall forums have wrapped up. The budget and ballot details they covered stay on the district's Dollars and Sense page.</p>${src}`;
+      list.innerHTML = `<p class="body">The district's forums are over. What they covered is still on the Dollars and Sense page.</p>${src}`;
       return;
     }
     list.innerHTML = `
@@ -165,7 +165,7 @@
    * writer's own voice, and lands on step 2 so they finish it.
    */
   function forumInviteText(s) {
-    return `The superintendent is taking questions about the LPS budget and the mill levy override at ${s.place} on ${fmtDay(s.when)}, ${s.time.replace(/\.$/, '')}. No sign-up, and there's Spanish interpretation. Want to go with me? I'd like the company — and I'm voting yes.`;
+    return `The superintendent is taking questions about the LPS budget and the mill levy override at ${s.place} on ${fmtDay(s.when)}, ${s.time.replace(/\.$/, '')}. No sign-up, and there is Spanish interpretation. Want to go with me? I'd like the company. And I'm voting yes.`;
   }
 
   function inviteToForum(i) {
@@ -226,16 +226,16 @@
     const quick = $('voice-forum');
     if (quick && next) {
       quick.hidden = false;
-      quick.innerHTML = `Don't have a story yet? Invite someone to the district's next budget forum —
+      quick.innerHTML = `No story yet? Invite someone to the district's next forum,
         <button class="link-btn-inline" data-forum="${next.i}">${escHtml(fmtDayShort(next.when))} at ${escHtml(next.place)}</button>.
-        "Come with me" is a story too.`;
+        Come with me counts.`;
     }
   }
 
   function renderVoicePrompts(gi) {
     const group = CAMPAIGN.storyPrompts[gi];
     $('voice-prompts').innerHTML = `
-      <p class="body">Tap the one that stirs something — it becomes your first line, and you finish it.</p>` +
+      <p class="body">Tap the one that stirs something. It becomes your first line. You finish it.</p>` +
       group.prompts.map((p, pi) => `
         <div class="prompt-card" data-prompt="${gi}:${pi}" role="button" tabindex="0">
           &ldquo;${escHtml(p.text)}&rdquo;
@@ -312,9 +312,9 @@
     const words = wordCount(text);
     return [
       { ok: PLACE_RE.test(text), label: 'Names a real place', hint: 'a school, a neighborhood, "Littleton" or "Centennial"' },
-      { ok: PERSON_RE.test(text), label: 'Has a person in it', hint: 'a teacher, a kid, a neighbor — someone the reader can picture' },
-      { ok: ASK_RE.test(text), label: 'Makes the ask', hint: '"I’m voting yes" — say it plainly, once' },
-      { ok: words > 0 && words <= 120, label: 'Readable at a red light', hint: `${words} words — under 120 travels; longer is fine for email or Nextdoor` },
+      { ok: PERSON_RE.test(text), label: 'Has a person in it', hint: 'a teacher, a kid, a neighbor. Someone the reader can picture' },
+      { ok: ASK_RE.test(text), label: 'Makes the ask', hint: 'say “I’m voting yes,” once' },
+      { ok: words > 0 && words <= 120, label: 'Readable at a red light', hint: `${words} words. Under 120 gets read. Longer is fine for email or Nextdoor` },
     ];
   }
 
@@ -327,7 +327,7 @@
     const checks = storyChecks(text);
     const done = checks.filter((c) => c.ok).length;
     box.innerHTML = `
-      <p class="checks-title">${done === checks.length ? 'That’s a post.' : 'What makes a post land'}</p>
+      <p class="checks-title">${done === checks.length ? 'That’s a post.' : 'What makes a post work'}</p>
       <ul class="checks">${checks.map((c) => `
         <li class="check ${c.ok ? 'ok' : ''}">
           <span class="check-mark" aria-hidden="true">${c.ok ? '✓' : '○'}</span>
@@ -616,7 +616,7 @@
         });
       }
       cardState.source = 'photo';
-      status.textContent = `${file.name || 'Photo'} — it stays on this device; only the finished card leaves it.`;
+      status.textContent = `${file.name || 'Photo'}. It stays on this device. Only the finished card leaves it.`;
       syncCardControls();
       redrawCard();
     } catch {
@@ -768,19 +768,19 @@
         'The button opens your Messages app with your words staged.',
         'Address it, make it sound like you, send.',
       ],
-      desktopNote: 'On a computer this opens Messages only if it’s set up here. If nothing happens, your words are copied — text them from your phone, or use “Pass it along” below to send this draft to your phone.',
+      desktopNote: 'On a computer this opens Messages only if it is set up here. If nothing happens, your words are copied. Text them from your phone, or use “Pass it along” to send this draft there.',
       mode: 'url', scheme: true,
       url: (text) => `sms:?body=${encodeURIComponent(text + ' ' + SITE_URL)}`,
       button: 'Open Messages',
       contactPicker: true,
-      soft: 400, softNote: 'Texts over about 400 characters read as a wall; the first line has to earn the rest.',
+      soft: 400, softNote: 'Texts over about 400 characters read as a wall. The first line has to earn the rest.',
     },
     {
       id: 'nextdoor', name: 'Nextdoor', role: 'your actual neighbors',
       steps: [
         'The button opens Nextdoor’s composer with your words already in it.',
         'Pick your neighborhood, look it over, post.',
-        'One genuine post is plenty — Nextdoor’s guidelines allow discussing a local ballot measure but not over-posting about it, and neighbors tune out repeats anyway.',
+        'One post is plenty. Nextdoor allows discussing a local ballot measure and does not allow over-posting about it. Neighbors tune out repeats anyway.',
       ],
       mode: 'url', limit: 3500,
       url: (text) => `https://nextdoor.com/sharekit/?source=lps-storyteller&body=${encodeURIComponent(text + '\n' + SITE_URL)}`,
@@ -791,7 +791,7 @@
       id: 'facebook', name: 'Facebook', role: 'groups beat feeds',
       steps: [
         'Facebook doesn’t let sites pre-fill posts, so the button copies your words first.',
-        'The share box opens with the campaign link — paste your words above it, look it over, post.',
+        'The share box opens with the campaign link. Paste your words above it, look it over, post.',
         'Even better: open a neighborhood or school group you belong to and paste it there instead.',
       ],
       mode: 'copy-open',
@@ -805,7 +805,7 @@
       steps: [
         'The button opens WhatsApp with your words ready.',
         'Pick the person or the group chat.',
-        'Send it — the link preview comes along automatically.',
+        'Send it. The link preview comes along on its own.',
       ],
       mode: 'url',
       url: (text) => `https://wa.me/?text=${encodeURIComponent(text + '\n' + SITE_URL)}`,
@@ -826,15 +826,15 @@
     {
       id: 'instagram', name: 'Instagram', role: 'the card carries the story',
       steps: IS_MOBILE ? [
-        'Instagram can’t take words from a website, so the picture does the talking: your card already carries your line.',
+        'Instagram will not take words from a website, so the picture does the talking. Your card already has your line on it.',
         canShareFiles
-          ? 'The button sends the card to your share sheet — pick Instagram, then Feed or Story.'
+          ? 'The button sends the card to your share sheet. Pick Instagram, then Feed or Story.'
           : 'Save the card in step 3, then open Instagram and start a post with it.',
-        'Your words are copied — hold the caption box and tap Paste. In a story, add the link sticker: citizensforlps.org.',
+        'Your words are copied. Hold the caption box and tap Paste. In a story, add the link sticker: citizensforlps.org.',
       ] : [
         'Instagram posts start from a phone. Send this to yours with “Pass it along” below, or:',
         'Save the card (step 3) and copy your words; then on instagram.com choose Create, pick the saved card, and paste the caption.',
-        'Or text the card to yourself and post from the app — the story sticker can carry the link.',
+        'Or text the card to yourself and post from the app. The story sticker can carry the link.',
       ],
       mode: 'copy-open', shareCard: true,
       url: () => 'https://www.instagram.com/',
@@ -847,7 +847,7 @@
       id: 'linkedin', name: 'LinkedIn', role: 'the professional case',
       steps: [
         'The button opens LinkedIn’s composer with your words in place.',
-        'The angle that lands here: schools are why families and employers choose a town.',
+        'The angle that works here: schools are why families and employers pick a town.',
         'Look it over, post.',
       ],
       mode: 'url', limit: 3000,
@@ -862,7 +862,7 @@
         'The button opens a draft with your words in the body.',
         'Address it and send.',
       ],
-      desktopNote: 'If no mail app opens, your words are copied — paste them into Gmail or whatever you use.',
+      desktopNote: 'If no mail app opens, your words are copied. Paste them into Gmail or whatever you use.',
       mode: 'url', scheme: true, limit: 1500,
       url: (text) => `mailto:?subject=${encodeURIComponent('Why I’m voting yes for LPS')}&body=${encodeURIComponent(text + '\n\n' + SITE_URL)}`,
       button: 'Open a draft',
@@ -942,7 +942,7 @@
     const draft = getDraft().trim();
     $('draft-review-text').textContent = draft
       ? (draft.length > 220 ? draft.slice(0, 217) + '…' : draft)
-      : 'Nothing yet — tap edit and give it one honest sentence. That’s enough.';
+      : 'Nothing yet. Tap edit and write one sentence. That is enough.';
   }
 
   let selectedTarget = null;
@@ -995,14 +995,14 @@
     const tally = $('sent-tally');
     tally.hidden = false;
     tally.textContent = n === 1
-      ? 'One down. Each place you share reaches people the others don’t — pick another?'
-      : `You’ve taken your story to ${n} places. That’s real reach — thank you.`;
+      ? 'One down. Each place reaches people the others don’t. Pick another?'
+      : `Your story is in ${n} places now. Thank you.`;
   }
 
   function emptyDraftDetail(detail, name) {
     detail.innerHTML = `
       <p class="target-detail-name">${escHtml(name)}</p>
-      <p class="body">There’s nothing to send yet. One honest sentence is enough.</p>
+      <p class="body">There is nothing to send yet. One sentence is enough.</p>
       <button class="btn" data-wstep="2">Write your words &rarr;</button>`;
   }
 
@@ -1014,9 +1014,9 @@
     detail.innerHTML = `
       <p class="target-detail-name">${IS_MOBILE ? 'Your phone’s share sheet' : 'This computer’s share menu'}</p>
       <ol class="micro-steps">
-        <li>${IS_MOBILE ? 'The button opens your phone’s own share menu — Messages, WhatsApp, Messenger, Instagram, everything installed.' : 'The button opens the system share menu — on a Mac that’s Messages, Mail, AirDrop and whatever else is installed; on Windows, the apps you’ve set up.'}</li>
+        <li>${IS_MOBILE ? 'The button opens your phone’s own share menu: Messages, WhatsApp, Messenger, Instagram, whatever is installed.' : 'The button opens the system share menu. On a Mac that is Messages, Mail, AirDrop, and whatever else is installed. On Windows, the apps you have set up.'}</li>
         <li>Pick the app, pick the person or audience.</li>
-        <li>Your words and the campaign link ride along (Facebook and Instagram drop the words — they’re on your clipboard, paste them).</li>
+        <li>Your words and the campaign link go with it. Facebook and Instagram drop the words, so they are also on your clipboard. Paste them.</li>
       </ol>
       <button class="btn" id="target-action">Share&hellip;</button>
       <p class="fallback-line" id="target-fallback" hidden></p>`;
@@ -1026,7 +1026,7 @@
         await navigator.share({ title: 'Why I’m voting yes for LPS', text, url: SITE_URL });
         markSent('native');
       } catch {
-        showFallback('The share menu didn’t open. Your words are copied — pick a network below and paste them.');
+        showFallback('The share menu did not open. Your words are copied. Pick a network below and paste.');
       }
     });
   }
@@ -1041,13 +1041,13 @@
   function fitLine(t, text) {
     const n = graphemes(text);
     if (t.limit && n > t.limit) {
-      return `<p class="fit-line fit-over">Your words run ${fmtNum(n)} characters; ${escHtml(t.name)} allows ${escHtml(t.limitLabel || fmtNum(t.limit))}. We’ll trim the end with an ellipsis — or <button class="link-btn-inline" data-wstep="2">tighten it yourself</button>.</p>`;
+      return `<p class="fit-line fit-over">Your words run ${fmtNum(n)} characters; ${escHtml(t.name)} allows ${escHtml(t.limitLabel || fmtNum(t.limit))}. We’ll trim the end with an ellipsis, or you can <button class="link-btn-inline" data-wstep="2">tighten it yourself</button>.</p>`;
     }
     if (t.soft && n > t.soft) {
       return `<p class="fit-line">${fmtNum(n)} characters. ${escHtml(t.softNote)}</p>`;
     }
     if (t.limit) {
-      return `<p class="fit-line fit-ok">Fits — ${fmtNum(n)} of ${fmtNum(t.limit)} characters.</p>`;
+      return `<p class="fit-line fit-ok">Fits. ${fmtNum(n)} of ${fmtNum(t.limit)} characters.</p>`;
     }
     return '';
   }
@@ -1066,7 +1066,7 @@
     if (t.contactPicker && 'contacts' in navigator && 'select' in navigator.contacts) {
       extra += `<div class="target-detail-extra">
         <button class="btn btn-quiet" id="target-contacts">Or pick straight from your contacts</button>
-        <p class="fine">The picking happens on your phone — nothing is uploaded anywhere.</p>
+        <p class="fine">The picking happens on your phone. Nothing is uploaded anywhere.</p>
       </div>`;
     }
     if (t.secondary && t.secondary.url) {
@@ -1106,7 +1106,7 @@
       // Copy in the same gesture — no await before the navigation, or
       // Safari treats the new tab as a popup and blocks it.
       copyText(text).then((ok) => {
-        if (!ok) showFallback('Your browser wouldn’t copy automatically — use “Copy my words” and paste.');
+        if (!ok) showFallback('Your browser would not copy on its own. Use “Copy my words” and paste.');
       });
       if (t.shareCard && canShareFiles && IS_MOBILE) {
         e.preventDefault();
@@ -1178,12 +1178,12 @@
     detail.innerHTML = `
       <p class="target-detail-name">Pass it along</p>
       <ol class="micro-steps">
-        <li>This link opens the studio with your words already loaded — nothing is stored anywhere but in the link itself.</li>
+        <li>This link opens the studio with your words already loaded. Nothing is stored anywhere except in the link itself.</li>
         <li>${IS_MOBILE
-          ? 'Send it to a friend who’d post something like it; they’ll rewrite it in their own voice.'
+          ? 'Send it to a friend who would post something like it. They will rewrite it in their own voice.'
           : 'Text or email it to yourself to finish on your phone (Instagram and Messages live there), or send it to a teammate as a starting draft.'}</li>
       </ol>
-      ${tooLong ? '<p class="fit-line">This draft is long for a link; some apps cut long links off. Shorten it a little if the link doesn’t open cleanly.</p>' : ''}
+      ${tooLong ? '<p class="fit-line">This draft is long for a link, and some apps cut long links off. Shorten it a little if the link does not open cleanly.</p>' : ''}
       <input class="field-input handoff-link" id="handoff-link" type="text" readonly value="${escAttr(link)}" aria-label="Link to this draft">
       <div class="target-actions">
         <button class="btn" id="handoff-copy">Copy the link</button>
@@ -1219,7 +1219,7 @@
     if (existing && existing !== incoming) {
       const notice = $('draft-notice');
       notice.hidden = false;
-      notice.innerHTML = `We loaded the draft from the link you opened. Your earlier draft is still here —
+      notice.innerHTML = `We loaded the draft from the link you opened. Your earlier draft is still here:
         <button class="link-btn-inline" id="draft-restore">bring it back</button>.`;
       $('draft-restore').addEventListener('click', () => {
         setDraft(existing);
@@ -1277,14 +1277,14 @@
 
     const unverified = !tc.estimatedMills.verified || !tc.residentialAssessmentRate.verified;
     $('calc-est-note').textContent = unverified
-      ? 'The assessment rate and the $25-per-$100,000 estimate are the state’s and the district’s own published figures. The mill number is derived from them and stays an estimate until the county certifies the ballot language this fall — this page will be updated the day the certified figure exists.'
+      ? 'The assessment rate and the $25-per-$100,000 estimate are the state’s and the district’s own published figures. The mill number is derived from them. It stays an estimate until the county certifies the ballot language this fall, and this page gets updated when that happens.'
       : 'Figures reflect the certified ballot language and published official rates.';
 
     const ex = tc.districtExample;
     $('calc-sources').innerHTML = `
-      The calculator opens on the district's own example — a ${fmtUSD(ex.homeValue)} home at "${escHtml(ex.monthlyText)}" — so you can check their arithmetic before you check yours (<a href="${SOURCES[ex.sourceId].url}" target="_blank" rel="noopener">${escHtml(SOURCES[ex.sourceId].label)}</a>).
+      The calculator opens on the district's own example, a ${fmtUSD(ex.homeValue)} home at "${escHtml(ex.monthlyText)}," so you can check their arithmetic before your own (<a href="${SOURCES[ex.sourceId].url}" target="_blank" rel="noopener">${escHtml(SOURCES[ex.sourceId].label)}</a>).
       Assessment rate (7.05% for 2026): <a href="${SOURCES[tc.residentialAssessmentRate.sourceId].url}" target="_blank" rel="noopener">${escHtml(SOURCES[tc.residentialAssessmentRate.sourceId].label)}</a>.
-      The district's estimate — "approximately $25 annually for every $100,000 of home value":
+      The district's estimate, "approximately $25 annually for every $100,000 of home value":
       <a href="${SOURCES[tc.perHundredK.sourceId].url}" target="_blank" rel="noopener">${escHtml(SOURCES[tc.perHundredK.sourceId].label)}</a>.
       The mill figure here (${tc.estimatedMills.value}) is derived from those two numbers; the certified ballot language will set the final figure.
       The formula is the county assessor's: home value &times; assessment rate &times; mills &divide; 1,000.`;
@@ -1299,7 +1299,7 @@
     $('calc-share').addEventListener('click', () => {
       const { monthly } = calcNumbers();
       setDraft(
-        `I did the math for our house: the LPS mill levy override works out to about ${fmtUSD(monthly, 2)} a month for us. ` +
+        `I did the math for our house. The LPS mill levy override works out to about ${fmtUSD(monthly, 2)} a month for us. ` +
         `For that, teachers get a raise instead of a freeze, the furlough day comes off the calendar, and every dollar stays in LPS schools. I’m voting yes.`
       );
       cardTextTouched = false;

@@ -352,3 +352,19 @@ no lecture. Facts inside stems are anchored: furlough day is Friday, March
 passed (Arapahoe results); yard signs = volunteer-form checkbox, out Sept 12
 (cflps site). Smoke test now checks every voice has 4+ stems with hints
 (128/128). Left: green; pushed.
+
+**2026-09-02 (fifth pass) — voice pass on the playbook and the site.** User:
+"take another stab at the Social Media Playbook and the copy on the website to
+try and eliminate as many of the 'typical AI' grammar and language… look at my
+blog for how I typically structure ideas, thinking, and language." Read five
+posts from LearningIsChange (2024–2026): short declarative sentences, fragments
+that earn their place, "And" to open a sentence, repetition for rhythm, plain
+words, first person, no clever closers. Rewrote SOCIAL-MEDIA-PLAYBOOK.md in
+full in that register (and corrected its dates: ballots mail Oct 2, phases
+re-cut Sept 1–Oct 1 / Oct 2–26 / Oct 27–Nov 3; forums, yard signs, lit drops,
+TABOR deadline placed; X removed; the $25 figure and $600K example now cite
+the district). Site copy: ~95 string rewrites across index.html, data.js,
+app.js — removed em-dash pivots, "X, not Y" reframes, aphorism closers, and
+the tics ("honest," "actually," "real," "lands," "travels," "genuine"). Code
+comments and page titles keep their dashes. Smoke 128/128; node --check
+clean. Not re-rendered in Chrome (string-only changes). Left: green; pushed.
