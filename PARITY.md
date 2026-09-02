@@ -66,7 +66,8 @@ everything else.
 | Story checklist (live, teaching, non-blocking) | ✅ | Names a place · has a person · makes the ask · under 120 words — learning-orientation: the writer keeps every decision |
 | Pass it along — draft travels in the URL (`?d=`) | ✅ | Desktop → phone hand-off; team lead → volunteer starting draft; earlier draft recoverable on import; no server, nothing stored |
 | Forum invites ("come with me") — district Dollars and Sense forums | ✅ | Home list (upcoming only, auto-expires) + step-1 quick path; seeds a personal invite naming the real time and place; district-track meetings described honestly |
-| Share-card generator (canvas → PNG, 3 sizes) | ✅ | Square/story/wide; Web Share file path into Instagram on mobile (Instagram panel's primary action on phones) |
+| Share-card generator — words on a card OR your own photo | ✅ | 4 shapes (square, 4:5 portrait, story w/ safe zones, wide); 5 looks, 3 typefaces (incl. handwritten), placement, size, signature line, "Mix it up"; photo: cover-fit, shade or panel behind the words, crop anchor, EXIF-honoring, never uploaded; choices persist; Web Share file path into Instagram on phones (panel's primary action) |
+| Instagram flow — the picture carries the story | ✅ | No web intent exists (verified 2026-09-02); phones: one tap sends the card to the share sheet with the caption copied; desktop: save card + copy words + instagram.com Create, or hand off to phone |
 | Person-to-person tools (SMS/WhatsApp/Messenger/Contact Picker) | ✅ | Contact Picker is Android-Chrome-only progressive enhancement |
 | The Cost — transparent calculator with on-page sources | ✅ | `?view=cost`; estimate-labeled until official figures; "put this number in a post" seeds the draft |
 | Team Playbook — per-network digests + pushback etiquette + sources index | ✅ | `?view=playbook`; no X/Twitter by decision |

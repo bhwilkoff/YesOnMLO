@@ -21,7 +21,8 @@
   <!-- Fonts mirror citizensforlps.org (Lora headings, Source Sans Pro body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Caveat is the share card's handwritten option only; never UI chrome -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/styles.css">
@@ -185,23 +186,38 @@
         <div class="wstep" id="wstep-3" hidden>
           <h2 class="wstep-title">Give it something to see <span class="wstep-optional">(optional)</span></h2>
           <p class="body">
-            Posts with a picture travel further. This makes you a
-            clean, simple card — save it now, attach it when you post.
+            Posts with a picture travel further, and a picture only you
+            could have posted travels furthest. Use your own photo, or
+            put your line on a card — then make it look like yours.
           </p>
           <div class="card-maker">
+            <div class="seg seg-source" id="card-source" role="group" aria-label="Picture source">
+              <button type="button" class="seg-btn source-btn selected" data-source="text" aria-pressed="true">Words on a card</button>
+              <button type="button" class="seg-btn source-btn" data-source="photo" aria-pressed="false">Your own photo</button>
+            </div>
+            <div class="photo-picker" id="photo-picker" hidden>
+              <label class="btn btn-quiet" for="card-photo">Choose a photo</label>
+              <input type="file" id="card-photo" accept="image/*" class="sr-only">
+              <p class="fine">The pickup line, the science fair, the yard sign, the kid in the jersey. It stays on your device — the card is drawn right here in your browser and the photo is never uploaded. Ask before you post other people's kids.</p>
+              <p class="fine" id="photo-status"></p>
+            </div>
+
             <label class="field-label" for="card-text">The line on the card</label>
             <textarea id="card-text" class="draft-box" rows="2" maxlength="220">I'm voting yes on the LPS mill levy override.</textarea>
-            <div class="card-controls">
-              <label class="field-label" for="card-size">Shape</label>
-              <select id="card-size" class="select">
-                <option value="square">Square &mdash; for a feed post</option>
-                <option value="story">Tall &mdash; for a story</option>
-                <option value="wide">Wide &mdash; for a link preview</option>
-              </select>
-              <button class="btn btn-quiet" id="card-download">Save the card</button>
-              <button class="btn btn-quiet" id="card-share" hidden>Share the card&hellip;</button>
+            <label class="field-label card-sign-label" for="card-sign">Sign it <span class="wstep-optional">(optional)</span></label>
+            <input type="text" id="card-sign" class="field-input" maxlength="60" placeholder="— Maria, Runyon parent">
+
+            <div class="card-layout">
+              <div class="card-controls" id="card-controls"></div>
+              <div class="card-preview-col">
+                <canvas id="card-canvas" class="card-preview" width="540" height="540" aria-label="Share card preview"></canvas>
+                <button type="button" class="link-btn" id="card-mix">Mix it up &rarr;</button>
+              </div>
             </div>
-            <canvas id="card-canvas" class="card-preview" width="540" height="540" aria-label="Share card preview"></canvas>
+            <div class="card-actions">
+              <button class="btn" id="card-download">Save the card</button>
+              <button class="btn btn-quiet" id="card-share" hidden>Send the card to an app&hellip;</button>
+            </div>
           </div>
           <div class="wstep-nav">
             <button class="link-btn" data-wstep="2">&larr; Back</button>

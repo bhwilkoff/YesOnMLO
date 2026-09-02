@@ -359,14 +359,55 @@
 
   /* ================================================================
      STEP 3 — a picture (canvas → PNG)
+     Words on a card, or the writer's own photo with their line over
+     it. Every choice is the writer's (look, type, placement, size,
+     shape, a signature); the tool only does the drawing. The photo
+     never leaves the device — the canvas is local.
   ================================================================ */
   const CARD_SIZES = {
-    square: { w: 1080, h: 1080 },
-    story: { w: 1080, h: 1920 },
-    wide: { w: 1200, h: 630 },
+    square:   { w: 1080, h: 1080, safe: 0 },
+    portrait: { w: 1080, h: 1350, safe: 0 },
+    story:    { w: 1080, h: 1920, safe: 250 },   // IG/FB story UI covers top + bottom
+    wide:     { w: 1200, h: 630,  safe: 0 },
   };
+  const CARD_LOOKS = {
+    paper: { name: 'Paper', bg: '#FBFAF7', text: '#323F49', accent: '#90CA65', muted: '#5A6772', rule: '#E3E2DC' },
+    slate: { name: 'Slate', bg: '#323F49', text: '#FBFAF7', accent: '#90CA65', muted: '#C5CDD3', rule: '#4A5761' },
+    green: { name: 'Green', bg: '#90CA65', text: '#1F2A1A', accent: '#FBFAF7', muted: '#2F4A26', rule: '#7DB554' },
+    cream: { name: 'Cream', bg: '#F3EAD8', text: '#3A3229', accent: '#90CA65', muted: '#7A6E5F', rule: '#E0D5BF' },
+    chalk: { name: 'Chalkboard', bg: '#2A3B31', text: '#F2F0E6', accent: '#90CA65', muted: '#BFC8B8', rule: '#3E5246' },
+  };
+  const CARD_TYPES = {
+    serif: { name: 'Serif', family: 'Lora, Georgia, serif', weight: 700, scale: 1, lineHeight: 1.28, signStyle: 'italic' },
+    sans:  { name: 'Sans', family: '"Source Sans Pro", "Source Sans 3", system-ui, sans-serif', weight: 700, scale: 1.02, lineHeight: 1.22, signStyle: 'normal' },
+    hand:  { name: 'Handwritten', family: 'Caveat, "Bradley Hand", cursive', weight: 600, scale: 1.32, lineHeight: 1.12, signStyle: 'normal' },
+  };
+  const CARD_SIZE_SCALE = { s: 0.82, m: 1, l: 1.2 };
 
+  const CARD_KEY = 'ymlo_card';
+  const cardState = {
+    source: 'text',          // 'text' | 'photo'
+    look: 'paper',
+    type: 'serif',
+    position: 'middle',      // 'top' | 'middle' | 'bottom'
+    size: 'm',
+    shape: 'square',
+    overlay: 'shade',        // photo only: 'shade' | 'panel'
+    crop: 'middle',          // photo only: which part of the photo to keep
+    sign: '',
+  };
+  let cardPhoto = null;      // ImageBitmap | HTMLImageElement, in memory only
   let cardTextTouched = false;
+
+  function loadCardState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CARD_KEY) || '{}');
+      for (const k of Object.keys(cardState)) if (k in saved && k !== 'source') cardState[k] = saved[k];
+    } catch { /* ignore */ }
+  }
+  function saveCardState() {
+    try { localStorage.setItem(CARD_KEY, JSON.stringify(cardState)); } catch { /* private mode */ }
+  }
 
   function seedCardText() {
     if (cardTextTouched) return;
@@ -378,51 +419,6 @@
       ? firstSentence.slice(0, 157) + '…'
       : firstSentence;
     redrawCard();
-  }
-
-  function drawCard(canvas, size) {
-    const { w, h } = CARD_SIZES[size];
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext('2d');
-    const text = $('card-text').value.trim() || 'I’m voting yes on the LPS mill levy override.';
-
-    ctx.fillStyle = '#FBFAF7';
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#90CA65';
-    ctx.fillRect(0, 0, w, Math.round(h * 0.012));
-
-    const pad = Math.round(w * 0.09);
-    const maxWidth = w - pad * 2;
-
-    // The logo's star motif — not the committee's logo: this card is
-    // the sharer's own voice, not a committee production (Decision 058)
-    ctx.fillStyle = '#90CA65';
-    const starSize = Math.round(w * 0.045);
-    drawStar(ctx, pad + starSize / 2, Math.round(h * 0.16), 5, starSize / 2, starSize / 4.4);
-
-    const fontSize = size === 'wide' ? Math.round(w * 0.052) : Math.round(w * 0.062);
-    ctx.fillStyle = '#323F49';
-    ctx.font = `700 ${fontSize}px Lora, Georgia, serif`;
-    ctx.textBaseline = 'top';
-    const lines = wrapText(ctx, text, maxWidth);
-    const lineHeight = Math.round(fontSize * 1.28);
-    let y = Math.round(h * 0.16) + starSize + Math.round(h * 0.045);
-    lines.forEach((line) => {
-      ctx.fillText(line, pad, y);
-      y += lineHeight;
-    });
-
-    const footY = h - Math.round(h * (size === 'wide' ? 0.16 : 0.1));
-    ctx.strokeStyle = '#E3E2DC';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(pad, footY);
-    ctx.lineTo(w - pad, footY);
-    ctx.stroke();
-    ctx.fillStyle = '#5A6772';
-    ctx.font = `600 ${Math.round(w * 0.026)}px "Source Sans Pro", sans-serif`;
-    ctx.fillText('Learn more: citizensforlps.org', pad, footY + Math.round(h * 0.02));
   }
 
   function drawStar(ctx, cx, cy, points, outer, inner) {
@@ -439,24 +435,140 @@
   }
 
   function wrapText(ctx, text, maxWidth) {
-    const words = text.split(/\s+/);
     const lines = [];
-    let line = '';
-    words.forEach((word) => {
-      const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > maxWidth && line) {
-        lines.push(line);
-        line = word;
-      } else {
-        line = test;
-      }
+    text.split(/\n/).forEach((para) => {
+      let line = '';
+      para.split(/\s+/).filter(Boolean).forEach((word) => {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      });
+      lines.push(line);
     });
-    if (line) lines.push(line);
     return lines;
   }
 
-  function redrawCard() {
-    document.fonts.ready.then(() => drawCard($('card-canvas'), $('card-size').value));
+  function drawPhotoCover(ctx, img, w, h, crop) {
+    const iw = img.width, ih = img.height;
+    const scale = Math.max(w / iw, h / ih);
+    const dw = iw * scale, dh = ih * scale;
+    const dx = (w - dw) / 2;
+    const dy = crop === 'top' ? 0 : crop === 'bottom' ? h - dh : (h - dh) / 2;
+    ctx.drawImage(img, dx, dy, dw, dh);
+  }
+
+  function drawCard(canvas, shape = cardState.shape) {
+    const { w, h, safe } = CARD_SIZES[shape];
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    const look = CARD_LOOKS[cardState.look] || CARD_LOOKS.paper;
+    const type = CARD_TYPES[cardState.type] || CARD_TYPES.serif;
+    const text = $('card-text').value.trim() || 'I’m voting yes on the LPS mill levy override.';
+    const sign = cardState.sign.trim();
+    const photo = cardState.source === 'photo' && cardPhoto;
+    const onShade = photo && cardState.overlay === 'shade';
+
+    // Ground
+    ctx.fillStyle = look.bg;
+    ctx.fillRect(0, 0, w, h);
+    if (photo) drawPhotoCover(ctx, cardPhoto, w, h, cardState.crop);
+    if (!photo) {
+      ctx.fillStyle = look.accent;
+      ctx.fillRect(0, 0, w, Math.round(h * 0.012));
+    }
+
+    // Type — shrink until the block fits the safe area
+    const pad = Math.round(w * 0.09);
+    const maxWidth = w - pad * 2;
+    const base = (shape === 'wide' ? w * 0.052 : w * 0.062) * type.scale * CARD_SIZE_SCALE[cardState.size];
+    const footerH = Math.round(h * (shape === 'wide' ? 0.16 : 0.1));
+    const starSize = Math.round(w * 0.045);
+    const top = safe + Math.round(h * 0.08);
+    const bottom = h - footerH - safe - Math.round(h * 0.03);
+    let fontSize = Math.round(base);
+    let lines, lineHeight, signSize, blockH;
+    for (;;) {
+      ctx.font = `${type.weight} ${fontSize}px ${type.family}`;
+      lines = wrapText(ctx, text, maxWidth);
+      lineHeight = Math.round(fontSize * type.lineHeight);
+      signSize = Math.round(fontSize * 0.55);
+      blockH = starSize + Math.round(h * 0.035) + lines.length * lineHeight + (sign ? signSize * 1.9 : 0);
+      if (blockH <= bottom - top || fontSize <= 22) break;
+      fontSize = Math.round(fontSize * 0.92);
+    }
+    const y0 = cardState.position === 'top' ? top
+      : cardState.position === 'bottom' ? bottom - blockH
+      : Math.round((top + bottom) / 2 - blockH / 2);
+
+    // Photo legibility: a shade behind the text, or a panel of the look
+    if (photo) {
+      const panelTop = y0 - Math.round(h * 0.04);
+      const panelBottom = y0 + blockH + Math.round(h * 0.04);
+      if (onShade) {
+        const g = ctx.createLinearGradient(0, panelTop - h * 0.18, 0, panelBottom + h * 0.1);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(0.35, 'rgba(0,0,0,0.55)');
+        g.addColorStop(0.65, 'rgba(0,0,0,0.55)');
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, panelTop - h * 0.18, w, panelBottom - panelTop + h * 0.28);
+      } else {
+        ctx.fillStyle = look.bg;
+        ctx.globalAlpha = 0.92;
+        ctx.fillRect(pad - Math.round(w * 0.03), panelTop, w - 2 * pad + Math.round(w * 0.06), panelBottom - panelTop);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    const inkColor = onShade ? '#FFFFFF' : look.text;
+    const mutedColor = onShade ? 'rgba(255,255,255,0.85)' : look.muted;
+    const accentColor = onShade ? '#90CA65' : look.accent;
+
+    // The star motif from the logo — the sharer's own voice, not a
+    // committee production (Decision 058)
+    ctx.fillStyle = accentColor;
+    drawStar(ctx, pad + starSize / 2, y0 + starSize / 2, 5, starSize / 2, starSize / 4.4);
+
+    ctx.fillStyle = inkColor;
+    ctx.font = `${type.weight} ${fontSize}px ${type.family}`;
+    ctx.textBaseline = 'top';
+    if (onShade) { ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = Math.round(w * 0.008); ctx.shadowOffsetY = 2; }
+    let y = y0 + starSize + Math.round(h * 0.035);
+    lines.forEach((line) => {
+      ctx.fillText(line, pad, y);
+      y += lineHeight;
+    });
+    if (sign) {
+      ctx.fillStyle = mutedColor;
+      ctx.font = `${type.signStyle} 600 ${signSize}px ${type.family}`;
+      ctx.fillText(sign, pad, y + Math.round(signSize * 0.5));
+    }
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+
+    // Footer
+    const footY = h - footerH - safe;
+    ctx.strokeStyle = photo ? 'rgba(255,255,255,0.5)' : look.rule;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(pad, footY);
+    ctx.lineTo(w - pad, footY);
+    ctx.stroke();
+    ctx.fillStyle = photo ? '#FFFFFF' : look.muted;
+    if (photo) { ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = Math.round(w * 0.008); }
+    ctx.font = `600 ${Math.round(w * 0.026)}px "Source Sans Pro", "Source Sans 3", sans-serif`;
+    ctx.fillText('Learn more: citizensforlps.org', pad, footY + Math.round(h * 0.02));
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+  }
+
+  async function redrawCard() {
+    const type = CARD_TYPES[cardState.type] || CARD_TYPES.serif;
+    try { await document.fonts.load(`${type.weight} 40px ${type.family}`); } catch { /* fallback face */ }
+    drawCard($('card-canvas'));
   }
 
   const canShareFiles = (() => {
@@ -466,35 +578,144 @@
     } catch { return false; }
   })();
 
-  function shareCardFile() {
-    const canvas = $('card-canvas');
-    drawCard(canvas, $('card-size').value);
-    canvas.toBlob(async (blob) => {
-      if (!blob) return;
-      const file = new File([blob], 'lps-share-card.png', { type: 'image/png' });
-      try {
-        await navigator.share({ files: [file] });
-      } catch { /* user cancelled */ }
-    }, 'image/png');
+  function cardBlob() {
+    return new Promise((resolve) => {
+      const canvas = $('card-canvas');
+      drawCard(canvas);
+      canvas.toBlob(resolve, 'image/png');
+    });
+  }
+
+  async function shareCardFile(withText) {
+    const blob = await cardBlob();
+    if (!blob) return false;
+    const file = new File([blob], 'lps-story-card.png', { type: 'image/png' });
+    const payload = { files: [file] };
+    if (withText) payload.text = withText;
+    try {
+      await navigator.share(payload);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async function loadCardPhoto(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const status = $('photo-status');
+    status.textContent = 'Reading your photo…';
+    try {
+      if (window.createImageBitmap) {
+        cardPhoto = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      } else {
+        cardPhoto = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = URL.createObjectURL(file);
+        });
+      }
+      cardState.source = 'photo';
+      status.textContent = `${file.name || 'Photo'} — it stays on this device; only the finished card leaves it.`;
+      syncCardControls();
+      redrawCard();
+    } catch {
+      status.textContent = 'That file didn’t open as a picture. Try a JPG, PNG, or HEIC straight from your camera roll.';
+    }
+  }
+
+  function renderCardControls() {
+    const seg = (name, items, current) => `
+      <div class="seg" role="group" aria-label="${escAttr(name)}">
+        ${items.map(([v, label, swatch]) => `
+          <button type="button" class="seg-btn ${v === current ? 'selected' : ''}" data-card="${name}" data-value="${v}" aria-pressed="${v === current}">
+            ${swatch ? `<span class="swatch" style="--sw:${swatch}"></span>` : ''}${escHtml(label)}
+          </button>`).join('')}
+      </div>`;
+    $('card-controls').innerHTML = `
+      <div class="card-control"><span class="field-label">Look</span>
+        ${seg('look', Object.entries(CARD_LOOKS).map(([k, l]) => [k, l.name, l.bg]), cardState.look)}</div>
+      <div class="card-control"><span class="field-label">Type</span>
+        ${seg('type', Object.entries(CARD_TYPES).map(([k, t]) => [k, t.name]), cardState.type)}</div>
+      <div class="card-control"><span class="field-label">Words sit</span>
+        ${seg('position', [['top', 'High'], ['middle', 'Middle'], ['bottom', 'Low']], cardState.position)}</div>
+      <div class="card-control"><span class="field-label">Size</span>
+        ${seg('size', [['s', 'Smaller'], ['m', 'Medium'], ['l', 'Bigger']], cardState.size)}</div>
+      <div class="card-control card-control-photo" ${cardState.source === 'photo' ? '' : 'hidden'}><span class="field-label">Behind the words</span>
+        ${seg('overlay', [['shade', 'A shade'], ['panel', 'A panel']], cardState.overlay)}</div>
+      <div class="card-control card-control-photo" ${cardState.source === 'photo' ? '' : 'hidden'}><span class="field-label">Keep the photo’s</span>
+        ${seg('crop', [['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']], cardState.crop)}</div>
+      <div class="card-control"><span class="field-label">Shape</span>
+        ${seg('shape', [['square', 'Square · feed'], ['portrait', 'Portrait · Instagram feed'], ['story', 'Tall · story'], ['wide', 'Wide · link preview']], cardState.shape)}</div>`;
+  }
+
+  function syncCardControls() {
+    document.querySelectorAll('.source-btn').forEach((b) => {
+      const on = b.dataset.source === cardState.source;
+      b.classList.toggle('selected', on);
+      b.setAttribute('aria-pressed', on);
+    });
+    $('photo-picker').hidden = cardState.source !== 'photo';
+    document.querySelectorAll('.card-control-photo').forEach((el) => { el.hidden = cardState.source !== 'photo'; });
+    document.querySelectorAll('[data-card]').forEach((b) => {
+      const on = cardState[b.dataset.card] === b.dataset.value;
+      b.classList.toggle('selected', on);
+      b.setAttribute('aria-pressed', on);
+    });
   }
 
   function initCardMaker() {
-    const canvas = $('card-canvas');
+    loadCardState();
+    renderCardControls();
+    $('card-sign').value = cardState.sign;
+
     $('card-text').addEventListener('input', () => {
       cardTextTouched = true;
       redrawCard();
     });
-    $('card-size').addEventListener('change', redrawCard);
-    $('card-download').addEventListener('click', () => {
-      drawCard(canvas, $('card-size').value);
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `lps-share-card-${$('card-size').value}.png`;
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }, 'image/png');
+    $('card-sign').addEventListener('input', () => {
+      cardState.sign = $('card-sign').value;
+      saveCardState();
+      redrawCard();
+    });
+    $('card-controls').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-card]');
+      if (!btn) return;
+      cardState[btn.dataset.card] = btn.dataset.value;
+      saveCardState();
+      syncCardControls();
+      redrawCard();
+    });
+    $('card-source').addEventListener('click', (e) => {
+      const btn = e.target.closest('.source-btn');
+      if (!btn) return;
+      cardState.source = btn.dataset.source;
+      syncCardControls();
+      if (cardState.source === 'photo' && !cardPhoto) $('card-photo').click();
+      redrawCard();
+    });
+    $('card-photo').addEventListener('change', (e) => loadCardPhoto(e.target.files?.[0]));
+
+    // A different starting point, not a decision made for the writer —
+    // every control stays live afterwards.
+    $('card-mix').addEventListener('click', () => {
+      const pick = (arr, not) => { const c = arr.filter((v) => v !== not); return c[Math.floor(Math.random() * c.length)]; };
+      cardState.look = pick(Object.keys(CARD_LOOKS), cardState.look);
+      cardState.type = pick(Object.keys(CARD_TYPES), cardState.type);
+      cardState.position = pick(['top', 'middle', 'bottom'], cardState.position);
+      saveCardState();
+      syncCardControls();
+      redrawCard();
+    });
+
+    $('card-download').addEventListener('click', async () => {
+      const blob = await cardBlob();
+      if (!blob) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `lps-story-card-${cardState.shape}.png`;
+      a.click();
+      URL.revokeObjectURL(a.href);
     });
 
     // Mobile: hand the PNG straight to the share sheet (the real
@@ -503,10 +724,12 @@
     if (canShareFiles) {
       shareBtn.hidden = false;
       shareBtn.addEventListener('click', () => {
-        copyDraft();
-        shareCardFile();
+        const words = getDraft().trim();
+        if (words) copyText(words);
+        shareCardFile(words);
       });
     }
+    syncCardControls();
     redrawCard();
   }
 
@@ -601,17 +824,22 @@
       fallback: { label: 'messenger.com', url: 'https://www.messenger.com/' },
     },
     {
-      id: 'instagram', name: 'Instagram', role: 'card + caption',
-      steps: [
-        'Instagram has no way for a site to start a post, so this is two moves: the card, then your words.',
-        IS_MOBILE
-          ? 'The button copies your words and sends the card to your share sheet — pick Instagram.'
-          : 'Save the card in step 3 (or do this part from your phone). The button copies your words and opens Instagram.',
-        'New post → add the card → paste your caption. In a story, add the link sticker.',
+      id: 'instagram', name: 'Instagram', role: 'the card carries the story',
+      steps: IS_MOBILE ? [
+        'Instagram can’t take words from a website, so the picture does the talking: your card already carries your line.',
+        canShareFiles
+          ? 'The button sends the card to your share sheet — pick Instagram, then Feed or Story.'
+          : 'Save the card in step 3, then open Instagram and start a post with it.',
+        'Your words are copied — hold the caption box and tap Paste. In a story, add the link sticker: citizensforlps.org.',
+      ] : [
+        'Instagram posts start from a phone. Send this to yours with “Pass it along” below, or:',
+        'Save the card (step 3) and copy your words; then on instagram.com choose Create, pick the saved card, and paste the caption.',
+        'Or text the card to yourself and post from the app — the story sticker can carry the link.',
       ],
       mode: 'copy-open', shareCard: true,
       url: () => 'https://www.instagram.com/',
-      button: canShareFiles ? 'Copy words + share the card' : 'Copy + open Instagram',
+      button: IS_MOBILE && canShareFiles ? 'Send the card to Instagram' : 'Copy words + open Instagram',
+      secondary: IS_MOBILE ? null : { label: 'Save the card', action: 'download' },
       fallback: { label: 'instagram.com', url: 'https://www.instagram.com/' },
       soft: 2200, softNote: 'Instagram captions cap at 2,200 characters.',
     },
@@ -841,13 +1069,17 @@
         <p class="fine">The picking happens on your phone — nothing is uploaded anywhere.</p>
       </div>`;
     }
-    if (t.secondary) {
+    if (t.secondary && t.secondary.url) {
       extra += `<div class="target-detail-extra">
         <a class="btn btn-quiet target-secondary" href="${escAttr(t.secondary.url)}" target="_blank" rel="noopener">${escHtml(t.secondary.label)}</a>
       </div>`;
+    } else if (t.secondary && t.secondary.action === 'download') {
+      extra += `<div class="target-detail-extra">
+        <button class="btn btn-quiet" id="target-download">${escHtml(t.secondary.label)}</button>
+      </div>`;
     }
 
-    const primary = t.shareCard && canShareFiles
+    const primary = t.shareCard && canShareFiles && IS_MOBILE
       ? `<button class="btn" id="target-action">${escHtml(t.button)}</button>`
       : `<a class="btn" id="target-action" href="${escAttr(href)}" ${t.scheme ? '' : 'target="_blank" rel="noopener"'}>${escHtml(t.button)}</a>`;
 
@@ -876,9 +1108,9 @@
       copyText(text).then((ok) => {
         if (!ok) showFallback('Your browser wouldn’t copy automatically — use “Copy my words” and paste.');
       });
-      if (t.shareCard && canShareFiles) {
+      if (t.shareCard && canShareFiles && IS_MOBILE) {
         e.preventDefault();
-        shareCardFile();
+        shareCardFile(text);
       }
       markSent(t.id);
       setTimeout(() => {
@@ -892,6 +1124,8 @@
         setTimeout(() => { $('target-copy').textContent = 'Copy my words'; }, 2000);
       });
     });
+
+    $('target-download')?.addEventListener('click', () => $('card-download').click());
 
     document.querySelector('.target-secondary')?.addEventListener('click', () => {
       copyText(text);

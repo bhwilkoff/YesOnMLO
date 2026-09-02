@@ -105,3 +105,20 @@ including the appended link · LinkedIn 3,000 · Nextdoor 3,500 ·
 utf-8>`; imported on load, then stripped with `replaceState` so a
 refresh doesn't re-import over edits. Links stay well under 2,000
 characters for drafts up to ~1,400 characters.
+
+## Live verification 2026-09-02 (real Chrome, logged-in where noted)
+
+| Network | Result |
+|---|---|
+| **Facebook** `sharer.php?u=` | ✅ Composer opened with the Citizens for LPS OG card; ⌘V pasted the exact copied draft (logged in; nothing posted) |
+| **Threads** `threads.com/intent/post?text=&url=` | ✅ "New thread" composer prefilled with the text AND the link card (logged in; nothing posted) |
+| **WhatsApp** `wa.me/?text=` | ✅ api.whatsapp.com "Share on WhatsApp" page shows the full text + link; Open app / Continue to WhatsApp Web (no login needed) |
+| **LinkedIn** `feed/?shareActive=true&text=` | ⚠️ Redirects to sign-in but preserves the compose params in `session_redirect`; not verified past login (no credentials entered). Documented `share-offsite` fallback stays on the panel |
+| **Nextdoor** ShareKit | ✅ verified end-to-end 2026-08-27 (composer carried the complete story) |
+| **Bluesky** intent | Official docs; requires login to see the composer — not re-verified |
+| **Instagram** | ❌ No web intent exists in 2026 (re-searched). Ceiling: `navigator.share({files:[png], text})` on a phone → Instagram appears in the sheet (Feed/Story). Instagram DROPS the text, so the caption is copied first and pasted; the card itself carries the line and a signature so the story travels even if nobody pastes. Desktop: instagram.com → Create → upload the saved PNG, or hand the draft to the phone via `?d=` |
+
+Design consequence for Instagram: make the **picture** carry the
+message (own photo or styled card + signature) and make the phone
+the primary path. Copy-and-paste is the caption fallback, not the
+flow.

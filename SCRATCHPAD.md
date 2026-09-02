@@ -301,3 +301,30 @@ Facebook composer opened with the OG card and ⌘V pasted the exact draft
 horizontal scroll, checklist + tiles stack cleanly. NOT verified: real
 phones (sms:, Messenger scheme, Web Share files, Contact Picker). Left:
 green; pushed.
+
+**2026-09-02 (second pass) — photos, personal cards, and an honest
+Instagram path.** User: "allow for you to upload a picture instead of just
+doing the text shot… adjust the textshot… more personalization (I don't want
+all of these to look the same)… check all of the sharing API's. The instagram
+one only seems to work via the copy and paste method." Verified live in
+Chrome: Threads intent prefills text + link card; wa.me shows text + link;
+Facebook composer + paste (earlier today); LinkedIn preserves compose params
+through its login redirect (not verified past login); Instagram has no web
+intent (re-searched) — the phone share sheet with the PNG is the ceiling. Done:
+step 3 rebuilt — source toggle (words on a card / your own photo via
+`<input type=file accept=image/*>`, `createImageBitmap` with EXIF orientation,
+cover-fit, never uploaded), 5 looks (paper/slate/green/cream/chalkboard), 3
+typefaces (Lora/Source Sans/Caveat — Caveat added to the font link for the
+card only), placement high/middle/low, 3 sizes with auto-shrink to fit, 4
+shapes incl. 4:5 portrait and story safe zones, signature line, photo overlay
+shade/panel + crop anchor, "Mix it up" (a new starting point, every control
+stays live), choices persist in `ymlo_card`. Instagram panel: phones lead with
+"Send the card to Instagram" (share sheet with file + text, caption copied);
+desktop gets save-card + copy + instagram.com Create, or hand-off. Web Share
+of the card now includes the words (apps that accept text keep them). VERIFIED
+IN CHROME: chalkboard + handwritten + signature card at 1080×1350; simulated
+JPG upload through the real file input → photo card with shade, white text,
+signature, footer; panel overlay; Instagram panel renders with Save-the-card
+secondary; smoke test 93/93. NOT verified: real-phone Web Share into
+Instagram, HEIC decode on iOS Safari (createImageBitmap handles it there).
+Left: green; pushed.
