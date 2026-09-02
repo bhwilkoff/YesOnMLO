@@ -44,6 +44,12 @@ for (const item of withSource) {
 }
 for (const f of CAMPAIGN.facts) check(f.text && f.share, 'fact has text + share');
 
+// Story prompts: every voice has at least four stems, each with a hint.
+for (const g of CAMPAIGN.storyPrompts) {
+  check(g.prompts.length >= 4, `voice "${g.voice}" has 4+ stems (${g.prompts.length})`);
+  for (const p of g.prompts) check(p.text && p.hint, `stem has text + hint: ${p.text.slice(0, 30)}`);
+}
+
 // Forums: ISO dates, strictly ascending, all in the 2026 election fall.
 const dates = CAMPAIGN.forums.sessions.map((s) => s.date);
 check(dates.every((d) => /^2026-(09|10)-\d{2}$/.test(d)), 'forum dates are ISO 2026 fall');

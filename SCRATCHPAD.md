@@ -342,3 +342,13 @@ measures allowed; over-posting not); Arapahoe's own calendar confirms "Oct 2:
 ballots begin mailing" (the brief's stale ⚠️ mid-October row corrected, VSPCs
 Oct 19 added). CAMPAIGN-BRIEF now lists what the official site lets a person
 do, so future copy can only promise those. Left: green; pushed.
+
+**2026-09-02 (fourth pass) — a second set of story stems.** User: "Can you
+come up with another set of 'story stems/starters' for each of the 'who you
+are' options?" Added 3–4 new stems per voice (parents 7, staff 6, alumni 6,
+grown/no kids 6, business 5), same register: one concrete moment, a hint,
+no lecture. Facts inside stems are anchored: furlough day is Friday, March
+19, 2027 (D&S page); 2% average raise = $2.5M (D&S); 2010/2013/2018/2020 all
+passed (Arapahoe results); yard signs = volunteer-form checkbox, out Sept 12
+(cflps site). Smoke test now checks every voice has 4+ stems with hints
+(128/128). Left: green; pushed.
