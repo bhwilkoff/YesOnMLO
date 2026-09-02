@@ -780,7 +780,7 @@
       steps: [
         'The button opens Nextdoor’s composer with your words already in it.',
         'Pick your neighborhood, look it over, post.',
-        'One genuine post is plenty — Nextdoor removes repeat campaigning, and neighbors tune it out anyway.',
+        'One genuine post is plenty — Nextdoor’s guidelines allow discussing a local ballot measure but not over-posting about it, and neighbors tune out repeats anyway.',
       ],
       mode: 'url', limit: 3500,
       url: (text) => `https://nextdoor.com/sharekit/?source=lps-storyteller&body=${encodeURIComponent(text + '\n' + SITE_URL)}`,

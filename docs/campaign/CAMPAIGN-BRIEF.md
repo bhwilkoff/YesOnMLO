@@ -110,10 +110,20 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   Central administration: **less than 2%** of the operating budget.
   GFOA excellence-in-financial-reporting award: **32 consecutive
   years**. District FTE: 1,493.1 (2022–23) → 1,422.6 (2026–27).
-- **Campaign calendar** (citizensforlps.org/upcoming_events, as of
-  8/26): Letters to Editors Aug 29 · postcards + yard signs Sept 12 ·
-  car painting Sept 21 · mail postcards Sept 26–Oct 5 · lit-drop
-  walks Oct 3, 4, 10, 11.
+- **Campaign calendar** (citizensforlps.org/upcoming_events, re-read
+  2026-09-02): Distribute Postcards + **Begin Distribute Yard Signs —
+  Sat Sept 12, 10:00 AM** · East Community Center Resource Fair ·
+  Begin Car Painting · Start Mailing Postcards · the district forums
+  are listed as "LPS at {school}" events. Register via the Eventbrite
+  links on that page.
+- **What the official site lets a person do** (verified 2026-09-02 —
+  our copy may only promise these): **Join**, **Volunteer** (a form
+  with checkboxes: attend an event and share information · reach out
+  to my network · **I will take a yard sign** · fill out postcards ·
+  lit-drop walk · paint my car · write a letter to the editor),
+  **Upcoming Events**, **Contribute**, News and Data. There is no
+  "get a yard sign" button — a yard sign is a volunteer-form checkbox,
+  and distribution starts Sept 12.
 - **The two-track rule**: the *district* may publish factual
   information; the *campaign* advocates. Public funds and district
   resources may never be used for advocacy (Colorado FCPA,
@@ -151,7 +161,8 @@ once) mean the campaign treats that floor as earned, not guaranteed.
 | ~2026-09-04 | Ballot content certified to county (60 days) | ⚠️ VERIFY |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
 | ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |
-| ⚠️ 2026-10-12–16 | Ballots mailed (statutory 18–22 day window) | VERIFY Arapahoe date |
+| **2026-10-02** | Ballots begin mailing to active eligible voters (Arapahoe County's own election calendar, read 2026-09-02; UOCAVA ballots Sept 18) | ✅ verified |
+| 2026-10-19 | Arapahoe Phase 1 Voter Service and Polling Centers open | verified (county calendar) |
 | ~2026-10-20 | Last safe day to return by mail — drop boxes after | guidance |
 | 2026-10-26 | Last day to register and still be mailed a ballot | verified rule |
 | ~2026-10-27 | Meta new-ad blackout begins (final-week ads must already be serving) | platform policy |

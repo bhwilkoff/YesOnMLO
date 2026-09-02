@@ -328,3 +328,17 @@ signature, footer; panel overlay; Instagram panel renders with Save-the-card
 secondary; smoke test 93/93. NOT verified: real-phone Web Share into
 Instagram, HEIC decode on iOS Safari (createImageBitmap handles it there).
 Left: green; pushed.
+
+**2026-09-02 (third pass) — claim audit: "get a yard sign."** User: "Where
+does it say on the website that you can get a yard sign? Remember, every
+single claim and set of written text must be factually accurate for something
+that is possible to do or share." Checked citizensforlps.org in Chrome: no
+"get a yard sign" anywhere; the Volunteer form has an "I will take a yard
+sign" checkbox and the events page lists "Begin Distribute Yard Signs — Sat
+Sept 12, 10:00 AM." Hero rewritten to say exactly that with direct links to
+/volunteer and /upcoming_events. Same pass: Nextdoor copy softened from
+"removes repeat campaigning" to the guideline's own words (local ballot
+measures allowed; over-posting not); Arapahoe's own calendar confirms "Oct 2:
+ballots begin mailing" (the brief's stale ⚠️ mid-October row corrected, VSPCs
+Oct 19 added). CAMPAIGN-BRIEF now lists what the official site lets a person
+do, so future copy can only promise those. Left: green; pushed.

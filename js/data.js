@@ -293,7 +293,7 @@ const CAMPAIGN = {
     {
       name: 'Nextdoor',
       role: 'neighbors & seniors — handle with care',
-      how: 'Local ballot measures are allowed; campaigning on repeat is not. One genuine post per phase, as a resident: introduce why you’re voting yes, answer questions civilly, link to citizensforlps.org, and step back. Never argue in a thread. Over-posting gets removed and costs goodwill.',
+      how: 'Nextdoor’s guidelines allow civil discussion of local ballot measures in the main feed and don’t allow over-posting about one. So: one genuine post per phase, as a resident — why you’re voting yes, answer questions civilly, link to citizensforlps.org, and step back. Never argue in a thread. Repeats break the guidelines and cost goodwill.',
     },
     {
       name: 'LinkedIn',
