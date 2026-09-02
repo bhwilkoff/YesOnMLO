@@ -417,7 +417,7 @@ a:hover { text-decoration-thickness: 2px; }
 .target-tile:hover { border-color: var(--green); }
 .target-tile.selected { border-color: var(--green); background: var(--hl-wash); }
 .target-tile.sent { border-color: var(--green); }
-.target-tile-name { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
+.target-tile-name { display: block; font-weight: 700; font-size: 0.95rem; color: var(--ink); }
 .target-tile-role { font-size: 0.78rem; color: var(--ink-soft); }
 .target-tile.sent .target-tile-name::after { content: " \2713"; color: var(--green-deep); }
 
@@ -441,3 +441,49 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .target-detail-extra { margin-top: var(--s3); }
 .sent-tally { font-weight: 600; color: var(--green-deep); margin-bottom: var(--s3); }
+
+/* ---- Forums (home) — the "come with me" list ---- */
+.forum-list { list-style: none; max-width: var(--measure); margin-bottom: var(--s3); }
+.forum-row {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s1) var(--s4);
+  align-items: baseline; padding: var(--s3) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.forum-when { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: baseline; }
+.forum-day { font-weight: 700; }
+.forum-time { font-size: 0.88rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.forum-place { color: var(--ink-soft); grid-column: 1; }
+.forum-invite { grid-column: 2; grid-row: 1 / span 2; align-self: center; white-space: nowrap; }
+.voice-forum { margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--hairline); }
+
+/* ---- Story checklist (step 2) — teaches, never blocks ---- */
+.story-checks {
+  margin-top: var(--s4); padding: var(--s3) var(--s4);
+  border-left: 3px solid var(--hairline); max-width: var(--measure);
+}
+.checks-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: var(--s2); }
+.checks { list-style: none; }
+.check { display: flex; gap: var(--s2); align-items: baseline; font-size: 0.92rem; margin-bottom: var(--s1); color: var(--ink-soft); }
+.check-mark { flex-shrink: 0; width: 1.2em; font-weight: 700; color: var(--ink-soft); }
+.check.ok { color: var(--ink); }
+.check.ok .check-mark { color: var(--green-deep); }
+.check-label { font-weight: 600; }
+.check-hint { font-size: 0.85rem; }
+.check.ok .check-hint { color: var(--ink-soft); }
+.draft-notice {
+  font-size: 0.9rem; padding: var(--s3) var(--s4); margin-bottom: var(--s4);
+  background: var(--hl-wash); border-radius: 6px; max-width: var(--measure);
+}
+
+/* ---- Step 4: honest fit + the always-there fallback ---- */
+.target-actions { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+.target-actions .btn { text-decoration: none; }
+.fit-line { font-size: 0.88rem; margin-bottom: var(--s3); color: var(--ink-soft); }
+.fit-ok { color: var(--green-deep); }
+.fit-over { color: var(--estimate); font-weight: 600; }
+.fallback-line {
+  font-size: 0.88rem; color: var(--ink-soft); margin-top: var(--s3);
+  padding-top: var(--s3); border-top: 1px dashed var(--hairline);
+}
+.target-tile-handoff { border-style: dashed; }
+.handoff-link { font-size: 0.85rem; margin-bottom: var(--s3); color: var(--ink-soft); }

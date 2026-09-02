@@ -21,18 +21,36 @@
 | Ballot measure letter/number | ⚠️ VERIFY — not yet assigned as of 8/26 (prior LPS labels: 3A '10, 3B '13, 4A '18, 4C '20); certification ~early Sept | Fact-check 2026-08-26, claim 10 |
 | Term | Say "**ongoing**" (LPS's own repeated wording, two sources); the LRPC-minutes "four years" language is NOT publicly verifiable — never state a term until certified ballot language exists | Fact-check 2026-08-26, claim 11 |
 | Tax impact per household | **~$25/year per $100,000 of home value — the district's own official estimate** (Superintendent's letter, May 29, 2026); mills still estimated (~3.5) until certification | littletonpublicschools.net/article/2950007 |
+| District's worked example | **A $600,000 home → "less than $13 per month"** (Dollars and Sense page); the Sept 1, 2026 community email says the same: "average single-family home in Littleton… around $600,000… approximately $150 per year, or about $13 per month." The calculator opens on this example. | littletonpublicschools.net/page/dollars-and-sense (read 2026-09-02); LPS community email 2026-09-01 |
+| Furlough day | **March 19, 2027** (districtwide, scheduled); $800,000 of the MLO would cancel it | Dollars and Sense page, read 2026-09-02 |
 | 2026 school residential assessment rate | **7.05% — verified** | dpt.colorado.gov/residential-school-assessment-rate |
 | Ballots mailed | **Starting October 2, 2026** (Arapahoe County official) | arapahoeco.gov FAQ |
-| GFOA award streak | **31 consecutive years** (FY2024) — NOT the "32" on citizensforlps.org; use 31 until LPS announces FY2025 | Fact-check 2026-08-26, claim 8 |
+| GFOA award streak | **32 consecutive years** — LPS's own Dollars and Sense page now says 32 (read 2026-09-02), which resolves fact-check claim 8 (31 was the last LPS-sourced figure as of Aug 26) | littletonpublicschools.net/page/dollars-and-sense |
 
 ## Why the district says it's needed
 
 - **$10.6M structural budget deficit**, driven by state-level revenue
   constraints, shifts in Colorado's school funding formula, declining
   enrollment, and rising operational costs.
-- The 2026–27 budget was balanced with **one-time measures**: ~$1.1M
-  in staffing reductions, ~$5.4M from the general fund, an employee
-  **wage freeze**, and a scheduled districtwide **furlough day**.
+- The 2026–27 budget was balanced with **one-time measures** (Dollars
+  and Sense page, read 2026-09-02): **$1.1M** cut from central-office
+  staffing (position eliminations, reduced hours), **$2.8M** cut from
+  operating budgets and departmental restructuring, **$5.4M** saved by
+  shifting qualifying general-fund expenses to the Ops/Tech fund,
+  **$500K** in eliminated one-time expenditures, an employee **wage
+  freeze**, and a scheduled districtwide **furlough day (March 19,
+  2027)**. The Sept 1 community email summarizes this as "central
+  office staffing and operational reductions, departmental
+  restructuring, an employee wage freeze, and a scheduled districtwide
+  furlough day."
+- **What a yes buys** (district's own list): $2.5M for a 2% average
+  salary increase; $800K to eliminate the furlough day; targeted math
+  and reading staffing; career-readiness programming; mental-health
+  and safety staff; a charter share per state law. "100% of the funds
+  will stay local."
+- **What a no means** (district's own list): the wage freeze stays,
+  more furlough days possible, career-readiness growth capped, more
+  central cuts, possible new or higher user fees.
 - Without ongoing local funding, the district faces deeper, permanent
   cuts.
 
@@ -104,15 +122,32 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   attribution where required. See
   `docs/research/colorado-compliance.md`.
 - **Community engagement so far**: Bemis Library community meeting
-  (July 30, 2026); district "roadshows" on finances, enrollment, and
-  long-range options planned through the fall; the district's
-  "Dollars and Sense" budget-transparency webpage.
+  (July 30, 2026); the district's "Dollars and Sense"
+  budget-transparency webpage; and the **Dollars and Sense Community
+  Forums** — seven public sessions hosted by Superintendent Todd
+  Lambert (budget + measure, then Q&A; no registration; Spanish
+  interpretation at each). Announced in the Sept 1, 2026 community
+  email and listed on the Dollars and Sense page (read 2026-09-02).
+  These are district-track informational meetings — our tools invite
+  neighbors to them; they never describe them as campaign events.
+
+  | Date | Time | Place |
+  |---|---|---|
+  | Mon Sept 14 | 5:00–6:00 p.m. | Newton Middle School |
+  | Tue Sept 15 | 6:00–7:00 p.m. | Goddard Middle School |
+  | Wed Sept 23 | 6:00–7:00 p.m. | Powell Middle School |
+  | Mon Sept 28 | 5:30–6:30 p.m. | Heritage High School |
+  | Tue Sept 29 | 5:00–6:00 p.m. | Littleton High School |
+  | Wed Sept 30 | 5:30–6:30 p.m. | Arapahoe High School |
+  | Thu Oct 1 | 6:00–7:00 p.m. | Euclid Middle School |
 
 ## Key dates (researched Aug 2026 — see docs/research/colorado-compliance.md §7 for the full table with statutes)
 
 | Date | Event | Status |
 |---|---|---|
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
+| 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
+| 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; see table above) | scheduled |
 | ~2026-09-04 | Ballot content certified to county (60 days) | ⚠️ VERIFY |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
 | ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |

@@ -12,12 +12,12 @@
 
 ## Current state
 
-- **Status**: v2 (the storytelling toolkit) LIVE at
-  https://bhwilkoff.github.io/YesOnMLO/ — fact-checked, sourced,
-  truthful footer, verified share intents
-- **Active milestone**: M3 shipped; M4 = certification updates +
-  team tools
-- **Last session**: 2026-08-26 (evening)
+- **Status**: v4 (robust sharing) LIVE at
+  https://bhwilkoff.github.io/YesOnMLO/ — every send path is a real
+  link + same-gesture copy + visible fallback (Decision 061); facts
+  refreshed from the district's Sept 1 email + Dollars and Sense page
+- **Active milestone**: M4 = certification updates + team tools
+- **Last session**: 2026-09-02
 - **Next actions**:
   1. **When Arapahoe certifies ballot content (~early Sept)**: add
      the measure letter (single find-and-replace), the certified mill
@@ -25,13 +25,15 @@
      term — cite the certified language in CAMPAIGN-BRIEF.md
   2. **TABOR pro/con comment deadline** (~Sept 18 noon, unrecoverable)
      — campaign task, not site task; flagged to the team
-  3. Watch for LPS's FY2025 GFOA announcement → bump 31 → 32 only
-     with the new LPS source (fact-check claim 8)
-  4. Candidate team tools (PARITY 🔮): local-FB-group directory with
-     copy-caption flow (needs the team's group list), client-side QR
-     generator, per-channel UTM links
-  5. Real-device check of share intents (sms:, Nextdoor ShareKit,
-     Web Share files) — desktop headless can't exercise these
+  3. **Real-phone pass** of the studio (iPhone Safari + Android
+     Chrome): `sms:` body, Messenger scheme, Web Share of the card into
+     Instagram, Contact Picker, the `?d=` hand-off link arriving by
+     text. Desktop Chrome is verified; phones are not.
+  4. After Oct 1 the forum list auto-expires to a one-line note — no
+     action needed, but check the home page reads right that week
+  5. Candidate team tools (PARITY 🔮): local-FB-group directory (needs
+     the team's group list), client-side QR of the `?d=` link for
+     tabling, per-channel UTM links (decide analytics stance first)
 - **Open questions**:
   - Final tagline (steering committee deciding; contenders in
     `private/STRATEGY.md`)
@@ -263,3 +265,39 @@ your story to 2 places"); calculator→step-4 handoff. Physical-click flakes
 during testing were CDP click-delivery races (worked on retry/JS click),
 not app bugs. Also verified: 375px wizard layout via iframe probe; DOM
 smoke test rewritten for wizard IA, 20/20. Left: green; pushed.
+
+**2026-09-02 — v4: every share goes through, and the district's Sept 1
+email lands in the data plane.** Found: v3 wizard live; user asked to
+"make sure that every share goes through on the correct platform with as
+much persuasive power, storytelling, and direct connection possible" and
+shared the district's Sept 1 community email (7 Dollars and Sense forums,
+$600K-home example, budget-gap framing). Sources: littletonpublicschools.net
+blocks curl (bot challenge) — read the Dollars and Sense page in real Chrome;
+it carries the forum schedule verbatim, "$600,000 home → less than $13 per
+month", the March 19, 2027 furlough date, the cut breakdown ($1.1M/$2.8M/
+$5.4M/$500K), what-yes-buys ($2.5M for 2%, $800K furlough), and **GFOA 32
+years** (resolves fact-check claim 8 with an LPS source). Done: data plane —
+`forums`, `districtExample`, `placeNames`, four new/updated facts, calculator
+opens on the district's $600K example; CAMPAIGN-BRIEF updated. Share engine
+rebuilt around Decision 061: `<a href>` targets (no window.open), synchronous
+in-gesture clipboard copy, "Didn't open?" fallback line + "Copy my words" on
+every panel, per-network limits shown before the click with honest trim,
+device-aware order + Messenger (mobile-only), Facebook "open my groups"
+secondary, Instagram card-share primary on phones. New: live story
+checklist (place · person · ask · under 120 words), "Pass it along" draft
+link (`?d=` base64url; desktop→phone, lead→volunteer; earlier draft
+recoverable), forum invites on Home + step 1 ("come with me" seeds a
+personal invite naming the real time/place; list auto-expires).
+`tools/toolkit_smoke.mjs` committed (87 checks: sources resolve, forums
+ordered, tax model reproduces the district example, ids present, no X, no
+window.open). VERIFIED IN REAL CHROME: forum invite → step 2 with checklist
+scored; tile order desktop; Facebook/Nextdoor/SMS anchors + hrefs; Bluesky/
+Threads over-limit lines; `?d=` link round-trip on a fresh load with the
+"bring it back" notice; **two clipboard failure modes observed and fixed**
+(await-then-open blocked by Safari; open-then-async-copy rejects "document
+is not focused" in Chrome) — final shape verified with a physical click:
+Facebook composer opened with the OG card and ⌘V pasted the exact draft
+(user logged in for the test; nothing posted). 375px iframe probe: no
+horizontal scroll, checklist + tiles stack cleanly. NOT verified: real
+phones (sms:, Messenger scheme, Web Share files, Contact Picker). Left:
+green; pushed.

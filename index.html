@@ -95,6 +95,16 @@
 
         <div class="rule"></div>
 
+        <h2 class="section-title">Ask the superintendent yourself &mdash; and bring someone</h2>
+        <p class="body">
+          The district is holding seven public budget forums this fall:
+          Superintendent Todd Lambert on the budget and the measure, then
+          questions from the room. They're informational meetings, not
+          rallies &mdash; which is exactly why an undecided neighbor will
+          come if you ask. "Come with me" is the easiest story there is.
+        </p>
+        <div id="forum-list"></div>
+
         <h2 class="section-title">What's actually on the ballot</h2>
         <div id="ballot-summary"></div>
         <p class="fine">
@@ -132,6 +142,7 @@
           </p>
           <div class="voice-grid" id="voice-grid"></div>
           <div id="voice-prompts" class="voice-prompts"></div>
+          <p class="fine voice-forum" id="voice-forum" hidden></p>
           <div class="wstep-nav">
             <span></span>
             <button class="link-btn" data-wstep="2">I'll just write my own &rarr;</button>
@@ -141,10 +152,12 @@
         <!-- STEP 2 — the draft -->
         <div class="wstep" id="wstep-2" hidden>
           <h2 class="wstep-title">Say it the way you'd say it at pickup</h2>
+          <p class="draft-notice" id="draft-notice" hidden></p>
           <label class="field-label" for="studio-draft">Your words</label>
           <textarea id="studio-draft" class="draft-box" rows="6"
             placeholder="Example: When our youngest started at Hopkins, her teacher learned every kid's name by the end of day one. That's the kind of thing the mill levy override protects. I'm voting yes, and I hope you will too."></textarea>
           <p class="draft-meta"><span id="draft-count">0</span> characters &middot; <button class="link-btn-inline" id="draft-clear">start over</button></p>
+          <div class="story-checks" id="story-checks" hidden aria-live="polite"></div>
 
           <details class="helper-details">
             <summary>Add one sourced fact (optional)</summary>
@@ -206,8 +219,10 @@
           </div>
           <p class="body">
             Pick a place — we'll walk you through it. Nothing posts
-            without you, and each one only takes a minute. Start with
-            wherever the people who know you actually are.
+            without you, and each one only takes a minute. Your words
+            are copied to your clipboard every time you tap a send
+            button, so if an app doesn't open, nothing is lost: open it
+            yourself and paste.
           </p>
           <div class="target-grid" id="target-grid"></div>
           <div class="target-detail" id="target-detail" hidden></div>

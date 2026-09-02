@@ -24,8 +24,11 @@ const SOURCES = {
     label: 'LPS Superintendent\'s budget letter (May 29, 2026)',
     url: 'https://www.littletonpublicschools.net/article/2950007',
   },
+  // Re-read in a browser 2026-09-02: carries the forum schedule, the
+  // $600,000-home example, the March 19, 2027 furlough date, the cut
+  // breakdown, and "32 consecutive years" for GFOA.
   lpsDollarsAndSense: {
-    label: 'LPS "Dollars and Sense" budget pages',
+    label: 'LPS "Dollars and Sense" budget page (read Sept 2, 2026)',
     url: 'https://www.littletonpublicschools.net/page/dollars-and-sense/',
   },
   cflpsHome: {
@@ -39,6 +42,12 @@ const SOURCES = {
   lpsGfoa: {
     label: 'LPS: GFOA excellence award, 31st consecutive year (June 2025)',
     url: 'http://web.archive.org/web/20250615045746/https://littletonpublicschools.net/district/nr/lps-finance-wins-excellence-award-31st-consecutive-year',
+  },
+  // LPS's own budget page now says 32 (read 2026-09-02) — the district
+  // is the source for its own award count, so 32 is the figure we use.
+  lpsGfoa32: {
+    label: 'LPS "Dollars and Sense": GFOA award, 32 consecutive years',
+    url: 'https://www.littletonpublicschools.net/page/dollars-and-sense/',
   },
   littletonIndependent: {
     label: 'Littleton Independent, Aug 3, 2026',
@@ -80,12 +89,12 @@ const CAMPAIGN = {
    */
   ballotSummary: [
     {
-      text: 'On August 13, 2026, the LPS Board of Education voted to place a $10 million mill levy override on the November ballot — a 5–0 vote. The district faces a $10.6 million budget gap and balanced this year with one-time measures: staffing reductions, operating-budget cuts, a wage freeze, and an unpaid furlough day.',
-      sourceId: 'lpsPressRelease',
+      text: 'On August 13, 2026, the LPS Board of Education voted to place a $10 million mill levy override on the November ballot — a 5–0 vote. The district faces a $10.6 million budget gap and balanced this year with one-time measures: central-office staffing cuts, operating-budget reductions and restructuring, a wage freeze, and an unpaid furlough day on March 19, 2027.',
+      sourceId: 'lpsDollarsAndSense',
     },
     {
-      text: 'If voters say yes, the district has said the ongoing funding goes to keeping teacher pay competitive, holding class-size ratios, sustaining career-readiness programs, and safety and operations — and the furlough day comes off the calendar. The district estimates the cost at about $25 a year per $100,000 of home value.',
-      sourceId: 'lpsDeficitLetter',
+      text: 'If voters say yes, the district has said the ongoing funding goes to keeping teacher pay competitive (a 2% average raise), cancelling the furlough day, targeted math and reading staffing, career-readiness programs, and student safety and mental-health staff — with 100% of the money staying local. The district estimates the cost at about $25 a year per $100,000 of home value; its example is a $600,000 home at less than $13 a month.',
+      sourceId: 'lpsDollarsAndSense',
     },
     {
       text: 'A mill levy override is additional local property-tax funding a Colorado community can approve for its own school district — collected here and controlled by the school board our community elects.',
@@ -99,14 +108,24 @@ const CAMPAIGN = {
    */
   facts: [
     {
-      text: 'Before asking voters for anything, LPS closed a $10.6 million gap with central-office staffing reductions, operating-budget cuts, general-fund savings, a wage freeze, and an unpaid furlough day.',
-      share: 'Before asking voters for anything, LPS closed a $10.6 million gap the hard way — staffing reductions, budget cuts, a wage freeze for employees, and an unpaid furlough day. The mill levy override is what comes after the district did its part.',
-      sourceId: 'lpsDeficitLetter',
+      text: 'Before asking voters for anything, LPS closed a $10.6 million gap: $1.1 million cut from central-office staffing, $2.8 million from operating budgets and restructuring, $5.4 million shifted in the general fund, a wage freeze, and an unpaid furlough day on March 19, 2027.',
+      share: 'Before asking voters for anything, LPS closed a $10.6 million gap the hard way — $1.1 million cut from the central office, $2.8 million from operating budgets, a wage freeze for every employee, and an unpaid furlough day. The mill levy override is what comes after the district did its part.',
+      sourceId: 'lpsDollarsAndSense',
     },
     {
-      text: 'The district’s own estimate of the cost: about $25 a year for every $100,000 of home value.',
-      share: 'The district’s own estimate for the LPS mill levy override: about $25 a year per $100,000 of home value. For most homes here, that’s the cost of one takeout dinner a year per $100K.',
-      sourceId: 'lpsDeficitLetter',
+      text: 'The district’s own estimate of the cost: about $25 a year for every $100,000 of home value. Its example: a $600,000 home pays less than $13 a month.',
+      share: 'The district’s own estimate for the LPS mill levy override: about $25 a year per $100,000 of home value. Their example — a $600,000 home pays less than $13 a month. That’s the whole ask.',
+      sourceId: 'lpsDollarsAndSense',
+    },
+    {
+      text: 'The district has said what a yes vote buys: $2.5 million for a 2% average raise so LPS can keep teachers from leaving for neighboring districts, and $800,000 to cancel the March 19, 2027 furlough day and give students that school day back.',
+      share: 'What a yes vote on the LPS mill levy override actually buys, per the district: a 2% average raise so our teachers stop leaving for neighboring districts, and the furlough day cancelled — kids get March 19 back as a school day.',
+      sourceId: 'lpsDollarsAndSense',
+    },
+    {
+      text: 'If it fails, the district says the wage freeze stays, more furlough days are possible, and career-readiness programs could be capped. If it passes, 100% of the money stays in LPS schools.',
+      share: 'The district has been plain about it: if the mill levy override fails, the wage freeze stays and more furlough days are on the table. If it passes, every dollar stays local, in LPS schools.',
+      sourceId: 'lpsDollarsAndSense',
     },
     {
       text: 'The Board of Education’s vote to put this on the ballot was unanimous, 5–0.',
@@ -119,9 +138,9 @@ const CAMPAIGN = {
       sourceId: 'cflpsAdmin',
     },
     {
-      text: 'LPS has earned the Government Finance Officers Association’s excellence-in-financial-reporting award for 31 consecutive years, most recently for fiscal year 2024.',
-      share: 'LPS has earned the national award for excellence in financial reporting 31 years in a row. This is a district that takes care of the money we give it.',
-      sourceId: 'lpsGfoa',
+      text: 'LPS has earned the Government Finance Officers Association’s excellence-in-financial-reporting award for 32 consecutive years.',
+      share: 'LPS has earned the national award for excellence in financial reporting 32 years in a row. This is a district that takes care of the money we give it.',
+      sourceId: 'lpsGfoa32',
     },
     {
       text: 'LPS voters have approved every recent funding measure: the 2010 override (57.5% yes), 2013 bond (60.3%), 2018 bond (56.8%), and 2020 override (57.7%) — per Arapahoe County official results.',
@@ -211,8 +230,49 @@ const CAMPAIGN = {
       sourceId: 'lpsDeficitLetter',
       note: 'Derived from the district’s $25-per-$100K estimate; certified ballot language will set the final figure' },
     perHundredK: { value: 25, verified: true, sourceId: 'lpsDeficitLetter' },
-    defaultHomeValue: 650000,
+    // The district's own worked example ("a $600,000 home would equal
+    // less than $13 per month") — the calculator opens on it so a
+    // reader can check the district's arithmetic before their own.
+    districtExample: { homeValue: 600000, monthlyText: 'less than $13 a month', verified: true,
+      sourceId: 'lpsDollarsAndSense' },
+    defaultHomeValue: 600000,
   },
+
+  /*
+   * The district's Dollars and Sense community forums — Superintendent
+   * Todd Lambert presenting the budget and the measure, then Q&A. These
+   * are district-track informational meetings (not campaign events):
+   * our tool's job is to help a supporter bring a neighbor. No
+   * registration; Spanish interpretation at every session.
+   * Dates are ISO local; times as the district prints them.
+   */
+  forums: {
+    sourceId: 'lpsDollarsAndSense',
+    host: 'Superintendent Todd Lambert',
+    sessions: [
+      { date: '2026-09-14', time: '5:00–6:00 p.m.', place: 'Newton Middle School' },
+      { date: '2026-09-15', time: '6:00–7:00 p.m.', place: 'Goddard Middle School' },
+      { date: '2026-09-23', time: '6:00–7:00 p.m.', place: 'Powell Middle School' },
+      { date: '2026-09-28', time: '5:30–6:30 p.m.', place: 'Heritage High School' },
+      { date: '2026-09-29', time: '5:00–6:00 p.m.', place: 'Littleton High School' },
+      { date: '2026-09-30', time: '5:30–6:30 p.m.', place: 'Arapahoe High School' },
+      { date: '2026-10-01', time: '6:00–7:00 p.m.', place: 'Euclid Middle School' },
+    ],
+  },
+
+  /*
+   * Names the story checklist recognizes as "a real place" — every LPS
+   * school plus the two cities the district serves. Teaching aid only:
+   * it nudges a writer toward the specific, it never blocks a post.
+   */
+  placeNames: [
+    'Arapahoe', 'Heritage', 'Littleton High', 'Options', 'Newton', 'Goddard',
+    'Powell', 'Euclid', 'Field', 'Hopkins', 'Wilder', 'Runyon', 'Sandburg',
+    'Lenski', 'Franklin', 'Highland', 'Moody', 'East Elementary', 'Peabody',
+    'Twain', 'Centennial Academy', 'Littleton Academy', 'Littleton Prep',
+    'Village at North', 'Village at Highland', 'Littleton', 'Centennial',
+    'Elementary', 'Middle School', 'High School',
+  ],
 
   /*
    * The playbook digest — how the team shows up on each network.

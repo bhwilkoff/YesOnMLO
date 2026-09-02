@@ -59,15 +59,21 @@ everything else.
 | Feature | Web | Notes |
 |---|---|---|
 | Start — what this is + sourced ballot summary | ✅ | `?` |
-| Share Studio — four-step guided wizard (who you are → your words → a picture → send it) | ✅ | `?view=studio`; voice prompts seed the draft; per-network guided panels with micro-steps; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG copy-then-open (prefill banned by Meta policy); native share sheet on mobile; sent-state tally |
-| Share-card generator (canvas → PNG, 3 sizes) | ✅ | Square/story/wide; Web Share file path into Instagram on mobile |
-| Person-to-person tools (SMS/WhatsApp/Contact Picker) | ✅ | Contact Picker is Android-Chrome-only progressive enhancement |
+| Share Studio — four-step guided wizard (who you are → your words → a picture → send it) | ✅ | `?view=studio&step=N`; voice prompts seed the draft; per-network guided panels with micro-steps; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG/Messenger copy-then-open (prefill banned by Meta policy); native share sheet on mobile; sent-state tally |
+| Send paths are real links + same-gesture copy + visible fallback (Decision 061) | ✅ | Anchors not `window.open`; synchronous clipboard copy; "Didn't open?" line with plain link; "Copy my words" on every panel; verified in Chrome with a real click into the real Facebook composer (2026-09-02) |
+| Per-network fit (character limits shown before the click; honest trim) | ✅ | Threads 500 · Bluesky 300 incl. link · LinkedIn 3,000 · Nextdoor 3,500 · mailto ~1,500 · soft notes for SMS/Instagram |
+| Device-aware target order + availability | ✅ | Phones: share sheet, Messages, WhatsApp, Messenger first; desktops: Facebook, Nextdoor, email, LinkedIn first, share menu last; Messenger scheme is mobile-only |
+| Story checklist (live, teaching, non-blocking) | ✅ | Names a place · has a person · makes the ask · under 120 words — learning-orientation: the writer keeps every decision |
+| Pass it along — draft travels in the URL (`?d=`) | ✅ | Desktop → phone hand-off; team lead → volunteer starting draft; earlier draft recoverable on import; no server, nothing stored |
+| Forum invites ("come with me") — district Dollars and Sense forums | ✅ | Home list (upcoming only, auto-expires) + step-1 quick path; seeds a personal invite naming the real time and place; district-track meetings described honestly |
+| Share-card generator (canvas → PNG, 3 sizes) | ✅ | Square/story/wide; Web Share file path into Instagram on mobile (Instagram panel's primary action on phones) |
+| Person-to-person tools (SMS/WhatsApp/Messenger/Contact Picker) | ✅ | Contact Picker is Android-Chrome-only progressive enhancement |
 | The Cost — transparent calculator with on-page sources | ✅ | `?view=cost`; estimate-labeled until official figures; "put this number in a post" seeds the draft |
 | Team Playbook — per-network digests + pushback etiquette + sources index | ✅ | `?view=playbook`; no X/Twitter by decision |
 | Truthful footer (volunteer-made, unpaid, not committee-published) | ✅ | Decision 058 — no false "paid for by" |
 | Facts duplicated from citizensforlps.org (FAQ/events/donate) | 🚫 | Decision 059 — linked, never duplicated |
 | Group-link directory (local FB groups w/ copy-caption flow) | 🔮 | Needs the team's curated list of groups they belong to |
-| QR generator for tabling/yard-sign → share page | 🔮 | Client-side lib, vendored |
+| QR generator for tabling/yard-sign → share page | 🔮 | Client-side lib, vendored; the `?d=` draft link is the payload it would carry |
 | Per-channel UTM links + lightweight analytics | 🔮 | Decide analytics stance first (privacy) |
 
 ---

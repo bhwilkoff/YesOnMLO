@@ -70,3 +70,38 @@ universal fallback (recipient-less `sms:?body=`) is nearly as good.
 - **UTM discipline**: mint per-channel `?utm_source=` links so free
   analytics show which channels move.
 - Web Share *Target* (PWA receiving shares): niche; skip for now.
+
+## Addendum 2026-09-02 — the clipboard + popup trap (observed in Chrome)
+
+Two orderings both fail; only one shape works:
+
+1. `await navigator.clipboard.writeText(text); window.open(url)` —
+   Safari blocks the `window.open` as a popup (no longer inside the
+   gesture after the await).
+2. `<a href target=_blank>` + `navigator.clipboard.writeText` in the
+   click handler (no await) — the new tab takes focus before Chrome's
+   async permission check, and the promise rejects with **"Document
+   is not focused"**. The composer opens; the clipboard is empty.
+
+Working shape: a real `<a href>` for the navigation, plus a
+**synchronous** copy in the same gesture — hidden textarea, `select()`,
+`document.execCommand('copy')` (deprecated but universal and
+synchronous) — with the async API only as a fallback when execCommand
+returns false. Verified with a real mouse click: Facebook's composer
+opened in a new tab and ⌘V pasted the exact draft.
+
+Also verified: `sharer.php?u=https://citizensforlps.org` renders the
+committee's OG card (Facebook resolves it to the NationBuilder domain
+in the preview). Programmatic `.click()` carries no user activation
+and cannot exercise the clipboard path — test with a physical click.
+
+**Per-network limits now enforced before the click** (js/app.js
+`SHARE_TARGETS.limit` / `.soft`): Threads 500 · Bluesky 300 graphemes
+including the appended link · LinkedIn 3,000 · Nextdoor 3,500 ·
+`mailto:` body ~1,500 (keeps the URI under ~2,000) · soft notes for SMS
+(400) and Instagram captions (2,200).
+
+**Draft hand-off in the URL**: `?view=studio&step=4&d=<base64url
+utf-8>`; imported on load, then stripped with `replaceState` so a
+refresh doesn't re-import over edits. Links stay well under 2,000
+characters for drafts up to ~1,400 characters.

@@ -1417,3 +1417,52 @@ something to say" to "the right people saw it." Verify every share
 intent against current platform documentation before shipping it
 (they deprecate quietly); respect each platform's prefill policies —
 never fake organic reach.
+
+---
+
+## 061 — Every send path is a real link with a same-gesture copy and a visible fallback
+
+*Date: 2026-09-02*
+
+A share button in the studio is an `<a href>` to the network's
+compose intent (or scheme: `sms:`, `mailto:`, `fb-messenger:`), never
+`window.open()` after an `await`. In the same click, the draft is
+copied to the clipboard **synchronously** (selection + `execCommand`,
+with the async Clipboard API only as a fallback), and a "Didn't open?
+Your words are on your clipboard — open {network} and paste" line
+appears after the navigation with a plain link to the network. Per-
+network character limits are computed and shown BEFORE the click
+(Threads 500, Bluesky 300 minus the link, LinkedIn 3,000, Nextdoor
+3,500, `mailto:` bodies ~1,500); over-limit drafts are trimmed with a
+visible ellipsis, never silently. Target order and availability follow
+the device (phones lead with the share sheet, Messages, WhatsApp,
+Messenger; desktops lead with Facebook, Nextdoor, email, LinkedIn and
+end with a hand-off to the phone). Drafts travel between devices and
+people in the URL (`?view=studio&step=4&d=<base64url>`), not a server.
+
+**Why**: two real failure modes were observed in Chrome. (1) The v3
+code awaited the clipboard write, then called `window.open` — Safari
+treats a popup after an `await` as unrequested and blocks it, so the
+network never opened. (2) Flipping the order (open the link, then
+async-copy) fails the other way: the new tab steals focus and the
+async Clipboard API rejects with "document is not focused", so the
+words were NOT copied even though the dialog opened. Only a
+synchronous copy inside the gesture survives both. A volunteer who
+tapped "Copy + open Facebook" and found an empty composer with nothing
+on the clipboard has lost their story; the fallback line and the
+"Copy my words" button mean the words are never more than one tap
+away. Length limits enforced by the network AFTER the composer opens
+(Bluesky silently refuses posts over 300) read as "the button is
+broken"; showing the fit first keeps the failure out of the
+volunteer's hands.
+
+**How to apply**: a new target is an entry in `SHARE_TARGETS` with
+`url(text)`, `mode` (`url` or `copy-open`), `limit`/`soft` when the
+network has one, a `fallback` link, and `mobileOnly` when the scheme
+only resolves on a phone. Never add a `window.open`; never `await`
+before the navigation; never trim without telling the writer. Test in
+a real browser with a real click — a programmatic `.click()` has no
+user activation, so it can't exercise the clipboard path
+(`tools/toolkit_smoke.mjs` guards the data plane and the
+no-`window.open` rule; the clipboard path is a Chrome check, logged in
+SCRATCHPAD.md).
