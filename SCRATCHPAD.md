@@ -1,4 +1,4 @@
-# Project Scratchpad — YesOnMLO (Citizens for LPS Campaign Toolkit)
+# Project Scratchpad — Yes on 4A (Citizens for LPS Campaign Toolkit)
 
 > Active working notes. When this file exceeds ~150 lines, move
 > completed milestone detail to ARCHIVE.md and keep this lean.
@@ -12,17 +12,23 @@
 
 ## Current state
 
-- **Status**: v4 (robust sharing) LIVE at
-  https://bhwilkoff.github.io/YesOnMLO/ — every send path is a real
-  link + same-gesture copy + visible fallback (Decision 061); facts
-  refreshed from the district's Sept 1 email + Dollars and Sense page
+- **Status**: v4 (robust sharing) LIVE at **https://yeson4a.org**
+  (custom apex domain, `CNAME`, since 2026-09-08) — every send path is
+  a real link + same-gesture copy + visible fallback (Decision 061);
+  facts refreshed from the district's Sept 1 email + Dollars and Sense
+  page. The measure is **Ballot Issue 4A** and the site says so
+  (Decision 062).
 - **Active milestone**: M4 = certification updates + team tools
 - **Last session**: 2026-09-02
 - **Next actions**:
-  1. **When Arapahoe certifies ballot content (~early Sept)**: add
-     the measure letter (single find-and-replace), the certified mill
-     figure (flip `estimatedMills.verified` in `js/data.js`), and the
-     term — cite the certified language in CAMPAIGN-BRIEF.md
+  1. **Ballot letter: DONE 2026-09-08 — it is 4A** (site, docs, and
+     `CAMPAIGN.measure` in `js/data.js`). Still outstanding from the
+     same certification: the **certified mill figure** (flip
+     `estimatedMills.verified` in `js/data.js`) and the **term**. Also
+     swap `CAMPAIGN.measure.sourceId` off the generic Arapahoe
+     elections page onto the certified-ballot-content URL, and drop
+     `sourceNote`, the moment the county posts it — that note is the
+     one place this site admits a fact has no link yet.
   2. **TABOR pro/con comment deadline** (~Sept 18 noon, unrecoverable)
      — campaign task, not site task; flagged to the team
   3. **Real-phone pass** of the studio (iPhone Safari + Android

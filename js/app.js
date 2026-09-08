@@ -49,11 +49,16 @@
      VIEW SYSTEM
   ================================================================ */
   const VIEW_NAMES = ['home', 'studio', 'cost', 'playbook'];
+  // Composed from CAMPAIGN.measure (Decision 062), and the ballot name
+  // leads because a narrow tab truncates from the right — "4A" is the
+  // half a voter needs to survive the truncation. showView() overwrites
+  // the static <title> on every navigation, so editing index.html alone
+  // does nothing here.
   const VIEW_TITLES = {
-    home: 'Tell the Story of Our Schools',
-    studio: 'Share Studio — Tell the Story of Our Schools',
-    cost: 'What It Costs — Tell the Story of Our Schools',
-    playbook: 'Team Playbook — Tell the Story of Our Schools',
+    home: `${CAMPAIGN.measure.campaignName} — Tell the Story of Our Schools`,
+    studio: `${CAMPAIGN.measure.campaignName} — Share Studio`,
+    cost: `${CAMPAIGN.measure.campaignName} — What It Costs`,
+    playbook: `${CAMPAIGN.measure.campaignName} — Team Playbook`,
   };
 
   function showView(name, fromHistory = false) {
@@ -165,7 +170,7 @@
    * writer's own voice, and lands on step 2 so they finish it.
    */
   function forumInviteText(s) {
-    return `The superintendent is taking questions about the LPS budget and the mill levy override at ${s.place} on ${fmtDay(s.when)}, ${s.time.replace(/\.$/, '')}. No sign-up, and there is Spanish interpretation. Want to go with me? I'd like the company. And I'm voting yes.`;
+    return `The superintendent is taking questions about the LPS budget and 4A, the mill levy override, at ${s.place} on ${fmtDay(s.when)}, ${s.time.replace(/\.$/, '')}. No sign-up, and there is Spanish interpretation. Want to go with me? I'd like the company. And I'm voting yes.`;
   }
 
   function inviteToForum(i) {
@@ -305,7 +310,7 @@
    * the writer keeps every decision.)
    */
   const PLACE_RE = new RegExp('\\b(' + CAMPAIGN.placeNames.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b', 'i');
-  const ASK_RE = /\b(vot(e|ing)\s+yes|yes\s+on\s+the|yes\s+for\s+lps|i(’|')?m\s+a\s+yes|vote\s+for\s+it)\b/i;
+  const ASK_RE = /\b(vot(e|ing)\s+yes|yes\s+on\s+(the|4a)|yes\s+for\s+lps|i(’|')?m\s+a\s+yes|vote\s+for\s+it)\b/i;
   const PERSON_RE = /\b(teacher|teachers|kid|kids|daughter|son|student|students|neighbor|neighbors|principal|coach|counselor|paraprofessional|bus driver|librarian|nurse|my class|our class|graduated|grew up)\b/i;
 
   function wordCount(text) {
@@ -317,7 +322,7 @@
     return [
       { ok: PLACE_RE.test(text), label: 'Names a real place', hint: 'a school, a neighborhood, "Littleton" or "Centennial"' },
       { ok: PERSON_RE.test(text), label: 'Has a person in it', hint: 'a teacher, a kid, a neighbor. Someone the reader can picture' },
-      { ok: ASK_RE.test(text), label: 'Makes the ask', hint: 'say “I’m voting yes,” once' },
+      { ok: ASK_RE.test(text), label: 'Makes the ask', hint: 'say “I’m voting yes on 4A,” once' },
       { ok: words > 0 && words <= 120, label: 'Readable at a red light', hint: `${words} words. Under 120 gets read. Longer is fine for email or Nextdoor` },
     ];
   }
@@ -472,7 +477,7 @@
     const ctx = canvas.getContext('2d');
     const look = CARD_LOOKS[cardState.look] || CARD_LOOKS.paper;
     const type = CARD_TYPES[cardState.type] || CARD_TYPES.serif;
-    const text = $('card-text').value.trim() || 'I’m voting yes on the LPS mill levy override.';
+    const text = $('card-text').value.trim() || 'I’m voting yes on 4A, the LPS mill levy override.';
     const sign = cardState.sign.trim();
     const photo = cardState.source === 'photo' && cardPhoto;
     const onShade = photo && cardState.overlay === 'shade';
@@ -867,7 +872,7 @@
       ],
       desktopNote: 'If no mail app opens, your words are copied. Paste them into Gmail or whatever you use.',
       mode: 'url', scheme: true, limit: 1500,
-      url: (text) => `mailto:?subject=${encodeURIComponent('Why I’m voting yes for LPS')}&body=${encodeURIComponent(text + '\n\n' + SITE_URL)}`,
+      url: (text) => `mailto:?subject=${encodeURIComponent('Why I’m voting yes on 4A')}&body=${encodeURIComponent(text + '\n\n' + SITE_URL)}`,
       button: 'Open a draft',
     },
     {
@@ -1097,10 +1102,10 @@
         if (includeCard() && canShareFiles) {
           const blob = await cardBlob();
           const file = new File([blob], 'lps-story-card.png', { type: 'image/png' });
-          const payload = { title: 'Why I’m voting yes for LPS', text: text + '\n' + SITE_URL, files: [file] };
+          const payload = { title: 'Why I’m voting yes on 4A', text: text + '\n' + SITE_URL, files: [file] };
           await navigator.share(navigator.canShare(payload) ? payload : { title: payload.title, text, url: SITE_URL });
         } else {
-          await navigator.share({ title: 'Why I’m voting yes for LPS', text, url: SITE_URL });
+          await navigator.share({ title: 'Why I’m voting yes on 4A', text, url: SITE_URL });
         }
         markSent('native');
       } catch {
@@ -1373,7 +1378,7 @@
     $('calc-share').addEventListener('click', () => {
       const { monthly } = calcNumbers();
       setDraft(
-        `I did the math for our house. The LPS mill levy override works out to about ${fmtUSD(monthly, 2)} a month for us. ` +
+        `I did the math for our house. 4A, the LPS mill levy override, works out to about ${fmtUSD(monthly, 2)} a month for us. ` +
         `For that, teachers get a raise instead of a freeze, the furlough day comes off the calendar, and every dollar stays in LPS schools. I’m voting yes.`
       );
       cardTextTouched = false;
@@ -1396,10 +1401,16 @@
 
   function renderSources() {
     const seen = new Set();
+    const m = CAMPAIGN.measure;
+    const mSrc = SOURCES[m.sourceId];
     $('sources-list').innerHTML = `<ul class="sources-list">` +
       Object.values(SOURCES).filter((s) => !seen.has(s.url) && seen.add(s.url)).map((s) =>
         `<li><a href="${s.url}" target="_blank" rel="noopener">${escHtml(s.label)}</a></li>`).join('') +
-      `</ul>`;
+      `</ul>` +
+      // The ballot letter is the one fact on this site with no public
+      // link yet. Say so plainly rather than let it pass as sourced.
+      `<p class="estimate-note">${escHtml(m.formal)}: ${escHtml(m.sourceNote)}
+        <a href="${mSrc.url}" target="_blank" rel="noopener">${escHtml(mSrc.label)}</a>.</p>`;
   }
 
   /* ================================================================

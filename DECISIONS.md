@@ -1214,9 +1214,10 @@ schema name the mapping translates.
 
 *Date: 2026-08-26*
 
-YesOnMLO builds tools for the Citizens for LPS campaign supporting
+This repo builds tools for the Citizens for LPS campaign supporting
 the $10M Littleton Public Schools mill levy override on the
-November 3, 2026 ballot. The platform set is **web only**: iOS,
+November 3, 2026 ballot — **Ballot Issue 4A** since certification
+(Decision 062). The platform set is **web only**: iOS,
 macOS, tvOS, Android, and Windows are 🚫 in PARITY.md.
 
 **Why**: the campaign has a ~10-week life. Voters and volunteers are
@@ -1466,3 +1467,55 @@ user activation, so it can't exercise the clipboard path
 (`tools/toolkit_smoke.mjs` guards the data plane and the
 no-`window.open` rule; the clipboard path is a Chrome check, logged in
 SCRATCHPAD.md).
+
+---
+
+## 062 — The measure has a number, and a bare "4A" never travels alone
+
+*Date: 2026-09-08*
+
+The measure's identity is a data-plane fact, not a string literal:
+`CAMPAIGN.measure` in `js/data.js` holds `label` ("4A"), `formal`
+("Ballot Issue 4A"), `campaignName` ("Yes on 4A") and — the
+load-bearing one — `gloss` ("the LPS mill levy override"). **The first
+time 4A appears in anything a cold reader meets — a post, a share
+caption, a card, a meta description, a text — it is paired with the
+gloss.** After that, bare "4A" is fine. The site's canonical home is
+**https://yeson4a.org** (apex, no `www`, `CNAME` at repo root); shares
+still point at citizensforlps.org, because that is where a persuaded
+neighbor can actually do something.
+
+**Why**: a ballot number is simultaneously the most useful and the
+most useless string in the campaign. Useful, because a voter holding
+a ballot has to *find* the thing — "vote yes on the mill levy
+override" does not tell them what to look for, and "4A" does.
+Useless, because to a neighbor scrolling Facebook who has heard
+nothing about this, "Yes on 4A" is a license plate. Campaigns lose
+weeks to this: they get the number, switch every asset to it
+overnight, and quietly stop explaining what they are asking for. The
+gloss rule costs four words and prevents that entire failure mode.
+Keeping the identity in `data.js` rather than hardcoded across
+40 strings also means the next identity change — a correction, a
+second measure on the ballot — is one edit, not a find-and-replace
+with misses.
+
+**How to apply**: new copy composes `CAMPAIGN.measure` rather than
+typing "4A"; new prose follows CAMPAIGN-BRIEF.md → "How to write 4A"
+(capital A, "Ballot Issue," never "Prop"). `ASK_RE` in `js/app.js`
+recognizes "yes on 4A" so the story checklist credits the new ask —
+any future rewording of the ask updates that regex in the same
+commit. The committee name in the attribution line never changes to a
+ballot nickname (Decision 055).
+
+**Provenance corollary to Decision 054**: the ballot letter arrived
+from the campaign on 2026-09-08 and Arapahoe County had not yet
+posted certified ballot content, so for the moment it is the one fact
+on this site with no public link. An identifier is not a figure, so it
+gets no ⚠️ estimate badge — a "4A (estimated)" badge would be absurd
+and would corrode trust in the badges that matter. Instead the gap is
+stated in plain language in the sources list on the Playbook view
+(`renderSources`), sourced to the county page where the certified
+content will appear, and it invites the reader to tell the team if
+they find it first. **When the county posts it**: repoint
+`measure.sourceId`, delete `sourceNote`, and delete the paragraph it
+renders — in one commit, with the brief updated first.

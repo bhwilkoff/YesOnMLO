@@ -1,12 +1,19 @@
 # Social Media Playbook — Citizens for LPS
 
-## Yes on the LPS mill levy override · September 1 to November 3, 2026
+## Yes on 4A — the LPS mill levy override · September 1 to November 3, 2026
 
 This is how the social media team plans to spend the next nine weeks.
 It comes out of the research we did in August (platform policy,
 Colorado campaign law, campaigns that won) and the facts the district
 has published. Where the law is involved, the registered agent has the
 last word, not this document. Sources are at the bottom.
+
+Updated September 8, 2026. **The measure has a number: it is Ballot
+Issue 4A.** Everything we post from here says "4A" — and the first
+time 4A appears in any post, it is glossed ("4A, the LPS mill levy
+override"), because a neighbor scrolling past has no idea what a bare
+number means. The naming rules are in
+`docs/campaign/CAMPAIGN-BRIEF.md` → "How to write 4A."
 
 Updated September 2, 2026. The ballot-mail date is now confirmed:
 Arapahoe County starts mailing ballots on **October 2**. Everything
@@ -187,7 +194,7 @@ that. Even without it, five texts per volunteer to people who live
 here is the highest-value hour anyone will spend this fall.
 
 **Profile photos.** Facebook killed its frame tool; Twibbonize or
-similar for a "Yes for LPS" overlay. One coordinated day: October 2,
+similar for a "Yes on 4A" overlay. One coordinated day: October 2,
 when ballots mail.
 
 ### In the comments
@@ -347,13 +354,16 @@ that gets shared.
 - Alt text on every image. Describe what's in it and any words on it.
 - Captions on every video. Most people watch muted. Fix the auto
   captions by hand (names, dollar figures). Burn them in for Reels.
-- CamelCase the hashtags: #YesOnLPS. Screen readers can't parse
-  #yesonlps.
+- CamelCase the hashtags: **#YesOn4A** (primary, since Sept 8) and
+  #YesOnLPS (the one we've been using — keep it as the second tag so
+  the August and September archive stays findable). Screen readers
+  can't parse #yeson4a.
 - Text in graphics at 24px or larger, AA contrast, and never put the
   tax math only in an image. Repeat the numbers in the post text.
 - No emoji as bullets. No decorative Unicode fonts.
 - One home for everything: citizensforlps.org. Every post, every ad,
-  every volunteer share links there.
+  every volunteer share links there. The storytelling toolkit lives at
+  yeson4a.org and is where we send volunteers, not voters.
 - One logo, one palette, one type treatment, with the disclaimer built
   into the templates.
 
@@ -416,14 +426,14 @@ Endorsement roll. Card: "they'll just ask again" and enrollment. Three
 forums this week (29th, 30th, Oct 1); post what people asked and how
 the district answered. Every October graphic drafted and approved:
 drop-box map, countdown set, "ballots are here" script. Stage the
-"your ballot is coming" explainer with what the measure looks like on
+"your ballot is coming" explainer with what 4A looks like on
 the ballot.
 
 ### Ballots out (Oct 2 to 26)
 
 **Week 6 (Oct 2 to 8).** Ballots start mailing Friday the 2nd. Profile
 photo day. Daily posting begins. Hero post: check your mailbox, find
-the LPS measure, vote yes. Envelope selfie chain (#YesOnLPS). Re-cut
+4A, vote yes. Envelope selfie chain (#YesOn4A). Re-cut
 the best testimonials with a "ballots are out, vote today" end card.
 Paid shifts to vote-now creative and retargeting. Volunteer ask one:
 text five friends, "did your ballot come?" Nextdoor round two: one

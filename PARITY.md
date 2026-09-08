@@ -1,4 +1,4 @@
-# YesOnMLO — Cross-Platform Feature Parity
+# Yes on 4A — Cross-Platform Feature Parity
 
 > **Single source of truth** for what's shipping where. Updated in
 > the SAME change set as any user-facing feature.

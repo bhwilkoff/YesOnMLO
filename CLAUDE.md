@@ -1,13 +1,17 @@
-# YesOnMLO — Claude Code Project Context
+# Yes on 4A — Claude Code Project Context
 
 > **This project**: the volunteer-built toolkit for the Citizens for
-> LPS campaign supporting the $10M Littleton Public Schools mill levy
-> override on the November 3, 2026 ballot. Read
+> LPS campaign supporting **Ballot Issue 4A**, the $10M Littleton
+> Public Schools mill levy override on the November 3, 2026 ballot.
+> It lives at **https://yeson4a.org**. Read
 > `docs/campaign/CAMPAIGN-BRIEF.md` FIRST in any session — it is the
 > source of truth for campaign facts, and Decisions 053–057 govern
 > the platform set (web-only), fact provenance, compliance, and the
-> public/private boundary. Never commit anything from `git ignore/`
-> or `private/`.
+> public/private boundary. **Decision 062 governs how the measure is
+> named**: never write a bare "4A" the first time a cold reader meets
+> it — pair it with what it is ("4A, the LPS mill levy override"), and
+> compose `CAMPAIGN.measure` from `js/data.js` rather than hardcoding
+> the string. Never commit anything from `git ignore/` or `private/`.
 
 ## Why we build
 
@@ -178,9 +182,10 @@ check before "done."
 
 ## What this app does
 
-**YesOnMLO** is the campaign toolkit for **Citizens for LPS** — the
-volunteer issue committee supporting the $10 million Littleton Public
-Schools mill levy override on the November 3, 2026 ballot. It serves
+**Yes on 4A** (repo `YesOnMLO`, served at **yeson4a.org**) is the
+campaign toolkit for **Citizens for LPS** — the volunteer issue
+committee supporting **Ballot Issue 4A**, the $10 million Littleton
+Public Schools mill levy override on the November 3, 2026 ballot. It serves
 three audiences: **voters** (understand the measure — what it funds,
 what it costs, a transparent tax calculator, an FAQ that teaches how
 Colorado school funding works), **volunteers** (the social media
@@ -190,8 +195,9 @@ reference). The repo owner leads the campaign's Social Media team.
 Every tool must pass the learning-orientation test: it should make a
 supporter a more capable advocate, not a passive re-sharer. Every
 fact rendered must trace to `docs/campaign/CAMPAIGN-BRIEF.md`
-(Decision 054), and every surface carries "Paid for by Citizens for
-LPS" attribution (Decision 055).
+(Decision 054), the measure is named per Decision 062, and every
+surface carries "Paid for by Citizens for LPS" attribution
+(Decision 055) — the committee name, never the ballot nickname.
 
 **Platform set: web only** (Decision 053) — the campaign is
 distributed by shareable links, not app installs. The native
@@ -227,7 +233,9 @@ client-side. GitHub Pages static hosting, branch `main`, root `/`.
 
 **Run locally**: `python3 -m http.server 8080` → visit
 http://localhost:8080. Deploy: push to `main`; GitHub Pages serves
-automatically.
+automatically at **yeson4a.org** (apex custom domain — the `CNAME`
+file at repo root is load-bearing; GitHub drops the domain binding if
+it is deleted).
 
 **Conventions** (the load-bearing ones — see skills for the rest):
 - All API calls through `js/api.js` — never `fetch` directly

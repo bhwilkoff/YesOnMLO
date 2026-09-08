@@ -81,7 +81,28 @@ const SOURCES = {
 
 const CAMPAIGN = {
   officialSite: 'https://citizensforlps.org',
-  toolkitUrl: 'https://bhwilkoff.github.io/YesOnMLO/',
+  toolkitUrl: 'https://yeson4a.org/',
+
+  /*
+   * The measure's identity. `label` is the ballot letter; `gloss` is
+   * what a bare "4A" must be paired with the first time a cold reader
+   * meets it (CAMPAIGN-BRIEF.md → "How to write 4A"). Copy composes
+   * these two rather than hardcoding "4A" — a neighbor scrolling
+   * Facebook does not know what 4A is until we say so.
+   *
+   * Provenance: the letter was assigned at ballot certification and
+   * reported by the campaign on 2026-09-08. Arapahoe County has not
+   * posted certified ballot content yet; when it does, point
+   * `sourceId` at that page and drop `sourceNote`.
+   */
+  measure: {
+    label: '4A',
+    formal: 'Ballot Issue 4A',
+    campaignName: 'Yes on 4A',
+    gloss: 'the LPS mill levy override',
+    sourceId: 'arapahoeVotes',
+    sourceNote: 'The ballot letter was reported by the campaign on September 8, 2026, when the ballot was certified. Arapahoe County posts the certified ballot content on its elections page — if you see it there before we do, tell the team.',
+  },
 
   /*
    * What's on the ballot — the short, sourced version for the home
@@ -89,7 +110,7 @@ const CAMPAIGN = {
    */
   ballotSummary: [
     {
-      text: 'On August 13, 2026, the LPS Board of Education voted to place a $10 million mill levy override on the November ballot. The vote was 5–0. The district faces a $10.6 million budget gap and balanced this year with one-time measures: central-office staffing cuts, operating-budget reductions and restructuring, a wage freeze, and an unpaid furlough day on March 19, 2027.',
+      text: 'It is Ballot Issue 4A. On August 13, 2026, the LPS Board of Education voted to place a $10 million mill levy override on the November ballot. The vote was 5–0. The district faces a $10.6 million budget gap and balanced this year with one-time measures: central-office staffing cuts, operating-budget reductions and restructuring, a wage freeze, and an unpaid furlough day on March 19, 2027.',
       sourceId: 'lpsDollarsAndSense',
     },
     {
@@ -97,7 +118,7 @@ const CAMPAIGN = {
       sourceId: 'lpsDollarsAndSense',
     },
     {
-      text: 'A mill levy override is additional local property-tax funding a Colorado community can approve for its own school district. It is collected here and controlled by the school board we elect.',
+      text: 'A mill levy override is additional local property-tax funding a Colorado community can approve for its own school district. It is collected here and controlled by the school board we elect. On your ballot it is 4A — an Arapahoe County coordinated-election ballot issue, not a statewide proposition.',
       sourceId: 'crsMlo',
     },
   ],
@@ -109,27 +130,27 @@ const CAMPAIGN = {
   facts: [
     {
       text: 'Before asking voters for anything, LPS closed a $10.6 million gap: $1.1 million cut from central-office staffing, $2.8 million from operating budgets and restructuring, $5.4 million shifted in the general fund, a wage freeze, and an unpaid furlough day on March 19, 2027.',
-      share: 'Before asking voters for anything, LPS closed a $10.6 million gap. $1.1 million cut from the central office. $2.8 million from operating budgets. A wage freeze for every employee. An unpaid furlough day. The mill levy override comes after the district did its part.',
+      share: 'Before asking voters for anything, LPS closed a $10.6 million gap. $1.1 million cut from the central office. $2.8 million from operating budgets. A wage freeze for every employee. An unpaid furlough day. 4A, the LPS mill levy override, comes after the district did its part.',
       sourceId: 'lpsDollarsAndSense',
     },
     {
       text: 'The district’s own estimate of the cost: about $25 a year for every $100,000 of home value. Its example: a $600,000 home pays less than $13 a month.',
-      share: 'The district’s own estimate for the LPS mill levy override is about $25 a year per $100,000 of home value. Their example is a $600,000 home at less than $13 a month.',
+      share: 'The district’s own estimate for 4A, the LPS mill levy override, is about $25 a year per $100,000 of home value. Their example is a $600,000 home at less than $13 a month.',
       sourceId: 'lpsDollarsAndSense',
     },
     {
       text: 'The district has said what a yes vote buys: $2.5 million for a 2% average raise so LPS can keep teachers from leaving for neighboring districts, and $800,000 to cancel the March 19, 2027 furlough day and give students that school day back.',
-      share: 'What a yes vote on the LPS mill levy override buys, according to the district: a 2% average raise so our teachers stop leaving for districts that pay more, and the furlough day cancelled. Kids get March 19 back as a school day.',
+      share: 'What a yes on 4A buys, according to the district: a 2% average raise so our teachers stop leaving for districts that pay more, and the furlough day cancelled. Kids get March 19 back as a school day. 4A is the LPS mill levy override.',
       sourceId: 'lpsDollarsAndSense',
     },
     {
       text: 'If it fails, the district says the wage freeze stays, more furlough days are possible, and career-readiness programs could be capped. If it passes, 100% of the money stays in LPS schools.',
-      share: 'The district has been plain about it. If the mill levy override fails, the wage freeze stays and more furlough days are possible. If it passes, every dollar stays in LPS schools.',
+      share: 'The district has been plain about it. If 4A, the LPS mill levy override, fails, the wage freeze stays and more furlough days are possible. If it passes, every dollar stays in LPS schools.',
       sourceId: 'lpsDollarsAndSense',
     },
     {
       text: 'The Board of Education’s vote to put this on the ballot was unanimous, 5–0.',
-      share: 'The LPS Board of Education voted 5–0 to put the mill levy override in front of voters this November.',
+      share: 'The LPS Board of Education voted 5–0 to put 4A, the mill levy override, in front of voters this November.',
       sourceId: 'cflpsHome',
     },
     {
@@ -148,13 +169,13 @@ const CAMPAIGN = {
       sourceId: 'arapahoeResults',
     },
     {
-      text: 'A mill levy override is additional local funding under Colorado law. It is collected here and controlled by the school board we elect.',
-      share: 'The LPS mill levy override is local money under Colorado law. Collected here, spent on our schools, controlled by the school board we elect.',
+      text: 'A mill levy override is additional local funding under Colorado law. It is collected here and controlled by the school board we elect. On the ballot it is 4A.',
+      share: '4A, the LPS mill levy override, is local money under Colorado law. Collected here, spent on our schools, controlled by the school board we elect.',
       sourceId: 'crsMlo',
     },
     {
       text: 'Arapahoe County mails ballots to every active registered voter starting October 2, 2026. Ballots must be received, not postmarked, by 7:00 p.m. on November 3.',
-      share: 'Ballots start arriving in Arapahoe County mailboxes October 2. No polling place needed. Find the LPS mill levy override on yours and get it back by 7 p.m. November 3. Received, not postmarked.',
+      share: 'Ballots start arriving in Arapahoe County mailboxes October 2. No polling place needed. Find 4A, the LPS mill levy override, on yours and get it back by 7 p.m. November 3. Received, not postmarked.',
       sourceId: 'arapahoeVotes',
     },
   ],

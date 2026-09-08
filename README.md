@@ -1,9 +1,9 @@
 # Tell the Story of Our Schools
 
-**A storytelling toolkit for volunteers supporting the Littleton
-Public Schools mill levy override — November 3, 2026.**
+**A storytelling toolkit for volunteers supporting 4A — the Littleton
+Public Schools mill levy override on the November 3, 2026 ballot.**
 
-Live at **https://bhwilkoff.github.io/YesOnMLO/**
+Live at **https://yeson4a.org**
 
 The campaign's official home is
 [citizensforlps.org](https://citizensforlps.org) — join, volunteer,

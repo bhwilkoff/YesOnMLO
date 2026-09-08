@@ -1,4 +1,4 @@
-# Campaign Brief — Yes on the LPS Mill Levy Override (November 2026)
+# Campaign Brief — Yes on 4A (LPS Mill Levy Override, November 2026)
 
 > The single source of truth for **verified campaign facts**. Every
 > number a tool or post publishes must trace back to a row here, and
@@ -18,7 +18,9 @@
 | What | $10 million mill levy override (MLO) | LPS press release, 2026-08-14 |
 | Election | November 3, 2026 coordinated election (Arapahoe County) | LPS press release |
 | Board approval | August 13, 2026 regular meeting — **5–0 unanimous** | LPS press release; citizensforlps.org news, 2026-08-19 |
-| Ballot measure letter/number | ⚠️ VERIFY — not yet assigned as of 8/26 (prior LPS labels: 3A '10, 3B '13, 4A '18, 4C '20); certification ~early Sept | Fact-check 2026-08-26, claim 10 |
+| Ballot measure letter/number | **Ballot Issue 4A** — assigned at ballot certification | Campaign (Ben Wilkoff, Social Media lead), 2026-09-08. ⚠️ Swap this source for the Arapahoe County certified-ballot-content link the moment it posts |
+| Public campaign name | **Yes on 4A** — the measure's public-facing name. The committee is still "Citizens for LPS"; "Yes on 4A" names the ballot question, not the committee, and never replaces the paid-for attribution | Campaign, 2026-09-08 |
+| Toolkit domain | **yeson4a.org** (apex, no `www`) — this repo, served by GitHub Pages via `CNAME`. The campaign's own site is still citizensforlps.org | Repo `CNAME`, 2026-09-08 |
 | Term | Say "**ongoing**" (LPS's own repeated wording, two sources); the LRPC-minutes "four years" language is NOT publicly verifiable — never state a term until certified ballot language exists | Fact-check 2026-08-26, claim 11 |
 | Tax impact per household | **~$25/year per $100,000 of home value — the district's own official estimate** (Superintendent's letter, May 29, 2026); mills still estimated (~3.5) until certification | littletonpublicschools.net/article/2950007 |
 | District's worked example | **A $600,000 home → "less than $13 per month"** (Dollars and Sense page); the Sept 1, 2026 community email says the same: "average single-family home in Littleton… around $600,000… approximately $150 per year, or about $13 per month." The calculator opens on this example. | littletonpublicschools.net/page/dollars-and-sense (read 2026-09-02); LPS community email 2026-09-01 |
@@ -26,6 +28,28 @@
 | 2026 school residential assessment rate | **7.05% — verified** | dpt.colorado.gov/residential-school-assessment-rate |
 | Ballots mailed | **Starting October 2, 2026** (Arapahoe County official) | arapahoeco.gov FAQ |
 | GFOA award streak | **32 consecutive years** — LPS's own Dollars and Sense page now says 32 (read 2026-09-02), which resolves fact-check claim 8 (31 was the last LPS-sourced figure as of Aug 26) | littletonpublicschools.net/page/dollars-and-sense |
+
+## How to write "4A"
+
+The ballot label is a fact with a shape, and getting it wrong reads as
+sloppy to the exact voter we need:
+
+- **"4A"** — capital A, no space, no period. Never "4a", "4-A", "Prop 4A"
+  (Colorado propositions are statewide; this is a local ballot *issue*),
+  and never "Question 4A."
+- The formal label is **"Ballot Issue 4A."** Prose can say "Issue 4A" or
+  just "4A" once the reader knows what it is.
+- **Never let a bare "4A" travel alone.** The first time 4A appears in
+  anything a neighbor will read cold — a post, a card, a share caption, a
+  text — it is glossed: *"4A, the LPS mill levy override."* A stranger
+  scrolling Facebook has no idea what 4A is, and a number with no noun
+  attached is the single fastest way to be ignored. After the gloss, "4A"
+  on its own is fine.
+- **"Yes on 4A" is the measure, not the committee.** The paid-for line
+  stays "Citizens for LPS" (Decision 055) — a ballot nickname is not a
+  registered committee name.
+
+---
 
 ## Why the district says it's needed
 
@@ -158,7 +182,7 @@ once) mean the campaign treats that floor as earned, not guaranteed.
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
 | 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
 | 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; see table above) | scheduled |
-| ~2026-09-04 | Ballot content certified to county (60 days) | ⚠️ VERIFY |
+| ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done (campaign-reported 2026-09-08; county link pending) |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
 | ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |
 | **2026-10-02** | Ballots begin mailing to active eligible voters (Arapahoe County's own election calendar, read 2026-09-02; UOCAVA ballots Sept 18) | ✅ verified |

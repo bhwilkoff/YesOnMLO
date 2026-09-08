@@ -195,10 +195,12 @@ Sources: Meta — https://www.facebook.com/business/help/208949576550051 · Goog
 
 ---
 
-## 9. Addendum (2026-08-26): this toolkit's own attribution
+## 9. Addendum (2026-08-26, revised 2026-09-08): this toolkit's own attribution
 
-The storytelling toolkit at bhwilkoff.github.io/YesOnMLO is built and
-hosted by volunteers at zero cost. It is NOT paid for by the Citizens
+The storytelling toolkit at yeson4a.org (a volunteer-purchased domain
+in front of GitHub Pages) is built and hosted by volunteers at
+near-zero cost — the domain registration is the only expense, paid
+personally, not by the committee. It is NOT paid for by the Citizens
 for LPS committee or anyone else. Consequences:
 
 - The CRS 1-45-108.3 disclaimer regime attaches to communications
@@ -206,10 +208,19 @@ for LPS committee or anyone else. Consequences:
   site requires no "Paid for by" statement, and displaying one naming
   a committee that didn't pay would be false. The footer states the
   true provenance instead (Decision 058).
+- **The domain does not change that (2026-09-08).** Registering
+  yeson4a.org is a personal expenditure of roughly the price of a
+  pizza, more than two orders of magnitude below the $1,000-per-
+  calendar-year threshold in CRS 1-45-108.3 that would attach the
+  disclaimer regime to a person's own communications. Should this
+  site ever start buying placement — promoted posts, ads, paid
+  distribution of any kind — that threshold is live and the analysis
+  restarts from scratch.
 - If the committee ever formally adopts, funds, or takes over the
   site, revisit attribution with the registered agent at that time.
-- Volunteer-donated services coordinated with a committee can
-  constitute reportable in-kind contributions — whether this applies
+- Volunteer-donated services and out-of-pocket costs (the domain
+  included) coordinated with a committee can constitute reportable
+  in-kind contributions — whether this applies
   is the registered agent's call, not this repo's; the repo owner
   should mention the site's existence to the registered agent so the
   committee can make that determination.

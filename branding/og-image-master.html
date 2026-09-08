@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OG image master — 1200x630</title>
+<!--
+  Master for /assets/og-image.png (Open Graph link preview, 1200x630).
+  Never hand-edit the PNG. Regenerate:  python3 tools/render_og_image.py
+  Tokens mirror css/styles.css :root exactly.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #90CA65; --green-deep: #4E7B2C;
+    --ink: #323F49; --ink-soft: #5A6772;
+    --paper: #FBFAF7; --hairline: #E3E2DC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    background: var(--paper);
+    font-family: 'Source Sans Pro', system-ui, sans-serif;
+    border-top: 12px solid var(--green);
+    padding: 84px 96px 0;
+    display: flex; flex-direction: column;
+  }
+  .star { color: var(--green); font-size: 54px; line-height: 1; }
+  .badge {
+    display: inline-block; align-self: flex-start;
+    margin-top: 22px;
+    font-weight: 700; font-size: 25px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--green-deep);
+    background: rgba(144, 202, 101, 0.32);
+    padding: 7px 16px;
+  }
+  h1 {
+    font-family: 'Lora', Georgia, serif; font-weight: 700;
+    font-size: 74px; line-height: 1.14; color: var(--ink);
+    margin-top: 26px; letter-spacing: -0.01em;
+  }
+  .foot { margin-top: auto; padding-bottom: 64px; }
+  .foot hr { border: 0; border-top: 1px solid var(--hairline); margin-bottom: 26px; }
+  .foot p { font-size: 29px; line-height: 1.45; color: var(--ink-soft); }
+  .foot .go { color: var(--green-deep); font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="star">&#9733;</div>
+  <span class="badge">Yes on 4A &middot; November 3</span>
+  <h1>Our schools have a story.<br>Help your neighbors hear it.</h1>
+  <div class="foot">
+    <hr>
+    <p>A storytelling toolkit for volunteers supporting 4A, the LPS mill levy override</p>
+    <p class="go">yeson4a.org</p>
+  </div>
+</body>
+</html>

@@ -111,8 +111,12 @@ a:hover { text-decoration-thickness: 2px; }
   .logo-dark { display: block; }
 }
 .header-tag {
-  font-family: var(--serif); font-style: italic; font-size: 0.95rem;
-  color: var(--ink-soft); text-align: right;
+  font-family: var(--serif); font-weight: 700; font-size: 1.05rem;
+  color: var(--ink); text-align: right; line-height: 1.15;
+}
+.header-tag-sub {
+  display: block; font-weight: 500; font-style: italic;
+  font-size: 0.85rem; color: var(--ink-soft);
 }
 
 .site-nav {
