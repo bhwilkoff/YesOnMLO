@@ -1389,6 +1389,31 @@ directly help someone tell or spread a story?" If it's voter
 services, campaign operations, or committee business, link to
 citizensforlps.org or the county instead.
 
+**Amendment (2026-09-08) — owning yeson4a.org does not change the
+link we share.** `SITE_URL` in `js/app.js` is citizensforlps.org and
+stays there. Every share target, every card footer, every drafted
+message sends a neighbor to the official campaign site, never to this
+one. The two sites have different audiences and the split is the whole
+point: **citizensforlps.org is for voters; yeson4a.org is for the
+people building awareness.**
+
+**Why**: the user, verbatim: "The official website should always be
+the link being shared. The yeson4a.org site is just for those who are
+helping to build awareness." The instinct once a campaign owns a
+memorable domain is to start sharing it — it's shorter, it's on-brand,
+it's *ours*. That instinct is wrong here. A persuaded neighbor needs a
+page where they can volunteer, donate, find an event, and read the
+FAQ; landing them on a storytelling toolkit is a dead end at the exact
+moment they were ready to act. It also re-splits the canonical home
+this decision exists to protect.
+
+**How to apply**: never repoint `SITE_URL`, and never add a donate,
+volunteer, or events affordance here to "make the landing better" —
+that's the same mistake from the other direction. yeson4a.org belongs
+on volunteer-facing materials (a team one-pager, a tabling QR for
+supporters); a yard sign, a mailer, a postcard, or an ad carries
+citizensforlps.org.
+
 ---
 
 ## 060 — Social-first: every tool ends in a post, a message, or a conversation
