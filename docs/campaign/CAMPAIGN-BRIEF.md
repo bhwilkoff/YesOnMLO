@@ -185,31 +185,36 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   | Wed Sept 30 | 5:30–6:30 p.m. | Arapahoe High School |
   | Thu Oct 1 | 6:00–7:00 p.m. | Euclid Middle School |
 
-- **Two more sessions, same kind of event** (campaign, confirmed
-  2026-09-09). **None of these meetings are run by the campaign** —
-  all nine are public information meetings on the LPS budget and 4A,
-  and the committee's role at every one of them is the same: outside
-  the room, with car painting.
+- **Campaign information meetings** — hosted by **Citizens for LPS**,
+  not the district (confirmed with the campaign organizer,
+  2026-09-09). In content they are the same offer as the district
+  forums: informational, a chance for community members to come learn
+  about 4A and ask questions. What differs is **who runs the room**,
+  and that is the whole distinction — the committee hosts these, so
+  the district-track framing above does not apply to them. Both land
+  after ballots mail on October 2, so attendees will have a ballot in
+  hand.
 
   | Date | Time | Place |
   |---|---|---|
   | Thu Oct 8 | 10:00–11:00 a.m. | Koelbel Library |
   | Fri Oct 9 | 9:30–10:30 a.m. | Bemis Library |
 
-  These two are not yet on the district's Dollars and Sense page,
-  which still lists the original seven; they are campaign-confirmed.
-  Both fall after ballots mail on October 2, so attendees will have a
-  ballot in hand. Koelbel is in Centennial and Bemis in Littleton, so
-  together they reach both halves of the electorate.
+  ⚠️ Never merge this table into the district forum table. A campaign
+  meeting listed as a district forum misattributes advocacy to LPS,
+  which is the exact failure mode CRS 1-45-117 punishes — and it lands
+  on the district, not on us. Two tables, two labels, always. (Koelbel
+  is in Centennial and Bemis in Littleton, so together they cover both
+  halves of the electorate.)
 
-  **Correction (2026-09-09):** an earlier version of this brief split
-  these two off as committee-hosted events and warned against merging
-  them. That was wrong — it came from reading "the campaign is adding
-  a few additional information meetings" as "the campaign is hosting
-  them." Adding a session to the schedule is not hosting it. All nine
-  are one list. Ask who *runs* the room before inventing a second
-  track; the two-track rule is about the district/committee boundary,
-  and it does not apply here because the committee runs none of them.
+  **This one flipped twice on 2026-09-09 before the organizer settled
+  it.** Because all nine sessions are informational and feel alike from
+  the outside, it is easy to conclude they are one list. They are not.
+  The test is never what happens in the room — it is **who is hosting**.
+  Seven are the district's, two are ours. If a future update seems to
+  show them merging, confirm with the organizer before changing this,
+  and do not infer hosting from a sentence like "the campaign is adding
+  meetings."
 
 ## Key dates (researched Aug 2026 — see docs/research/colorado-compliance.md §7 for the full table with statutes)
 
@@ -218,7 +223,7 @@ once) mean the campaign treats that floor as earned, not guaranteed.
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
 | 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
 | 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; district-hosted; campaign outside with car painting) | scheduled |
-| 2026-10-08, 10-09 | Two more public information meetings — Koelbel Library, Bemis Library (same track as the seven above) | scheduled |
+| 2026-10-08, 10-09 | Campaign information meetings — Koelbel Library, Bemis Library (committee-hosted) | scheduled |
 | ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done (campaign-reported 2026-09-08; county link pending) |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
 | ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |
