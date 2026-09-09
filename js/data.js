@@ -314,6 +314,66 @@ const CAMPAIGN = {
     // painting (campaign, 2026-09-09). Inside is the district
     // informing voters; outside is advocacy. Copy says both, so a
     // reader always knows which side of the door they're on.
+    campaignOutside: 'Volunteers will be outside every one of these painting car windows. The campaign runs none of the meetings themselves.',
+    sessions: [
+      { date: '2026-09-14', time: '5:00–6:00 p.m.', place: 'Newton Middle School' },
+      { date: '2026-09-15', time: '6:00–7:00 p.m.', place: 'Goddard Middle School' },
+      { date: '2026-09-23', time: '6:00–7:00 p.m.', place: 'Powell Middle School' },
+      { date: '2026-09-28', time: '5:30–6:30 p.m.', place: 'Heritage High School' },
+      { date: '2026-09-29', time: '5:00–6:00 p.m.', place: 'Littleton High School' },
+      { date: '2026-09-30', time: '5:30–6:30 p.m.', place: 'Arapahoe High School' },
+      { date: '2026-10-01', time: '6:00–7:00 p.m.', place: 'Euclid Middle School' },
+      // Campaign-confirmed 2026-09-09; same kind of event as the seven
+      // above (the committee runs none of them). Not yet on the
+      // district's Dollars and Sense page, which still lists seven.
+      { date: '2026-10-08', time: '10:00–11:00 a.m.', place: 'Koelbel Library' },
+      { date: '2026-10-09', time: '9:30–10:30 a.m.', place: 'Bemis Library' },
+    ],
+    lateAdditionNote: 'The October 8 and 9 sessions were confirmed by the campaign and are not yet on the district\u2019s page.',
+  },
+
+  /*
+   * Tax-impact model. Every value labeled an estimate until the
+   * district publishes official figures (it has said it will).
+   *   annual $ = home value x assessment rate x (mills / 1000)
+   */
+  taxCalc: {
+    // "2026 Residential School Assessment Rate - 7.05%" — Colorado
+    // Division of Property Taxation, fetched 2026-08-26.
+    residentialAssessmentRate: { value: 0.0705, verified: true,
+      sourceId: 'dptRate',
+      note: '2026 rate; the State Board of Equalization can adjust in future years' },
+    // Derived from the district's own official estimate ("approximately
+    // $25 annually for every $100,000 of home value" — Superintendent's
+    // letter, May 29, 2026): 25 / 7.05 ≈ 3.5 mills. The certified mill
+    // figure arrives with county ballot certification (~September).
+    estimatedMills: { value: 3.5, verified: false,
+      sourceId: 'lpsDeficitLetter',
+      note: 'Derived from the district’s $25-per-$100K estimate; certified ballot language will set the final figure' },
+    perHundredK: { value: 25, verified: true, sourceId: 'lpsDeficitLetter' },
+    // The district's own worked example ("a $600,000 home would equal
+    // less than $13 per month") — the calculator opens on it so a
+    // reader can check the district's arithmetic before their own.
+    districtExample: { homeValue: 600000, monthlyText: 'less than $13 a month', verified: true,
+      sourceId: 'lpsDollarsAndSense' },
+    defaultHomeValue: 600000,
+  },
+
+  /*
+   * The district's Dollars and Sense community forums — Superintendent
+   * Todd Lambert presenting the budget and the measure, then Q&A. These
+   * are district-track informational meetings (not campaign events):
+   * our tool's job is to help a supporter bring a neighbor. No
+   * registration; Spanish interpretation at every session.
+   * Dates are ISO local; times as the district prints them.
+   */
+  forums: {
+    sourceId: 'lpsDollarsAndSense',
+    host: 'Superintendent Todd Lambert',
+    // The committee is outside the room at each of these with car
+    // painting (campaign, 2026-09-09). Inside is the district
+    // informing voters; outside is advocacy. Copy says both, so a
+    // reader always knows which side of the door they're on.
     campaignOutside: 'Volunteers will be outside each forum painting car windows. The meeting inside is the district\u2019s.',
     sessions: [
       { date: '2026-09-14', time: '5:00–6:00 p.m.', place: 'Newton Middle School' },
@@ -323,28 +383,13 @@ const CAMPAIGN = {
       { date: '2026-09-29', time: '5:00–6:00 p.m.', place: 'Littleton High School' },
       { date: '2026-09-30', time: '5:30–6:30 p.m.', place: 'Arapahoe High School' },
       { date: '2026-10-01', time: '6:00–7:00 p.m.', place: 'Euclid Middle School' },
-    ],
-  },
-
-  /*
-   * The COMMITTEE's own information meetings — a separate track from
-   * `forums` above and never merged with them. Citizens for LPS hosts
-   * these and may advocate at them; listing a campaign event as a
-   * district forum misattributes advocacy to LPS (CRS 1-45-117) and
-   * the consequence lands on the district. Two lists, two labels.
-   * Both fall after ballots mail Oct 2 — attendees have a ballot.
-   */
-  campaignMeetings: {
-    host: 'Citizens for LPS',
-    // Campaign-reported 2026-09-09. There is NO public listing yet, so
-    // this carries a plain-language note instead of a sourceId — citing
-    // the Aug 19 news post would imply a source that doesn't cover it.
-    // Add sourceId once these appear on citizensforlps.org/upcoming_events.
-    sourceNote: 'Reported by the campaign on September 9, 2026. Not yet listed publicly \u2014 check',
-    sessions: [
+      // Campaign-confirmed 2026-09-09; same kind of event as the seven
+      // above (the committee runs none of them). Not yet on the
+      // district's Dollars and Sense page, which still lists seven.
       { date: '2026-10-08', time: '10:00–11:00 a.m.', place: 'Koelbel Library' },
       { date: '2026-10-09', time: '9:30–10:30 a.m.', place: 'Bemis Library' },
     ],
+    lateAdditionNote: 'The October 8 and 9 sessions were confirmed by the campaign and are not yet on the district\u2019s page.',
   },
 
   /*

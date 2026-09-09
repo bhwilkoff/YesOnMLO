@@ -54,7 +54,11 @@ for (const g of CAMPAIGN.storyPrompts) {
 const dates = CAMPAIGN.forums.sessions.map((s) => s.date);
 check(dates.every((d) => /^2026-(09|10)-\d{2}$/.test(d)), 'forum dates are ISO 2026 fall');
 check(dates.every((d, i) => i === 0 || d > dates[i - 1]), 'forum dates ascend');
-check(CAMPAIGN.forums.sessions.length === 7, 'seven forums (district email 2026-09-01)');
+// 7 from the district's Sept 1 email + Dollars and Sense page, plus the
+// Oct 8 and Oct 9 sessions confirmed by the campaign 2026-09-09. All one
+// track: the campaign runs none of them.
+check(CAMPAIGN.forums.sessions.length === 9, 'nine public meetings (7 district-listed + 2 campaign-confirmed)');
+check(!('campaignMeetings' in CAMPAIGN), 'no separate committee-hosted meeting list');
 check(CAMPAIGN.forums.sessions.every((s) => s.time && s.place), 'each forum has time + place');
 
 // Tax model reproduces the district's own example: $600K → "< $13/mo".

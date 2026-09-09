@@ -63,16 +63,16 @@ li{display:flex;align-items:baseline;gap:var(--colGap);
 body.portrait{width:1080px;height:1350px;
   --bar:16px; --padX:72px; --padY:52px; --logo:104px;
   --h1:76px; --sub:33px; --list:29px; --listSm:27px; --note:29px; --fine:24px;
-  --group:25px; --groupSub:23px; --groupGap:12px; --groupTop:30px;
-  --gap1:26px; --gap2:16px; --gap3:30px; --row:13px;
+  --group:25px; --groupSub:23px; --groupGap:14px; --groupTop:0px;
+  --gap1:28px; --gap2:16px; --gap3:32px; --row:17px;
   --wWhen:200px; --wTime:210px; --colGap:18px}
 
 /* ---- 1080x1080 — square feed / profile grid ---- */
 body.square{width:1080px;height:1080px;
   --bar:14px; --padX:66px; --padY:44px; --logo:88px;
   --h1:58px; --sub:27px; --list:25px; --listSm:23px; --note:25px; --fine:21px;
-  --group:22px; --groupSub:20px; --groupGap:9px; --groupTop:22px;
-  --gap1:18px; --gap2:12px; --gap3:20px; --row:8px;
+  --group:22px; --groupSub:20px; --groupGap:10px; --groupTop:0px;
+  --gap1:20px; --gap2:12px; --gap3:22px; --row:11px;
   --wWhen:186px; --wTime:196px; --colGap:16px}
 
 /* ---- 1080x1920 — Stories / Reels. Platform UI eats the top and bottom,
@@ -80,8 +80,8 @@ body.square{width:1080px;height:1080px;
 body.story{width:1080px;height:1920px;
   --bar:18px; --padX:78px; --padY:200px; --logo:124px;
   --h1:92px; --sub:38px; --list:34px; --listSm:31px; --note:36px; --fine:27px;
-  --group:30px; --groupSub:27px; --groupGap:14px; --groupTop:34px;
-  --gap1:34px; --gap2:22px; --gap3:34px; --row:16px;
+  --group:30px; --groupSub:27px; --groupGap:16px; --groupTop:0px;
+  --gap1:36px; --gap2:24px; --gap3:36px; --row:21px;
   --wWhen:230px; --wTime:245px; --colGap:22px}
 
 /* ---- 1200x630 — link previews and shared-link cards. Too short to stack,
@@ -89,8 +89,8 @@ body.story{width:1080px;height:1920px;
 body.wide{width:1200px;height:630px;
   --bar:12px; --padX:56px; --padY:38px; --logo:74px;
   --h1:47px; --sub:24px; --list:23px; --listSm:21px; --note:22px; --fine:19px;
-  --group:20px; --groupSub:18px; --groupGap:6px; --groupTop:16px;
-  --gap1:14px; --gap2:10px; --gap3:0px; --row:6px;
+  --group:20px; --groupSub:18px; --groupGap:7px; --groupTop:0px;
+  --gap1:14px; --gap2:10px; --gap3:0px; --row:8px;
   --wWhen:160px; --wTime:0px; --colGap:16px}
 body.wide .sheet{display:grid;column-gap:46px;
   grid-template-columns:44% 1fr;
@@ -120,7 +120,7 @@ body.wide .sub{max-width:24ch}
   <p class="sub">Nine chances to hear about the LPS budget and <b>Ballot Issue&nbsp;4A</b>, and to ask whatever you want.</p>
 
   <div class="sched">
-    <p class="group">The district&rsquo;s forums<span>Superintendent Todd Lambert &middot; we&rsquo;ll be outside with car painting</span></p>
+    <p class="group">Nine public meetings<span>On the LPS budget and 4A &middot; we&rsquo;ll be outside with car painting</span></p>
     <ul>
       <li><span class="when">Mon Sept 14</span><span class="time">5:00–6:00 p.m.</span><span class="place">Newton Middle School</span></li>
       <li><span class="when">Tue Sept 15</span><span class="time">6:00–7:00 p.m.</span><span class="place">Goddard Middle School</span></li>
@@ -129,17 +129,13 @@ body.wide .sub{max-width:24ch}
       <li><span class="when">Tue Sept 29</span><span class="time">5:00–6:00 p.m.</span><span class="place">Littleton High School</span></li>
       <li><span class="when">Wed Sept 30</span><span class="time">5:30–6:30 p.m.</span><span class="place">Arapahoe High School</span></li>
       <li><span class="when">Thu Oct 1</span><span class="time">6:00–7:00 p.m.</span><span class="place">Euclid Middle School</span></li>
-    </ul>
-
-    <p class="group ours">Our meetings<span>Hosted by Citizens for LPS &middot; after ballots arrive</span></p>
-    <ul>
       <li><span class="when">Thu Oct 8</span><span class="time">10:00–11:00 a.m.</span><span class="place">Koelbel Library</span></li>
       <li><span class="when">Fri Oct 9</span><span class="time">9:30–10:30 a.m.</span><span class="place">Bemis Library</span></li>
     </ul>
   </div>
 
   <div class="foot">
-    <p class="note">No registration. <span>Spanish interpretation at every district forum.</span></p>
+    <p class="note">No registration. <span>Spanish interpretation at every session.</span></p>
     <p class="fine">Ballots mail October 2. Election Day is November 3.</p>
   </div>
 </div>

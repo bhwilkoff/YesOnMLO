@@ -185,23 +185,31 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   | Wed Sept 30 | 5:30–6:30 p.m. | Arapahoe High School |
   | Thu Oct 1 | 6:00–7:00 p.m. | Euclid Middle School |
 
-- **Campaign information meetings** (campaign, 2026-09-09) — hosted by
-  **Citizens for LPS**, not the district. These are the committee's own
-  events: it may advocate at them, and the "district-track" framing
-  above does NOT apply. Both land after ballots mail on October 2, so
-  attendees will have a ballot in hand.
+- **Two more sessions, same kind of event** (campaign, confirmed
+  2026-09-09). **None of these meetings are run by the campaign** —
+  all nine are public information meetings on the LPS budget and 4A,
+  and the committee's role at every one of them is the same: outside
+  the room, with car painting.
 
   | Date | Time | Place |
   |---|---|---|
   | Thu Oct 8 | 10:00–11:00 a.m. | Koelbel Library |
   | Fri Oct 9 | 9:30–10:30 a.m. | Bemis Library |
 
-  ⚠️ Never merge this table into the district forum table. A campaign
-  meeting listed as a district forum misattributes advocacy to LPS,
-  which is the exact failure mode CRS 1-45-117 punishes — and it lands
-  on the district, not on us. Two tables, two labels, always. (Koelbel
-  is in Centennial and Bemis in Littleton, so together they cover both
-  halves of the electorate.)
+  These two are not yet on the district's Dollars and Sense page,
+  which still lists the original seven; they are campaign-confirmed.
+  Both fall after ballots mail on October 2, so attendees will have a
+  ballot in hand. Koelbel is in Centennial and Bemis in Littleton, so
+  together they reach both halves of the electorate.
+
+  **Correction (2026-09-09):** an earlier version of this brief split
+  these two off as committee-hosted events and warned against merging
+  them. That was wrong — it came from reading "the campaign is adding
+  a few additional information meetings" as "the campaign is hosting
+  them." Adding a session to the schedule is not hosting it. All nine
+  are one list. Ask who *runs* the room before inventing a second
+  track; the two-track rule is about the district/committee boundary,
+  and it does not apply here because the committee runs none of them.
 
 ## Key dates (researched Aug 2026 — see docs/research/colorado-compliance.md §7 for the full table with statutes)
 
@@ -210,7 +218,7 @@ once) mean the campaign treats that floor as earned, not guaranteed.
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
 | 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
 | 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; district-hosted; campaign outside with car painting) | scheduled |
-| 2026-10-08, 10-09 | Campaign information meetings — Koelbel Library, Bemis Library (committee-hosted) | scheduled |
+| 2026-10-08, 10-09 | Two more public information meetings — Koelbel Library, Bemis Library (same track as the seven above) | scheduled |
 | ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done (campaign-reported 2026-09-08; county link pending) |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
 | ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |

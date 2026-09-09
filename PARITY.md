@@ -59,7 +59,7 @@ everything else.
 | Feature | Web | Notes |
 |---|---|---|
 | Start — what this is + sourced ballot summary | ✅ | `?` |
-| District forums + campaign meetings, listed separately | ✅ | Two tracks never merged: `CAMPAIGN.forums` (district-hosted, committee outside with car painting) and `CAMPAIGN.campaignMeetings` (committee-hosted, Oct 8-9). Each gets its own invite draft |
+| Nine public meetings on the budget + 4A | ✅ | One list in `CAMPAIGN.forums`: 7 from the district's page plus Oct 8 Koelbel and Oct 9 Bemis, campaign-confirmed 2026-09-09. The campaign runs none of them and is outside each with car painting |
 | Official Yes on 4A brand — header lockup (light/dark), favicon set, app icons, OG card | ✅ | Generated from `branding/yes-on-4a/` by `tools/render_brand_assets.py`; site had NO icon of any kind before 2026-09-09. Lockup marks the site only — share cards keep the star motif (Decision 058 amendment) |
 | Share Studio — four-step guided wizard (who you are → your words → a picture → send it) | ✅ | `?view=studio&step=N`; voice prompts seed the draft; per-network guided panels with micro-steps; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG/Messenger copy-then-open (prefill banned by Meta policy); native share sheet on mobile; sent-state tally |
 | Send paths are real links + same-gesture copy + visible fallback (Decision 061) | ✅ | Anchors not `window.open`; synchronous clipboard copy; "Didn't open?" line with plain link; "Copy my words" on every panel; verified in Chrome with a real click into the real Facebook composer (2026-09-02) |
