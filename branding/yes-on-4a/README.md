@@ -70,6 +70,23 @@ the content:
 | `portrait` | 1080x1350 | Facebook + Instagram feed (default) |
 | `story` | 1080x1920 | Stories / Reels; inset ~200px top and bottom for platform UI |
 | `wide` | 1200x630 | link previews, shared-link cards; two-column |
+| `fbcover` | 1640x624 | Facebook Page cover (2x of the 820x312 display) |
+
+A master can restrict itself to certain formats with
+`<meta name="formats" content="fbcover">`; without it a master renders
+at the four post placements. `facebook-cover.html` uses this — a page
+cover has no business being rendered as a story.
+
+**Page cover geometry, verified on the live Page 2026-09-09 (owner
+view):** the profile picture sits BELOW the cover on desktop rather
+than overlapping it, so only a modest bottom reserve is needed; and
+mobile crops the sides, so everything meaningful stays inside the
+centre ~78% of the width. Both are encoded in the master's `.safe` box.
+
+**Facebook silently keeps the old cover if you re-upload without
+going through the reposition step.** After saving, confirm the served
+image actually changed — the photo id in the `fbcdn.net` URL is the
+tell, not the on-screen look.
 
 Output lands in `assets/social/<card>-<format>.png`.
 

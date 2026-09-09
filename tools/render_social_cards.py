@@ -19,6 +19,7 @@ Headless Chrome, because the masters use the campaign's real webfonts
 """
 
 import pathlib
+import re
 import subprocess
 import sys
 import tempfile
@@ -33,7 +34,27 @@ FORMATS = {
     "portrait": (1080, 1350),
     "story": (1080, 1920),
     "wide": (1200, 630),
+    # Facebook Page cover. Uploaded at 2x; Facebook shows 820x312 on
+    # desktop and crops to a narrower centre on mobile.
+    "fbcover": (1640, 624),
 }
+DEFAULT_FORMATS = ("square", "portrait", "story", "wide")
+
+
+def formats_for(master):
+    """A master may opt into specific formats with
+    <meta name="formats" content="fbcover">. Otherwise it gets the four
+    post placements — a page cover has no business being rendered as a
+    story, and vice versa."""
+    head = master.read_text(encoding="utf-8")[:4000]
+    m = re.search(r'<meta\s+name="formats"\s+content="([^"]+)"', head)
+    names = (
+        [n.strip() for n in m.group(1).split(",")] if m else list(DEFAULT_FORMATS)
+    )
+    unknown = [n for n in names if n not in FORMATS]
+    if unknown:
+        sys.exit(f"{master.name}: unknown format(s) {', '.join(unknown)}")
+    return names
 
 
 def render(master, fmt, size, out_path):
@@ -80,7 +101,8 @@ def main(argv):
             sys.exit(f"no master matches {', '.join(sorted(wanted))}")
 
     for master in masters:
-        for fmt, size in FORMATS.items():
+        for fmt in formats_for(master):
+            size = FORMATS[fmt]
             out_path = OUT / f"{master.stem}-{fmt}.png"
             render(master, fmt, size, out_path)
             print(f"  wrote assets/social/{out_path.name}  {size[0]}x{size[1]}")
