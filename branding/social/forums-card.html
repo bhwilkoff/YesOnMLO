@@ -36,7 +36,17 @@ h1{font-family:'Lora',Georgia,serif;font-weight:700;font-size:var(--h1);
 .sub{font-size:var(--sub);line-height:1.35;color:var(--ink-soft);
      margin-top:var(--gap2);max-width:30ch}
 .sub b{color:var(--ink);font-weight:700}
-ul{list-style:none;margin-top:var(--gap3);border-top:2px solid var(--hairline)}
+.sched{margin-top:var(--gap3)}
+ul{list-style:none;border-top:2px solid var(--hairline)}
+/* Who hosts what is the load-bearing fact on this card: the district's
+   forums and the committee's meetings are different tracks and must
+   never read as one list. */
+.group{font-size:var(--group);font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--green-deep);
+  margin-bottom:var(--groupGap);line-height:1.25}
+.group.ours{margin-top:var(--groupTop)}
+.group span{display:block;text-transform:none;letter-spacing:0;
+  font-weight:400;font-size:var(--groupSub);color:var(--ink-soft)}
 li{display:flex;align-items:baseline;gap:var(--colGap);
    padding:var(--row) 0;border-bottom:2px solid var(--hairline)}
 .when{font-weight:700;font-size:var(--list);color:var(--ink);
@@ -53,14 +63,16 @@ li{display:flex;align-items:baseline;gap:var(--colGap);
 body.portrait{width:1080px;height:1350px;
   --bar:16px; --padX:72px; --padY:52px; --logo:104px;
   --h1:76px; --sub:33px; --list:29px; --listSm:27px; --note:29px; --fine:24px;
-  --gap1:30px; --gap2:18px; --gap3:34px; --row:32px;
+  --group:25px; --groupSub:23px; --groupGap:12px; --groupTop:30px;
+  --gap1:26px; --gap2:16px; --gap3:30px; --row:13px;
   --wWhen:200px; --wTime:210px; --colGap:18px}
 
 /* ---- 1080x1080 — square feed / profile grid ---- */
 body.square{width:1080px;height:1080px;
   --bar:14px; --padX:66px; --padY:44px; --logo:88px;
-  --h1:62px; --sub:29px; --list:27px; --listSm:25px; --note:26px; --fine:22px;
-  --gap1:22px; --gap2:14px; --gap3:22px; --row:21px;
+  --h1:58px; --sub:27px; --list:25px; --listSm:23px; --note:25px; --fine:21px;
+  --group:22px; --groupSub:20px; --groupGap:9px; --groupTop:22px;
+  --gap1:18px; --gap2:12px; --gap3:20px; --row:8px;
   --wWhen:186px; --wTime:196px; --colGap:16px}
 
 /* ---- 1080x1920 — Stories / Reels. Platform UI eats the top and bottom,
@@ -68,15 +80,17 @@ body.square{width:1080px;height:1080px;
 body.story{width:1080px;height:1920px;
   --bar:18px; --padX:78px; --padY:200px; --logo:124px;
   --h1:92px; --sub:38px; --list:34px; --listSm:31px; --note:36px; --fine:27px;
-  --gap1:40px; --gap2:24px; --gap3:40px; --row:26px;
+  --group:30px; --groupSub:27px; --groupGap:14px; --groupTop:34px;
+  --gap1:34px; --gap2:22px; --gap3:34px; --row:16px;
   --wWhen:230px; --wTime:245px; --colGap:22px}
 
 /* ---- 1200x630 — link previews and shared-link cards. Too short to stack,
        so headline and schedule sit side by side. ---- */
 body.wide{width:1200px;height:630px;
   --bar:12px; --padX:56px; --padY:38px; --logo:74px;
-  --h1:47px; --sub:24px; --list:24px; --listSm:21px; --note:23px; --fine:19px;
-  --gap1:16px; --gap2:12px; --gap3:0px; --row:11px;
+  --h1:47px; --sub:24px; --list:23px; --listSm:21px; --note:22px; --fine:19px;
+  --group:20px; --groupSub:18px; --groupGap:6px; --groupTop:16px;
+  --gap1:14px; --gap2:10px; --gap3:0px; --row:6px;
   --wWhen:160px; --wTime:0px; --colGap:16px}
 body.wide .sheet{display:grid;column-gap:46px;
   grid-template-columns:44% 1fr;
@@ -85,8 +99,8 @@ body.wide .lockup{grid-column:1;grid-row:1}
 body.wide h1{grid-column:1;grid-row:2}
 body.wide .sub{grid-column:1;grid-row:3}
 body.wide .foot{grid-column:1;grid-row:4;align-self:end;margin-top:0}
-body.wide ul{grid-column:2;grid-row:1/5;align-self:center;
-  margin-top:0;border-top:none}
+body.wide .sched{grid-column:2;grid-row:1/5;align-self:center;margin-top:0}
+body.wide ul{border-top:none}
 body.wide li:last-child{border-bottom:none}
 /* The wide card is a teaser, not a reference: times would force a third
    column and shrink everything below thumbnail legibility. */
@@ -102,9 +116,12 @@ body.wide .sub{max-width:24ch}
 
 <div class="sheet">
   <img class="lockup" src="../../assets/yes-on-4a-logo.png" alt="">
-  <h1>Ask the superintendent.</h1>
-  <p class="sub">Seven public forums on the LPS budget and <b>Ballot Issue&nbsp;4A</b>. Hosted by the school district. Just show up.</p>
-  <ul>
+  <h1>Bring your questions.</h1>
+  <p class="sub">Nine chances to hear about the LPS budget and <b>Ballot Issue&nbsp;4A</b>, and to ask whatever you want.</p>
+
+  <div class="sched">
+    <p class="group">The district&rsquo;s forums<span>Superintendent Todd Lambert &middot; we&rsquo;ll be outside with car painting</span></p>
+    <ul>
       <li><span class="when">Mon Sept 14</span><span class="time">5:00–6:00 p.m.</span><span class="place">Newton Middle School</span></li>
       <li><span class="when">Tue Sept 15</span><span class="time">6:00–7:00 p.m.</span><span class="place">Goddard Middle School</span></li>
       <li><span class="when">Wed Sept 23</span><span class="time">6:00–7:00 p.m.</span><span class="place">Powell Middle School</span></li>
@@ -112,10 +129,18 @@ body.wide .sub{max-width:24ch}
       <li><span class="when">Tue Sept 29</span><span class="time">5:00–6:00 p.m.</span><span class="place">Littleton High School</span></li>
       <li><span class="when">Wed Sept 30</span><span class="time">5:30–6:30 p.m.</span><span class="place">Arapahoe High School</span></li>
       <li><span class="when">Thu Oct 1</span><span class="time">6:00–7:00 p.m.</span><span class="place">Euclid Middle School</span></li>
-  </ul>
+    </ul>
+
+    <p class="group ours">Our meetings<span>Hosted by Citizens for LPS &middot; after ballots arrive</span></p>
+    <ul>
+      <li><span class="when">Thu Oct 8</span><span class="time">10:00–11:00 a.m.</span><span class="place">Koelbel Library</span></li>
+      <li><span class="when">Fri Oct 9</span><span class="time">9:30–10:30 a.m.</span><span class="place">Bemis Library</span></li>
+    </ul>
+  </div>
+
   <div class="foot">
-    <p class="note">No registration. <span>Spanish interpretation at every session.</span></p>
-    <p class="fine">These are Littleton Public Schools' informational meetings, not campaign events.</p>
+    <p class="note">No registration. <span>Spanish interpretation at every district forum.</span></p>
+    <p class="fine">Ballots mail October 2. Election Day is November 3.</p>
   </div>
 </div>
 </body></html>

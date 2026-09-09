@@ -165,6 +165,16 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   These are district-track informational meetings — our tools invite
   neighbors to them; they never describe them as campaign events.
 
+  **The campaign will be present at each forum, OUTSIDE the room, with
+  car painting** (campaign, 2026-09-09). This does not change the
+  two-track rule; it sharpens it. Inside the room is the district
+  informing voters, and no campaign material belongs there. Outside is
+  the committee, and it may advocate freely. Copy must keep those two
+  facts in the same breath so a reader knows where the line is: "the
+  district's meeting inside, us outside." Never write anything that
+  could read as the district hosting, endorsing, or sponsoring the
+  campaign's table.
+
   | Date | Time | Place |
   |---|---|---|
   | Mon Sept 14 | 5:00–6:00 p.m. | Newton Middle School |
@@ -175,13 +185,32 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   | Wed Sept 30 | 5:30–6:30 p.m. | Arapahoe High School |
   | Thu Oct 1 | 6:00–7:00 p.m. | Euclid Middle School |
 
+- **Campaign information meetings** (campaign, 2026-09-09) — hosted by
+  **Citizens for LPS**, not the district. These are the committee's own
+  events: it may advocate at them, and the "district-track" framing
+  above does NOT apply. Both land after ballots mail on October 2, so
+  attendees will have a ballot in hand.
+
+  | Date | Time | Place |
+  |---|---|---|
+  | Thu Oct 8 | 10:00–11:00 a.m. | Koelbel Library |
+  | Fri Oct 9 | 9:30–10:30 a.m. | Bemis Library |
+
+  ⚠️ Never merge this table into the district forum table. A campaign
+  meeting listed as a district forum misattributes advocacy to LPS,
+  which is the exact failure mode CRS 1-45-117 punishes — and it lands
+  on the district, not on us. Two tables, two labels, always. (Koelbel
+  is in Centennial and Bemis in Littleton, so together they cover both
+  halves of the electorate.)
+
 ## Key dates (researched Aug 2026 — see docs/research/colorado-compliance.md §7 for the full table with statutes)
 
 | Date | Event | Status |
 |---|---|---|
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
 | 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
-| 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; see table above) | scheduled |
+| 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; district-hosted; campaign outside with car painting) | scheduled |
+| 2026-10-08, 10-09 | Campaign information meetings — Koelbel Library, Bemis Library (committee-hosted) | scheduled |
 | ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done (campaign-reported 2026-09-08; county link pending) |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
 | ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |

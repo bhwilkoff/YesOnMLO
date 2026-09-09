@@ -81,6 +81,12 @@
   }
 
   document.addEventListener('click', (e) => {
+    const cmBtn = e.target.closest('[data-cmeeting]');
+    if (cmBtn) {
+      e.preventDefault();
+      inviteToCampaignMeeting(Number(cmBtn.dataset.cmeeting));
+      return;
+    }
     const forumBtn = e.target.closest('[data-forum]');
     if (forumBtn) {
       inviteToForum(Number(forumBtn.dataset.forum));
@@ -141,6 +147,34 @@
       .filter((s) => s.when >= today);
   }
 
+  function upcomingCampaignMeetings() {
+    const today = todayStart();
+    return CAMPAIGN.campaignMeetings.sessions
+      .map((s, i) => ({ ...s, i, when: localDate(s.date) }))
+      .filter((s) => s.when >= today);
+  }
+
+  function renderCampaignMeetings() {
+    const list = $('campaign-meeting-list');
+    if (!list) return;
+    const cm = CAMPAIGN.campaignMeetings;
+    const upcoming = upcomingCampaignMeetings();
+    if (!upcoming.length) { list.innerHTML = ''; return; }
+    list.innerHTML = `
+      <ul class="forum-list">${upcoming.map((s) => `
+        <li class="forum-row">
+          <div class="forum-when">
+            <span class="forum-day">${escHtml(fmtDay(s.when))}</span>
+            <span class="forum-time">${escHtml(s.time)}</span>
+          </div>
+          <div class="forum-place">${escHtml(s.place)}</div>
+          <button class="link-btn campaign-meeting-invite" data-cmeeting="${s.i}">Invite someone &rarr;</button>
+        </li>`).join('')}
+      </ul>
+      <p class="fine">Hosted by ${escHtml(cm.host)}. ${escHtml(cm.sourceNote)}
+        <a href="${CAMPAIGN.officialSite}" target="_blank" rel="noopener">citizensforlps.org</a> for updates.</p>`;
+  }
+
   function renderForums() {
     const list = $('forum-list');
     if (!list) return;
@@ -161,7 +195,8 @@
           <button class="link-btn forum-invite" data-forum="${s.i}">Invite someone &rarr;</button>
         </li>`).join('')}
       </ul>
-      <p class="fine">No sign-up needed. Spanish interpretation at every session. ${src}</p>`;
+      <p class="fine">No sign-up needed. Spanish interpretation at every session. ${src}</p>
+      <p class="fine">${escHtml(CAMPAIGN.forums.campaignOutside)} Come early if you want your car windows painted.</p>`;
   }
 
   /*
@@ -171,6 +206,20 @@
    */
   function forumInviteText(s) {
     return `The superintendent is taking questions about the LPS budget and 4A, the mill levy override, at ${s.place} on ${fmtDay(s.when)}, ${s.time.replace(/\.$/, '')}. No sign-up, and there is Spanish interpretation. Want to go with me? I'd like the company. And I'm voting yes.`;
+  }
+
+  function campaignMeetingInviteText(s) {
+    return `Citizens for LPS is holding an information meeting about 4A, the LPS mill levy override, at ${s.place} on ${fmtDay(s.when)}, ${s.time.replace(/\.$/, '')}. Ballots will already be in your mailbox. Bring your questions and I'll see you there. I'm voting yes.`;
+  }
+
+  function inviteToCampaignMeeting(i) {
+    const s = CAMPAIGN.campaignMeetings.sessions[i];
+    if (!s) return;
+    setDraft(campaignMeetingInviteText({ ...s, when: localDate(s.date) }));
+    cardTextTouched = false;
+    if ($('view-studio').hidden) showView('studio');
+    gotoStep(2);
+    $('studio-draft').focus();
   }
 
   function inviteToForum(i) {
@@ -1419,6 +1468,7 @@
   function init() {
     renderBallotSummary();
     renderForums();
+    renderCampaignMeetings();
     renderVoices();
     initPromptClicks();
     initDraft();

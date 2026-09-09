@@ -310,6 +310,11 @@ const CAMPAIGN = {
   forums: {
     sourceId: 'lpsDollarsAndSense',
     host: 'Superintendent Todd Lambert',
+    // The committee is outside the room at each of these with car
+    // painting (campaign, 2026-09-09). Inside is the district
+    // informing voters; outside is advocacy. Copy says both, so a
+    // reader always knows which side of the door they're on.
+    campaignOutside: 'Volunteers will be outside each forum painting car windows. The meeting inside is the district\u2019s.',
     sessions: [
       { date: '2026-09-14', time: '5:00–6:00 p.m.', place: 'Newton Middle School' },
       { date: '2026-09-15', time: '6:00–7:00 p.m.', place: 'Goddard Middle School' },
@@ -318,6 +323,27 @@ const CAMPAIGN = {
       { date: '2026-09-29', time: '5:00–6:00 p.m.', place: 'Littleton High School' },
       { date: '2026-09-30', time: '5:30–6:30 p.m.', place: 'Arapahoe High School' },
       { date: '2026-10-01', time: '6:00–7:00 p.m.', place: 'Euclid Middle School' },
+    ],
+  },
+
+  /*
+   * The COMMITTEE's own information meetings — a separate track from
+   * `forums` above and never merged with them. Citizens for LPS hosts
+   * these and may advocate at them; listing a campaign event as a
+   * district forum misattributes advocacy to LPS (CRS 1-45-117) and
+   * the consequence lands on the district. Two lists, two labels.
+   * Both fall after ballots mail Oct 2 — attendees have a ballot.
+   */
+  campaignMeetings: {
+    host: 'Citizens for LPS',
+    // Campaign-reported 2026-09-09. There is NO public listing yet, so
+    // this carries a plain-language note instead of a sourceId — citing
+    // the Aug 19 news post would imply a source that doesn't cover it.
+    // Add sourceId once these appear on citizensforlps.org/upcoming_events.
+    sourceNote: 'Reported by the campaign on September 9, 2026. Not yet listed publicly \u2014 check',
+    sessions: [
+      { date: '2026-10-08', time: '10:00–11:00 a.m.', place: 'Koelbel Library' },
+      { date: '2026-10-09', time: '9:30–10:30 a.m.', place: 'Bemis Library' },
     ],
   },
 
