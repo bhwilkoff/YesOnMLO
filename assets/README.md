@@ -1,5 +1,12 @@
 # /assets/ — shared static resources
 
+> **Campaign brand rasters in this directory are GENERATED.** The
+> `yes-on-4a-logo*`, `favicon-*`, `apple-touch-icon`, `icon-*` and
+> `og-image` files come from `branding/yes-on-4a/` via
+> `tools/render_brand_assets.py` (and `tools/render_og_image.py` for
+> the OG card). Never hand-edit or hand-crop them — edit the master
+> and re-run. See `branding/yes-on-4a/README.md`.
+
 Single source of truth for static resources consumed by every
 platform. Keep the structure consistent so per-platform sync
 scripts can copy verbatim.

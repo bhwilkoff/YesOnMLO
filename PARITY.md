@@ -59,6 +59,7 @@ everything else.
 | Feature | Web | Notes |
 |---|---|---|
 | Start — what this is + sourced ballot summary | ✅ | `?` |
+| Official Yes on 4A brand — header lockup (light/dark), favicon set, app icons, OG card | ✅ | Generated from `branding/yes-on-4a/` by `tools/render_brand_assets.py`; site had NO icon of any kind before 2026-09-09. Lockup marks the site only — share cards keep the star motif (Decision 058 amendment) |
 | Share Studio — four-step guided wizard (who you are → your words → a picture → send it) | ✅ | `?view=studio&step=N`; voice prompts seed the draft; per-network guided panels with micro-steps; Nextdoor ShareKit, SMS, WhatsApp, LinkedIn compose, Threads, Bluesky prefill; FB/IG/Messenger copy-then-open (prefill banned by Meta policy); native share sheet on mobile; sent-state tally |
 | Send paths are real links + same-gesture copy + visible fallback (Decision 061) | ✅ | Anchors not `window.open`; synchronous clipboard copy; "Didn't open?" line with plain link; "Copy my words" on every panel; verified in Chrome with a real click into the real Facebook composer (2026-09-02) |
 | Per-network fit (character limits shown before the click; honest trim) | ✅ | Threads 500 · Bluesky 300 incl. link · LinkedIn 3,000 · Nextdoor 3,500 · mailto ~1,500 · soft notes for SMS/Instagram |

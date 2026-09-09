@@ -23,13 +23,19 @@
     background: var(--paper);
     font-family: 'Source Sans Pro', system-ui, sans-serif;
     border-top: 12px solid var(--green);
-    padding: 84px 96px 0;
+    padding: 64px 96px 0;
     display: flex; flex-direction: column;
   }
-  .star { color: var(--green); font-size: 54px; line-height: 1; }
+  /* The official lockup, not a drawn star: this card IS the site's own
+     identity. (A volunteer's share card is the opposite case — that one
+     keeps the star motif, per Decision 058.) */
+  /* align-self is mandatory: body is a column flex container, so the
+     default `stretch` blows the img to full width and height:auto
+     then squashes the lockup. */
+  .lockup { height: 124px; width: auto; align-self: flex-start; }
   .badge {
     display: inline-block; align-self: flex-start;
-    margin-top: 22px;
+    margin-top: 26px;
     font-weight: 700; font-size: 25px; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--green-deep);
     background: rgba(144, 202, 101, 0.32);
@@ -37,7 +43,7 @@
   }
   h1 {
     font-family: 'Lora', Georgia, serif; font-weight: 700;
-    font-size: 74px; line-height: 1.14; color: var(--ink);
+    font-size: 68px; line-height: 1.14; color: var(--ink);
     margin-top: 26px; letter-spacing: -0.01em;
   }
   .foot { margin-top: auto; padding-bottom: 64px; }
@@ -47,8 +53,8 @@
 </style>
 </head>
 <body>
-  <div class="star">&#9733;</div>
-  <span class="badge">Yes on 4A &middot; November 3</span>
+  <img class="lockup" src="../assets/yes-on-4a-logo.png" alt="Yes on 4A">
+  <span class="badge">Ballot Issue 4A &middot; November 3, 2026</span>
   <h1>Our schools have a story.<br>Help your neighbors hear it.</h1>
   <div class="foot">
     <hr>

@@ -1362,6 +1362,32 @@ Every fact in `js/data.js` carries a `sourceId` resolving to a real
 URL in the sources registry; facts without a checkable source get cut
 or reworded as personal experience.
 
+**Amendment (2026-09-09) — the official "Yes on 4A" lockup marks the
+SITE, never a volunteer's post.** The campaign's logo may appear on
+surfaces that are the site speaking as itself: the header wordmark,
+the favicon and app icons, and the Open Graph link-preview card. It
+must NOT appear on anything `drawCard()` generates. Share cards keep
+the green **star motif** drawn from the same logo — recognizably the
+campaign's family, unmistakably not its letterhead.
+
+**Why**: a personal story card carrying the official lockup reads as a
+committee production, which is precisely the false-attribution problem
+this decision exists to prevent — and it is false twice over, because
+the committee neither made the card nor paid for the site. It also
+undercuts the site's whole thesis (Decisions 059, 060): the post that
+reaches a neighbor is the one only that volunteer could have written,
+and campaign letterhead is the fastest way to make it read as
+literature. The star keeps the visual family without the claim. This
+was already the shipped behavior with a one-line comment in
+`drawCard`; the 2026-09-09 logo drop is exactly the moment someone
+would have "finished the job" by adding the lockup, so it is now a
+rule.
+
+**How to apply**: adding a brand mark to a new surface? Ask who is
+speaking. The site → lockup. A volunteer → star. If a future version
+ever offers an explicitly committee-sanctioned card, it needs the
+registered agent's sign-off and its own decision entry first.
+
 ---
 
 ## 059 — Narrow scope: this is a storytelling toolkit, not a second campaign site

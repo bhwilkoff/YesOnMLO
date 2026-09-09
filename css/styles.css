@@ -104,19 +104,18 @@ a:hover { text-decoration-thickness: 2px; }
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s4);
 }
-.wordmark img { height: 40px; width: auto; }
+/* The lockup carries a tagline, so it needs more height than a bare
+   wordmark before "INVEST FOR A STRONG LPS" turns into a grey smear. */
+.wordmark img { height: 52px; width: auto; }
+@media (min-width: 720px) { .wordmark img { height: 60px; } }
 .logo-dark { display: none; }
 @media (prefers-color-scheme: dark) {
   .logo-light { display: none; }
   .logo-dark { display: block; }
 }
 .header-tag {
-  font-family: var(--serif); font-weight: 700; font-size: 1.05rem;
-  color: var(--ink); text-align: right; line-height: 1.15;
-}
-.header-tag-sub {
-  display: block; font-weight: 500; font-style: italic;
-  font-size: 0.85rem; color: var(--ink-soft);
+  font-family: var(--serif); font-style: italic; font-size: 0.95rem;
+  color: var(--ink-soft); text-align: right;
 }
 
 .site-nav {

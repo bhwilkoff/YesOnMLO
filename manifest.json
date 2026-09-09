@@ -1,9 +1,28 @@
 {
-  "name": "Yes on 4A — Tell the Story of Our Schools",
+  "name": "Yes on 4A \u2014 Tell the Story of Our Schools",
   "short_name": "Yes on 4A",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#4C9B2F",
-  "icons": []
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
