@@ -171,7 +171,7 @@
           <button class="link-btn campaign-meeting-invite" data-cmeeting="${s.i}">Invite someone &rarr;</button>
         </li>`).join('')}
       </ul>
-      <p class="fine">Hosted by ${escHtml(cm.host)}. ${escHtml(cm.sourceNote)}
+      <p class="fine">Hosted by ${escHtml(cm.host)}. ${escHtml(CAMPAIGN.carPainting.short)} ${escHtml(cm.sourceNote)}
         <a href="${CAMPAIGN.officialSite}" target="_blank" rel="noopener">citizensforlps.org</a> for updates.</p>`;
   }
 
@@ -196,7 +196,7 @@
         </li>`).join('')}
       </ul>
       <p class="fine">No sign-up needed. Spanish interpretation at every session. ${src}</p>
-      <p class="fine">${escHtml(CAMPAIGN.forums.campaignOutside)} Come early if you want your car windows painted.</p>`;
+      <p class="fine">${escHtml(CAMPAIGN.carPainting.long)} ${escHtml(CAMPAIGN.carPainting.atDistrictForums)}</p>`;
   }
 
   /*

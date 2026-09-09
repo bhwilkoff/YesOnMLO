@@ -57,6 +57,17 @@ check(dates.every((d, i) => i === 0 || d > dates[i - 1]), 'forum dates ascend');
 check(CAMPAIGN.forums.sessions.length === 7, 'seven forums (district email 2026-09-01)');
 check(CAMPAIGN.forums.sessions.every((s) => s.time && s.place), 'each forum has time + place');
 
+// The committee's own meetings are a SEPARATE list (confirmed with the
+// organizer 2026-09-09): same offer, different host. Never merged.
+const cm = CAMPAIGN.campaignMeetings;
+check(cm && cm.sessions.length === 2, 'two committee-hosted meetings');
+check(cm.host === 'Citizens for LPS', 'committee meetings name their host');
+check(cm.sessions.every((s) => /^2026-10-(08|09)$/.test(s.date) && s.time && s.place), 'committee meetings dated Oct 8-9 with time + place');
+check(!CAMPAIGN.forums.sessions.some((s) => cm.sessions.some((c) => c.date === s.date)), 'the two lists share no dates');
+// Render-time contract: app.js reads all three of these. A missing key
+// is a blank line on the page, not an exception, so assert them here.
+check(['short', 'long', 'atDistrictForums'].every((k) => typeof CAMPAIGN.carPainting?.[k] === 'string'), 'carPainting carries the strings app.js renders');
+
 // Tax model reproduces the district's own example: $600K → "< $13/mo".
 const tc = CAMPAIGN.taxCalc;
 const monthly = tc.districtExample.homeValue * tc.residentialAssessmentRate.value * (tc.estimatedMills.value / 1000) / 12;

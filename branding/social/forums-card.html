@@ -16,6 +16,12 @@
 
   Tokens mirror css/styles.css :root. Content mirrors
   docs/campaign/CAMPAIGN-BRIEF.md — update the brief first.
+
+  WHEN YOU CHANGE COPY, RE-MEASURE. `body` is overflow:hidden, so
+  scrollHeight never exceeds the canvas and an overflow check on it
+  reports "ok" while the last line is being cut off. Measure the
+  bottom of `.foot .fine` against the canvas height instead — a
+  footer note that grows from one line to two is what clips it.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +70,7 @@ body.portrait{width:1080px;height:1350px;
   --bar:16px; --padX:72px; --padY:52px; --logo:104px;
   --h1:76px; --sub:33px; --list:29px; --listSm:27px; --note:29px; --fine:24px;
   --group:25px; --groupSub:23px; --groupGap:12px; --groupTop:30px;
-  --gap1:26px; --gap2:16px; --gap3:30px; --row:13px;
+  --gap1:26px; --gap2:16px; --gap3:30px; --row:9px;
   --wWhen:200px; --wTime:210px; --colGap:18px}
 
 /* ---- 1080x1080 — square feed / profile grid ---- */
@@ -120,7 +126,7 @@ body.wide .sub{max-width:24ch}
   <p class="sub">Nine chances to hear about the LPS budget and <b>Ballot Issue&nbsp;4A</b>, and to ask whatever you want.</p>
 
   <div class="sched">
-    <p class="group">The district&rsquo;s forums<span>Superintendent Todd Lambert &middot; we&rsquo;ll be outside with car painting</span></p>
+    <p class="group">The district&rsquo;s forums<span>Superintendent Todd Lambert presents, then the room asks</span></p>
     <ul>
       <li><span class="when">Mon Sept 14</span><span class="time">5:00–6:00 p.m.</span><span class="place">Newton Middle School</span></li>
       <li><span class="when">Tue Sept 15</span><span class="time">6:00–7:00 p.m.</span><span class="place">Goddard Middle School</span></li>
@@ -139,8 +145,8 @@ body.wide .sub{max-width:24ch}
   </div>
 
   <div class="foot">
-    <p class="note">No registration. <span>Spanish interpretation at every district forum.</span></p>
-    <p class="fine">Ballots mail October 2. Election Day is November 3.</p>
+    <p class="note">No registration. <span>Car painting outside every one &mdash; get #YesOn4A on your windows.</span></p>
+    <p class="fine">Spanish interpretation at every district forum. Ballots mail October 2. Election Day is November 3.</p>
   </div>
 </div>
 </body></html>

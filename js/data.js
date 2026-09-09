@@ -310,11 +310,6 @@ const CAMPAIGN = {
   forums: {
     sourceId: 'lpsDollarsAndSense',
     host: 'Superintendent Todd Lambert',
-    // The committee is outside the room at each of these with car
-    // painting (campaign, 2026-09-09). Inside is the district
-    // informing voters; outside is advocacy. Copy says both, so a
-    // reader always knows which side of the door they're on.
-    campaignOutside: 'Volunteers will be outside each forum painting car windows. The meeting inside is the district\u2019s.',
     sessions: [
       { date: '2026-09-14', time: '5:00–6:00 p.m.', place: 'Newton Middle School' },
       { date: '2026-09-15', time: '6:00–7:00 p.m.', place: 'Goddard Middle School' },
@@ -324,6 +319,18 @@ const CAMPAIGN = {
       { date: '2026-09-30', time: '5:30–6:30 p.m.', place: 'Arapahoe High School' },
       { date: '2026-10-01', time: '6:00–7:00 p.m.', place: 'Euclid Middle School' },
     ],
+  },
+
+  /*
+   * Car painting happens outside ALL nine meetings — the district's
+   * seven and our two (campaign, 2026-09-09). At the district forums
+   * it is also the line that keeps the two tracks legible: the
+   * meeting inside is theirs, the table outside is ours.
+   */
+  carPainting: {
+    short: 'Car painting outside these too.',
+    long: 'Volunteers will be outside every meeting painting car windows \u2014 #YesOn4A and where to learn more about the effort.',
+    atDistrictForums: 'The meeting inside is the district\u2019s; the car painting outside is ours.',
   },
 
   /*
