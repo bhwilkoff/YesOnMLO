@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>Yes on 4A — forums card</title>
+<!--
+  Master for the "Ask the superintendent" forum-schedule graphic.
+  Renders at four aspect ratios from ONE source of truth. Pick one with
+  ?format=square|portrait|story|wide  (default: portrait).
+
+      python3 tools/render_social_cards.py
+
+  Each format is LAID OUT for its aspect, never scaled-and-cropped: a
+  1080x1350 squeezed into a 9:16 story or a 1.91:1 link preview loses
+  either the schedule or the headline. Type is sized so the headline
+  survives a phone-feed thumbnail (~300px wide), which is where most
+  people will actually meet this.
+
+  Tokens mirror css/styles.css :root. Content mirrors
+  docs/campaign/CAMPAIGN-BRIEF.md — update the brief first.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#90CA65; --green-deep:#4E7B2C; --ink:#323F49;
+  --ink-soft:#5A6772; --paper:#FBFAF7; --hairline:#E3E2DC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);font-family:'Source Sans Pro',system-ui,sans-serif;
+     border-top:var(--bar) solid var(--green);overflow:hidden}
+.sheet{width:100%;height:100%;padding:var(--padY) var(--padX);
+       display:flex;flex-direction:column}
+.lockup{height:var(--logo);width:auto;align-self:flex-start}
+h1{font-family:'Lora',Georgia,serif;font-weight:700;font-size:var(--h1);
+   line-height:1.05;color:var(--ink);margin-top:var(--gap1);letter-spacing:-.01em}
+.sub{font-size:var(--sub);line-height:1.35;color:var(--ink-soft);
+     margin-top:var(--gap2);max-width:30ch}
+.sub b{color:var(--ink);font-weight:700}
+ul{list-style:none;margin-top:var(--gap3);border-top:2px solid var(--hairline)}
+li{display:flex;align-items:baseline;gap:var(--colGap);
+   padding:var(--row) 0;border-bottom:2px solid var(--hairline)}
+.when{font-weight:700;font-size:var(--list);color:var(--ink);
+      flex:0 0 var(--wWhen);font-variant-numeric:tabular-nums}
+.time{font-weight:600;font-size:var(--listSm);color:var(--green-deep);
+      flex:0 0 var(--wTime);font-variant-numeric:tabular-nums}
+.place{font-size:var(--list);color:var(--ink-soft)}
+.foot{margin-top:auto;padding-top:var(--gap2)}
+.note{font-size:var(--note);color:var(--ink);font-weight:700;line-height:1.35}
+.note span{color:var(--green-deep)}
+.fine{font-size:var(--fine);color:var(--ink-soft);margin-top:.5em;line-height:1.4}
+
+/* ---- 1080x1350 — Facebook + Instagram feed (the default placement) ---- */
+body.portrait{width:1080px;height:1350px;
+  --bar:16px; --padX:72px; --padY:52px; --logo:104px;
+  --h1:76px; --sub:33px; --list:29px; --listSm:27px; --note:29px; --fine:24px;
+  --gap1:30px; --gap2:18px; --gap3:34px; --row:32px;
+  --wWhen:200px; --wTime:210px; --colGap:18px}
+
+/* ---- 1080x1080 — square feed / profile grid ---- */
+body.square{width:1080px;height:1080px;
+  --bar:14px; --padX:66px; --padY:44px; --logo:88px;
+  --h1:62px; --sub:29px; --list:27px; --listSm:25px; --note:26px; --fine:22px;
+  --gap1:22px; --gap2:14px; --gap3:22px; --row:21px;
+  --wWhen:186px; --wTime:196px; --colGap:16px}
+
+/* ---- 1080x1920 — Stories / Reels. Platform UI eats the top and bottom,
+       so the sheet is inset by a safe area and the type goes big. ---- */
+body.story{width:1080px;height:1920px;
+  --bar:18px; --padX:78px; --padY:200px; --logo:124px;
+  --h1:92px; --sub:38px; --list:34px; --listSm:31px; --note:36px; --fine:27px;
+  --gap1:40px; --gap2:24px; --gap3:40px; --row:26px;
+  --wWhen:230px; --wTime:245px; --colGap:22px}
+
+/* ---- 1200x630 — link previews and shared-link cards. Too short to stack,
+       so headline and schedule sit side by side. ---- */
+body.wide{width:1200px;height:630px;
+  --bar:12px; --padX:56px; --padY:38px; --logo:74px;
+  --h1:47px; --sub:24px; --list:24px; --listSm:21px; --note:23px; --fine:19px;
+  --gap1:16px; --gap2:12px; --gap3:0px; --row:11px;
+  --wWhen:160px; --wTime:0px; --colGap:16px}
+body.wide .sheet{display:grid;column-gap:46px;
+  grid-template-columns:44% 1fr;
+  grid-template-rows:auto auto auto 1fr}
+body.wide .lockup{grid-column:1;grid-row:1}
+body.wide h1{grid-column:1;grid-row:2}
+body.wide .sub{grid-column:1;grid-row:3}
+body.wide .foot{grid-column:1;grid-row:4;align-self:end;margin-top:0}
+body.wide ul{grid-column:2;grid-row:1/5;align-self:center;
+  margin-top:0;border-top:none}
+body.wide li:last-child{border-bottom:none}
+/* The wide card is a teaser, not a reference: times would force a third
+   column and shrink everything below thumbnail legibility. */
+body.wide .time{display:none}
+body.wide .sub{max-width:24ch}
+</style>
+</head>
+<body>
+<script>
+  const f = new URLSearchParams(location.search).get('format') || 'portrait';
+  document.body.className = ['square','portrait','story','wide'].includes(f) ? f : 'portrait';
+</script>
+
+<div class="sheet">
+  <img class="lockup" src="../../assets/yes-on-4a-logo.png" alt="">
+  <h1>Ask the superintendent.</h1>
+  <p class="sub">Seven public forums on the LPS budget and <b>Ballot Issue&nbsp;4A</b>. Hosted by the school district. Just show up.</p>
+  <ul>
+      <li><span class="when">Mon Sept 14</span><span class="time">5:00–6:00 p.m.</span><span class="place">Newton Middle School</span></li>
+      <li><span class="when">Tue Sept 15</span><span class="time">6:00–7:00 p.m.</span><span class="place">Goddard Middle School</span></li>
+      <li><span class="when">Wed Sept 23</span><span class="time">6:00–7:00 p.m.</span><span class="place">Powell Middle School</span></li>
+      <li><span class="when">Mon Sept 28</span><span class="time">5:30–6:30 p.m.</span><span class="place">Heritage High School</span></li>
+      <li><span class="when">Tue Sept 29</span><span class="time">5:00–6:00 p.m.</span><span class="place">Littleton High School</span></li>
+      <li><span class="when">Wed Sept 30</span><span class="time">5:30–6:30 p.m.</span><span class="place">Arapahoe High School</span></li>
+      <li><span class="when">Thu Oct 1</span><span class="time">6:00–7:00 p.m.</span><span class="place">Euclid Middle School</span></li>
+  </ul>
+  <div class="foot">
+    <p class="note">No registration. <span>Spanish interpretation at every session.</span></p>
+    <p class="fine">These are Littleton Public Schools' informational meetings, not campaign events.</p>
+  </div>
+</div>
+</body></html>

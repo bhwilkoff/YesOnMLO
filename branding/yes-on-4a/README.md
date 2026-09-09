@@ -50,6 +50,37 @@ keep the green **star motif**, because a volunteer's personal story
 must not read as a committee production — see the 2026-09-09
 amendment to Decision 058. Same family, no letterhead.
 
+## Social graphics
+
+Campaign social cards live in `branding/social/*.html` and render with:
+
+```sh
+python3 tools/render_social_cards.py            # every card, every size
+python3 tools/render_social_cards.py forums-card # just one
+```
+
+Each master renders at **four aspect ratios**, and each is *laid out*
+for its shape rather than scaled and cropped — a 1080x1350 squeezed
+into a 9:16 story or a 1.91:1 link preview loses either the headline or
+the content:
+
+| Format | Size | Placement |
+|---|---|---|
+| `square` | 1080x1080 | square feed posts, profile grid |
+| `portrait` | 1080x1350 | Facebook + Instagram feed (default) |
+| `story` | 1080x1920 | Stories / Reels; inset ~200px top and bottom for platform UI |
+| `wide` | 1200x630 | link previews, shared-link cards; two-column |
+
+Output lands in `assets/social/<card>-<format>.png`.
+
+**No "Paid for by" line on these.** The payer is a natural person, so
+the registered-agent identification does not apply, and organic
+graphics need no disclaimer — see `docs/research/colorado-compliance.md`
+§2. Paid placement is a separate question; re-read that section first.
+
+Content mirrors `docs/campaign/CAMPAIGN-BRIEF.md` — update the brief
+first, then the master, per Decision 054.
+
 ## Replacing the logo
 
 Drop the new files in with these same eight names, run the generator,

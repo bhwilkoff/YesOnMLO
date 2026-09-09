@@ -47,6 +47,19 @@ Any issue committee **or other person** spending **more than $1,000 per calendar
 - **"Paid for by Citizens for LPS."**
 - Because the payer is not a natural person, also **identify the registered agent by name**: **"Paid for by Citizens for LPS, [Registered Agent Name], Registered Agent."** ⚠️ ACTION: add the registered agent's name to the site footer and ad templates once confirmed.
 
+### Who the payer is (campaign, 2026-09-09)
+**The payer for this campaign's communications is a natural person.**
+That settles two things this section otherwise leaves open: the
+"identify the registered agent" requirement above applies only when the
+payer is **not** a natural person, so it does not apply here; and
+**organic social graphics carry no "Paid for by" line.** Do not stamp
+one onto a graphic by default — the earlier "put it on everything from
+day one" advice was written before the payer was settled and overshoots
+for unpaid organic creative. Paid placement is a different question:
+if this campaign starts buying distribution, re-read the trigger above
+and confirm the current facts with the registered agent before the
+first dollar is spent.
+
 ### Format rules (verified — Rule 22, 8 CCR 1505-6-22)
 - **Print/nonbroadcast (mailers, yard signs, flyers):** clear, conspicuous; font at least **15% of the largest font used**, or **at least 8-point**.
 - **Broadcast:** FCC sponsorship ID applies independently.
