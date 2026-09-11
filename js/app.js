@@ -1454,7 +1454,7 @@
      hand the file straight to an app via the share sheet.
   ================================================================ */
   const FRAME_SIZE = 1080;
-  const frameState = { img: null, zoom: 1, x: 0.5, y: 0.5, badge: 'wordmark-bottom', ring: true };
+  const frameState = { img: null, zoom: 1, x: 0.5, y: 0.5, badge: 'wordmark-bottom', ring: true, chip: 'solid', cutout: false };
   let frameAssets = null;
 
   function loadImage(src) {
@@ -1530,7 +1530,7 @@
       ctx.beginPath(); ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP / 2, 0, Math.PI * 2); ctx.stroke();
     }
 
-    if (!frameAssets || frameState.badge === 'none') { drawFrameSizes(); return; }
+    if (!frameAssets || frameState.badge === 'none') { applyCutout(ctx, S); drawFrameSizes(); return; }
     const { wordmark, mark } = frameAssets;
     const softShadow = () => {
       ctx.shadowColor = 'rgba(20,26,30,0.28)';
@@ -1558,6 +1558,7 @@
       ctx.strokeStyle = '#90CA65';
       ctx.lineWidth = S * 0.014;
       ctx.beginPath(); ctx.arc(cx, cy, d / 2 - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
+      applyCutout(ctx, S);
       drawFrameSizes();
       return;
     }
@@ -1571,13 +1572,38 @@
     const cw = lw + padX * 2, ch = lh + padY * 2;
     const cx = (S - cw) / 2;
     const cy = top ? S * F.chipInset : S - ch - S * F.chipInset;
-    softShadow();
-    ctx.fillStyle = '#FBFAF7';
-    roundRect(ctx, cx, cy, cw, ch, ch / 2);
-    ctx.fill();
-    clearShadow();
-    ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+    if (frameState.chip === 'solid') {
+      softShadow();
+      ctx.fillStyle = '#FBFAF7';
+      roundRect(ctx, cx, cy, cw, ch, ch / 2);
+      ctx.fill();
+      clearShadow();
+      ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+    } else {
+      // No pill: build a white halo by stacking the shadow, so the
+      // charcoal lockup still separates from a dark photo without
+      // recolouring brand art.
+      ctx.shadowColor = 'rgba(255,255,255,0.95)';
+      ctx.shadowBlur = S * 0.014;
+      for (let i = 0; i < 3; i++) ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+      clearShadow();
+      ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+    }
+    applyCutout(ctx, S);
     drawFrameSizes();
+  }
+
+  // Optional round PNG: everything outside the circle becomes
+  // transparent. Platforms that crop to a circle look identical either
+  // way; this is for the ones that don't, and for reuse elsewhere.
+  function applyCutout(ctx, S) {
+    if (!frameState.cutout) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.beginPath();
+    ctx.arc(S / 2, S / 2, S / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
 
   // A profile picture is met at 40-50px far more often than at full
@@ -1686,6 +1712,23 @@
 
     $('frame-ring').addEventListener('change', (e) => {
       frameState.ring = e.target.checked;
+      drawFrame();
+    });
+
+    $('frame-cutout').addEventListener('change', (e) => {
+      frameState.cutout = e.target.checked;
+      drawFrame();
+    });
+
+    $('frame-chip').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-chip]');
+      if (!b) return;
+      frameState.chip = b.dataset.chip;
+      [...$('frame-chip').querySelectorAll('.seg-btn')].forEach((el) => {
+        const on = el === b;
+        el.classList.toggle('selected', on);
+        el.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
       drawFrame();
     });
 

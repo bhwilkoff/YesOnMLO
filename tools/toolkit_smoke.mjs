@@ -87,6 +87,8 @@ check(!/drawCard[\s\S]{0,400}yes-on-4a-logo/.test(APP), 'share cards still avoid
 check(APP.includes("assets/yes-on-4a-wordmark.png"), 'frame badge uses the tagline-free wordmark');
 check(!/frameBadges[\s\S]{0,300}yes-on-4a-logo\.png/.test(APP), 'frame badge does not use the tagline lockup');
 check(APP.includes('trackNavOverflow()'), 'nav scroll affordance is wired');
+['frame-chip', 'frame-cutout'].forEach((id) => check(HTML.includes(`id="${id}"`), `frame markup has #${id}`));
+check(APP.includes("globalCompositeOperation = 'destination-in'"), 'transparent-corner cutout is implemented');
 
 // Tax model reproduces the district's own example: $600K → "< $13/mo".
 const tc = CAMPAIGN.taxCalc;
