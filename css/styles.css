@@ -546,6 +546,9 @@ a:hover { text-decoration-thickness: 2px; }
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 .frame-picker.drag { border-color: var(--green); background: var(--hl-wash); }
+/* .fine caps at 68ch. Without auto margins that block sits flush left
+   inside a centred parent, so its centred text lands off-centre. */
+.frame-picker .fine { margin-inline: auto; }
 .frame-picker.has-photo { padding: var(--s4); }
 .frame-picker .fine { margin-top: var(--s3); }
 .frame-picker kbd {

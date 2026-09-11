@@ -1658,11 +1658,14 @@
     };
 
     if (design.badge === 'mark') {
-      // Centred ON the ring, not floating inside it. A disc sitting in
-      // the photo reads as a sticker stuck to someone's shoulder; one
-      // straddling the edge reads as part of the frame.
+      // Anchored by its OUTER EDGE, not its centre. Putting the centre
+      // on the ring centreline pushed 41% of the disc outside the
+      // circular crop every platform applies — it looked fine on the
+      // square canvas and was sheared off in a real avatar. The edge
+      // lands just inside the crop, which still overlaps the ring band
+      // so it reads as part of the frame rather than a sticker.
       const d = S * F.markD;
-      const r = S / 2 - RW / 2 - 2;
+      const r = S / 2 - RW * 0.25 - d / 2;
       const mx = S / 2 + r * Math.SQRT1_2, my = S / 2 + r * Math.SQRT1_2;
       softShadow();
       ctx.fillStyle = '#FBFAF7';

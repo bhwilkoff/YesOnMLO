@@ -94,6 +94,11 @@ check(APP.includes('FRAME_DESIGNS'), 'frame designs are presets, not separate to
 // set where every design has a ring looked like doing nothing.
 check(/ring:\s*\{[^}]*ringText/.test(APP), 'the ring design carries text, not just an empty ring');
 check(!/banner:\s*\{/.test(APP), 'the chord banner design is gone');
+// The corner mark is anchored by its OUTER EDGE so it provably lands
+// inside the circular crop. Anchoring by centre put 41% of it outside.
+check(/const r = S \/ 2 - RW \* 0\.25 - d \/ 2;/.test(APP), 'corner mark is anchored by its outer edge');
+// .fine caps at 68ch; inside a centred box it needs auto margins.
+check(/\.frame-picker \.fine\s*\{[^}]*margin-inline:\s*auto/.test(CSS), 'picker copy is centred, not just centre-aligned');
 check(/pointers\.size >= 2/.test(APP), 'pinch-to-zoom is handled');
 check(APP.includes("addEventListener('wheel'"), 'wheel zoom is handled');
 // The link on the ring points at the campaign, never this toolkit
