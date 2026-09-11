@@ -1458,12 +1458,16 @@
   // One picker instead of four. Each design bundles the decisions that
   // used to be separate controls (ring, badge, badge background), which
   // is what keeps this usable for someone who just wants a picture.
+  // Banner was cut: a straight band across a circular crop is a chord,
+  // so it sliced the shoulders and its ends tapered into the ring.
+  // Ring used to mean "no badge", which read as doing nothing because
+  // every design already had a ring — it now carries the name around
+  // the edge and leaves the photo completely alone.
   const FRAME_DESIGNS = {
     badge:  { badge: 'wordmark', chip: 'solid' },
     clean:  { badge: 'wordmark', chip: 'clear' },
-    banner: { badge: 'band',     chip: 'solid' },
     corner: { badge: 'mark',     chip: 'solid' },
-    ring:   { badge: 'none',     chip: 'solid' },
+    ring:   { badge: 'none',     chip: 'solid', ringText: 'YES ON 4A' },
   };
 
   const frameState = {
@@ -1484,13 +1488,12 @@
 
   async function frameBadges() {
     if (!frameAssets) {
-      const [wordmark, reversed, mark] = await Promise.all([
+      const [wordmark, mark] = await Promise.all([
         // Tagline-free: at avatar size the tagline is unreadable clutter.
         loadImage('assets/yes-on-4a-wordmark.png'),
-        loadImage('assets/yes-on-4a-wordmark-reversed.png'),
         loadImage('assets/icon-512.png'),
       ]);
-      frameAssets = { wordmark, reversed, mark };
+      frameAssets = { wordmark, mark };
     }
     return frameAssets;
   }
@@ -1510,7 +1513,7 @@
   const F = {
     ring: 0.034, ringUrl: 0.062, gap: 0.009,
     chipW: 0.46, chipPadX: 0.026, chipPadY: 0.022, chipInset: 0.072,
-    markD: 0.245, bandH: 0.20, bandW: 0.50,
+    markD: 0.20,
   };
 
   // Rotation is baked into an offscreen copy so the cover maths below
@@ -1533,7 +1536,7 @@
 
   // Text that rides the ring. Drawn per character around the bottom
   // arc, flipped so it reads upright from outside the circle.
-  function drawArcText(ctx, text, cx, cy, radius, fontPx, color) {
+  function drawArcText(ctx, text, cx, cy, radius, fontPx, color, top = false) {
     ctx.save();
     ctx.fillStyle = color;
     ctx.font = `700 ${fontPx}px "Source Sans Pro", "Source Sans 3", system-ui, sans-serif`;
@@ -1546,16 +1549,20 @@
     // inward (which is up, at the bottom of a circle), and sweep with a
     // DECREASING angle because cos(a) moves left past PI/2. Getting
     // either wrong renders the line upside down and mirrored.
-    let angle = Math.PI / 2 + total / radius / 2;
+    // Bottom arc sweeps backwards with glyphs rotated (a - PI/2); the
+    // top arc is the mirror of both. Getting either half wrong renders
+    // the line upside down and reversed.
+    const dir = top ? 1 : -1;
+    let angle = (top ? -Math.PI / 2 : Math.PI / 2) - dir * (total / radius / 2);
     chars.forEach((ch, i) => {
       const step = widths[i] / radius;
-      const a = angle - step / 2;
+      const a = angle + dir * step / 2;
       ctx.save();
       ctx.translate(cx + Math.cos(a) * radius, cy + Math.sin(a) * radius);
-      ctx.rotate(a - Math.PI / 2);
+      ctx.rotate(a + dir * Math.PI / 2);
       ctx.fillText(ch, 0, 0);
       ctx.restore();
-      angle -= step;
+      angle += dir * step;
     });
     ctx.restore();
   }
@@ -1614,8 +1621,9 @@
     else ctx.drawImage(src, dx, dy, dw, dh);
 
     const design = FRAME_DESIGNS[frameState.design] || FRAME_DESIGNS.badge;
-    // The link rides the ring, so it needs a thicker one to sit in.
-    const RW = S * (frameState.url ? F.ringUrl : F.ring);
+    // Anything written on the ring needs a thicker one to sit in.
+    const wantsText = frameState.url || design.ringText;
+    const RW = S * (wantsText ? F.ringUrl : F.ring);
     const GAP = S * F.gap;
     const rg = S / 2 - RW / 2 - 2;
     ctx.strokeStyle = '#90CA65';
@@ -1624,12 +1632,22 @@
     ctx.strokeStyle = '#FBFAF7';
     ctx.lineWidth = GAP;
     ctx.beginPath(); ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP / 2, 0, Math.PI * 2); ctx.stroke();
+    // The name takes the bottom of the ring; the link moves to the top
+    // when both are on, so they never collide.
+    // Ink, not paper. Paper on the brand green measures 1.86:1, well
+    // under AA; ink on the same green is 5.57:1. The ring is the one
+    // place on this canvas where the background colour is known, so
+    // there is no excuse for guessing.
+    if (design.ringText) {
+      drawArcText(ctx, design.ringText, S / 2, S / 2, rg, RW * 0.60, '#323F49');
+    }
     if (frameState.url) {
-      drawArcText(ctx, 'citizensforlps.org', S / 2, S / 2, rg, RW * 0.62, '#FBFAF7');
+      drawArcText(ctx, 'citizensforlps.org', S / 2, S / 2, rg, RW * 0.52, '#323F49',
+        Boolean(design.ringText));
     }
 
     if (!frameAssets || design.badge === 'none') { applyCutout(ctx, S); drawFrameSizes(); return; }
-    const { wordmark, reversed, mark } = frameAssets;
+    const { wordmark, mark } = frameAssets;
     const softShadow = () => {
       ctx.shadowColor = 'rgba(20,26,30,0.28)';
       ctx.shadowBlur = S * 0.020;
@@ -1640,40 +1658,24 @@
     };
 
     if (design.badge === 'mark') {
+      // Centred ON the ring, not floating inside it. A disc sitting in
+      // the photo reads as a sticker stuck to someone's shoulder; one
+      // straddling the edge reads as part of the frame.
       const d = S * F.markD;
-      const r = S / 2 - RW - d / 2 - GAP;
+      const r = S / 2 - RW / 2 - 2;
       const mx = S / 2 + r * Math.SQRT1_2, my = S / 2 + r * Math.SQRT1_2;
       softShadow();
       ctx.fillStyle = '#FBFAF7';
       ctx.beginPath(); ctx.arc(mx, my, d / 2, 0, Math.PI * 2); ctx.fill();
       clearShadow();
       ctx.save();
-      ctx.beginPath(); ctx.arc(mx, my, d / 2, 0, Math.PI * 2); ctx.clip();
-      ctx.drawImage(mark, mx - d / 2, my - d / 2, d, d);
+      ctx.beginPath(); ctx.arc(mx, my, d / 2 * 0.94, 0, Math.PI * 2); ctx.clip();
+      const inner = d * 0.94;
+      ctx.drawImage(mark, mx - inner / 2, my - inner / 2, inner, inner);
       ctx.restore();
       ctx.strokeStyle = '#90CA65';
-      ctx.lineWidth = S * 0.014;
+      ctx.lineWidth = S * 0.016;
       ctx.beginPath(); ctx.arc(mx, my, d / 2 - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
-      applyCutout(ctx, S); drawFrameSizes(); return;
-    }
-
-    if (design.badge === 'band') {
-      // Green band clipped to the circle, reversed lockup on top.
-      const bh = S * F.bandH;
-      const by = S - bh - RW - GAP * 2;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP, 0, Math.PI * 2);
-      ctx.clip();
-      // Ink, not green: the reversed lockup is green-and-white, which
-      // the designer drew FOR a dark ground. On a green band the green
-      // letters sit on green and the whole thing mushes.
-      ctx.fillStyle = '#323F49';
-      ctx.fillRect(0, by, S, S);
-      ctx.restore();
-      const lw = S * F.bandW;
-      const lh = lw * (reversed.height / reversed.width);
-      ctx.drawImage(reversed, (S - lw) / 2, by + (bh - lh) / 2, lw, lh);
       applyCutout(ctx, S); drawFrameSizes(); return;
     }
 

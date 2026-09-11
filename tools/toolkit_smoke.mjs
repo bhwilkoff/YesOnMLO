@@ -90,6 +90,10 @@ check(APP.includes('trackNavOverflow()'), 'nav scroll affordance is wired');
 ['frame-design', 'frame-cutout', 'frame-rotate', 'frame-recenter', 'frame-url', 'frame-soften']
   .forEach((id) => check(HTML.includes(`id="${id}"`), `frame markup has #${id}`));
 check(APP.includes('FRAME_DESIGNS'), 'frame designs are presets, not separate toggles');
+// Ring must SAY something; it used to just delete the badge, which on a
+// set where every design has a ring looked like doing nothing.
+check(/ring:\s*\{[^}]*ringText/.test(APP), 'the ring design carries text, not just an empty ring');
+check(!/banner:\s*\{/.test(APP), 'the chord banner design is gone');
 check(/pointers\.size >= 2/.test(APP), 'pinch-to-zoom is handled');
 check(APP.includes("addEventListener('wheel'"), 'wheel zoom is handled');
 // The link on the ring points at the campaign, never this toolkit
