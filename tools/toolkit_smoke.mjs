@@ -102,6 +102,11 @@ check(!/corner:\s*\{/.test(APP), 'no fixed-corner design; placement is the user\
 check(APP.includes('function clampBadge'), 'badge position is clamped inside the crop circle');
 check(/badgePos/.test(APP), 'badge position is user state');
 check(APP.includes("grabbing = overBadge(e) ? 'badge' : 'photo'"), 'dragging routes between badge and photo');
+// The photo must follow the cursor. frameState.x interpolates across a
+// NEGATIVE slack, so the delta has to be divided by panRange; adding
+// the raw fraction inverts the drag and mistracks at every zoom.
+check(/frameState\.x \+ moveX \/ panRange\.x/.test(APP), 'photo pan divides by panRange (direction + 1:1)');
+check(!/frameState\.x \+ \(e\.clientX - prev\.x\) \/ rect\.width/.test(APP), 'photo pan no longer adds a raw drag fraction');
 // .fine caps at 68ch; inside a centred box it needs auto margins.
 check(/\.frame-picker \.fine\s*\{[^}]*margin-inline:\s*auto/.test(CSS), 'picker copy is centred, not just centre-aligned');
 check(/pointers\.size >= 2/.test(APP), 'pinch-to-zoom is handled');

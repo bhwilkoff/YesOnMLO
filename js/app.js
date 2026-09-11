@@ -1599,6 +1599,10 @@
 
   // Where the badge currently sits, for hit-testing the pointer.
   let badgeHit = null;
+  // How much slack the photo has in each axis, in canvas px. Negative:
+  // it is (canvas - drawn), and the photo is bigger than the canvas.
+  // Needed so a drag can move the photo exactly with the cursor.
+  let panRange = { x: 0, y: 0 };
 
   // Clamp a badge centre so the whole badge stays inside the circle a
   // platform crops to. Treating it as a disc of half-diagonal radius
@@ -1636,6 +1640,7 @@
     const base = Math.max(S / src.width, S / src.height);
     const scale = base * frameState.zoom;
     const dw = src.width * scale, dh = src.height * scale;
+    panRange = { x: S - dw, y: S - dh };
     const dx = (S - dw) * frameState.x, dy = (S - dh) * frameState.y;
     if (frameState.soften) drawSoftened(ctx, src, dx, dy, dw, dh, S);
     else ctx.drawImage(src, dx, dy, dw, dh);
@@ -1911,8 +1916,17 @@
           y: frameState.badgePos.y + (e.clientY - prev.y) / rect.height,
         };
       } else {
-        frameState.x = Math.min(1, Math.max(0, frameState.x + (e.clientX - prev.x) / rect.width));
-        frameState.y = Math.min(1, Math.max(0, frameState.y + (e.clientY - prev.y) / rect.height));
+        // The photo follows the cursor exactly. frameState.x/y are an
+        // interpolation across the slack, and that slack is NEGATIVE
+        // (the photo is larger than the canvas), so dividing the cursor
+        // delta by it flips the sign for free — drag right, image goes
+        // right — and makes the movement 1:1 at any zoom. Adding the
+        // raw fraction instead, as this did, both inverted the drag and
+        // tracked at the wrong rate everywhere except one zoom level.
+        const moveX = ((e.clientX - prev.x) / rect.width) * FRAME_SIZE;
+        const moveY = ((e.clientY - prev.y) / rect.height) * FRAME_SIZE;
+        if (panRange.x) frameState.x = Math.min(1, Math.max(0, frameState.x + moveX / panRange.x));
+        if (panRange.y) frameState.y = Math.min(1, Math.max(0, frameState.y + moveY / panRange.y));
       }
       drawFrame();
     });
