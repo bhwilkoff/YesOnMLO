@@ -57,7 +57,7 @@
   const VIEW_TITLES = {
     home: `${CAMPAIGN.measure.campaignName} — Tell the Story of Our Schools`,
     studio: `${CAMPAIGN.measure.campaignName} — Share Studio`,
-    frame: `${CAMPAIGN.measure.campaignName} — Profile Photo`,
+    frame: `${CAMPAIGN.measure.campaignName} — Profile Frame`,
     cost: `${CAMPAIGN.measure.campaignName} — What It Costs`,
     playbook: `${CAMPAIGN.measure.campaignName} — Team Playbook`,
   };

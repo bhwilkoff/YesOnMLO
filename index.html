@@ -45,7 +45,7 @@
     <nav class="site-nav" aria-label="Main navigation">
       <button class="nav-item active" id="nav-home" data-view="home">Start</button>
       <button class="nav-item" id="nav-studio" data-view="studio">Share studio</button>
-      <button class="nav-item" id="nav-frame" data-view="frame">Your photo</button>
+      <button class="nav-item" id="nav-frame" data-view="frame">Profile frame</button>
       <button class="nav-item" id="nav-cost" data-view="cost">The cost</button>
       <button class="nav-item" id="nav-playbook" data-view="playbook">Playbook</button>
     </nav>
@@ -277,16 +277,19 @@
       </div>
     </section>
 
-    <!-- PROFILE PHOTO FRAME -->
-    <section id="view-frame" class="view" aria-label="Profile photo frame" hidden>
+    <!-- PROFILE FRAME -->
+    <section id="view-frame" class="view" aria-label="Profile frame" hidden>
       <div class="view-inner">
-        <p class="eyebrow">Wear it</p>
+        <p class="eyebrow">Profile frame</p>
         <h1 class="view-heading">Put 4A on your profile picture</h1>
         <p class="lede">
-          A yard sign your whole feed walks past. Drop in the photo you
-          already use, nudge it into place, and save it. Your photo never
-          leaves this device &mdash; the whole thing is drawn right here
-          in your browser.
+          Your profile picture is the one thing everyone you know
+          already sees. This puts 4A on it. You get to say you're
+          voting yes without posting about it.
+        </p>
+        <p class="body">
+          Use the photo you have. Move it, pick a look, save it.
+          Nothing gets uploaded.
         </p>
 
         <div class="frame-picker" id="frame-picker">
@@ -294,8 +297,8 @@
           <input type="file" id="frame-file" accept="image/*" class="sr-only">
           <p class="fine" id="frame-hint">
             On a phone this opens your camera roll. On a computer you can
-            also drag a photo here, or copy your current profile picture
-            and press <kbd>&#8984;V</kbd> / <kbd>Ctrl&nbsp;V</kbd>.
+            drag a photo here instead. Or copy the profile picture you use
+            now and paste it: <kbd>&#8984;V</kbd> / <kbd>Ctrl&nbsp;V</kbd>.
           </p>
           <p class="fine" id="frame-status" role="status"></p>
         </div>
@@ -310,7 +313,7 @@
               <figure><canvas width="48" height="48"></canvas><figcaption>on a comment</figcaption></figure>
               <figure><canvas width="32" height="32"></canvas><figcaption>smallest</figcaption></figure>
             </div>
-            <p class="fine frame-sizes-note">This is the size most people will actually see it. If the badge stops reading here, try <em>Corner</em> or <em>Ring only</em>.</p>
+            <p class="fine frame-sizes-note">Most people will see it this small. If the badge stops reading here, try <em>Corner</em> or <em>Ring</em>.</p>
           </div>
 
           <div class="frame-controls">
@@ -363,12 +366,12 @@
 
         <div id="frame-next" hidden>
           <div class="rule"></div>
-          <h2 class="section-title">Saved. Now the part that actually moves someone.</h2>
+          <h2 class="section-title">Saved. One more thing.</h2>
           <p class="body">
-            Set it as your profile picture on Facebook, Instagram, or
-            wherever you post. Then, because a frame tells people
-            <em>that</em> you're voting yes and nothing about
-            <em>why</em>, put one sentence underneath it.
+            Set it as your profile picture wherever you post. Then write
+            one sentence about why. The frame says you're voting yes. It
+            says nothing about the teacher, the school, or the reason you
+            stayed.
           </p>
           <p class="cta-row">
             <button class="btn" data-view="studio" data-wstep="1">Write the why &rarr;</button>
@@ -377,9 +380,8 @@
 
         <div class="rule"></div>
         <p class="fine">
-          Nothing here is uploaded. The picture is drawn on a canvas in
-          your browser and saved straight to your device. No account, no
-          server, no copy kept.
+          No account. No upload. No copy kept anywhere. The picture is
+          made in your browser and saved to your device.
         </p>
       </div>
     </section>
