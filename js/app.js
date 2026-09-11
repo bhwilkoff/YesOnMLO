@@ -1469,7 +1469,9 @@
   async function frameBadges() {
     if (!frameAssets) {
       const [wordmark, mark] = await Promise.all([
-        loadImage('assets/yes-on-4a-logo.png'),
+        // The tagline-free lockup: at avatar size "INVEST FOR A STRONG
+        // LPS" is unreadable and only adds clutter to a photo.
+        loadImage('assets/yes-on-4a-wordmark.png'),
         loadImage('assets/icon-512.png'),
       ]);
       frameAssets = { wordmark, mark };
@@ -1487,6 +1489,18 @@
     ctx.closePath();
   }
 
+  // Proportions, all as fractions of the 1080 canvas so the art scales
+  // with any export size.
+  const F = {
+    ring: 0.034,        // green ring thickness
+    gap: 0.009,         // paper hairline that separates ring from photo
+    chipW: 0.46,        // wordmark width inside the chip
+    chipPadX: 0.026,    // tight padding: the pill should hug the mark,
+    chipPadY: 0.022,    // not add a slab of white over the photo
+    chipInset: 0.072,   // distance from the canvas edge to the chip
+    markD: 0.245,       // corner mark diameter
+  };
+
   function drawFrame() {
     const c = $('frame-canvas');
     if (!c || !frameState.img) return;
@@ -1500,54 +1514,89 @@
     const base = Math.max(S / img.width, S / img.height);
     const scale = base * frameState.zoom;
     const dw = img.width * scale, dh = img.height * scale;
-    const dx = (S - dw) * frameState.x;
-    const dy = (S - dh) * frameState.y;
-    ctx.save();
-    ctx.beginPath(); ctx.rect(0, 0, S, S); ctx.clip();
-    ctx.drawImage(img, dx, dy, dw, dh);
-    ctx.restore();
+    ctx.drawImage(img, (S - dw) * frameState.x, (S - dh) * frameState.y, dw, dh);
 
-    // Ring, inset so a platform's circular crop can't shave it off.
-    const ringW = Math.round(S * 0.045);
+    const RW = S * F.ring, GAP = S * F.gap;
     if (frameState.ring) {
+      // Ring sits inside the circle a platform will crop to, with a
+      // paper hairline under it so the green never muddies into a
+      // photo that happens to be green.
+      const rg = S / 2 - RW / 2 - 2;
       ctx.strokeStyle = '#90CA65';
-      ctx.lineWidth = ringW;
-      ctx.beginPath();
-      ctx.arc(S / 2, S / 2, S / 2 - ringW / 2 - 2, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.lineWidth = RW;
+      ctx.beginPath(); ctx.arc(S / 2, S / 2, rg, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = '#FBFAF7';
+      ctx.lineWidth = GAP;
+      ctx.beginPath(); ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP / 2, 0, Math.PI * 2); ctx.stroke();
     }
 
-    if (!frameAssets || frameState.badge === 'none') return;
+    if (!frameAssets || frameState.badge === 'none') { drawFrameSizes(); return; }
     const { wordmark, mark } = frameAssets;
+    const softShadow = () => {
+      ctx.shadowColor = 'rgba(20,26,30,0.28)';
+      ctx.shadowBlur = S * 0.020;
+      ctx.shadowOffsetY = S * 0.005;
+    };
+    const clearShadow = () => {
+      ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    };
 
     if (frameState.badge === 'mark-corner') {
-      // 45 degrees down-right: the spot a circular crop always keeps.
-      const d = Math.round(S * 0.30);
-      const r = S / 2 - ringW - d / 2;
+      // 45 degrees down-right: the part of the square a circular crop
+      // always keeps, and clear of where a face usually sits.
+      const d = S * F.markD;
+      const r = S / 2 - RW - d / 2 - GAP;
       const cx = S / 2 + r * Math.SQRT1_2, cy = S / 2 + r * Math.SQRT1_2;
+      softShadow();
+      ctx.fillStyle = '#FBFAF7';
+      ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.fill();
+      clearShadow();
       ctx.save();
       ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.clip();
       ctx.drawImage(mark, cx - d / 2, cy - d / 2, d, d);
       ctx.restore();
       ctx.strokeStyle = '#90CA65';
-      ctx.lineWidth = Math.round(S * 0.018);
+      ctx.lineWidth = S * 0.014;
       ctx.beginPath(); ctx.arc(cx, cy, d / 2 - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
+      drawFrameSizes();
       return;
     }
 
-    // Wordmark on a paper chip — the lockup is charcoal and would
-    // disappear into a dark photo without a ground behind it.
+    // Wordmark on a paper chip. The lockup is charcoal and would sink
+    // into a dark photo without a ground behind it.
     const top = frameState.badge === 'wordmark-top';
-    const lw = Math.round(S * 0.56);
-    const lh = Math.round(lw * (wordmark.height / wordmark.width));
-    const padX = Math.round(S * 0.035), padY = Math.round(S * 0.03);
+    const lw = S * F.chipW;
+    const lh = lw * (wordmark.height / wordmark.width);
+    const padX = S * F.chipPadX, padY = S * F.chipPadY;
     const cw = lw + padX * 2, ch = lh + padY * 2;
-    const cxp = Math.round((S - cw) / 2);
-    const cyp = top ? Math.round(S * 0.085) : Math.round(S - ch - S * 0.085);
+    const cx = (S - cw) / 2;
+    const cy = top ? S * F.chipInset : S - ch - S * F.chipInset;
+    softShadow();
     ctx.fillStyle = '#FBFAF7';
-    roundRect(ctx, cxp, cyp, cw, ch, Math.round(ch / 2));
+    roundRect(ctx, cx, cy, cw, ch, ch / 2);
     ctx.fill();
-    ctx.drawImage(wordmark, cxp + padX, cyp + padY, lw, lh);
+    clearShadow();
+    ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+    drawFrameSizes();
+  }
+
+  // A profile picture is met at 40-50px far more often than at full
+  // size. Showing the real sizes is the whole reason the badge got
+  // smaller: it is the only way a writer can see what actually survives.
+  function drawFrameSizes() {
+    const src = $('frame-canvas');
+    const wrap = $('frame-sizes');
+    if (!src || !wrap) return;
+    wrap.hidden = false;
+    wrap.querySelectorAll('canvas').forEach((mini) => {
+      const d = mini.width;
+      const g = mini.getContext('2d');
+      g.clearRect(0, 0, d, d);
+      g.save();
+      g.beginPath(); g.arc(d / 2, d / 2, d / 2, 0, Math.PI * 2); g.clip();
+      g.drawImage(src, 0, 0, d, d);
+      g.restore();
+    });
   }
 
   async function setFramePhoto(file) {
@@ -1721,6 +1770,20 @@
   /* ================================================================
      BOOT
   ================================================================ */
+  // The nav hides its scrollbar by design; without this the last tab
+  // is simply invisible on a narrow phone with nothing to suggest it.
+  function trackNavOverflow() {
+    const nav = document.querySelector('.site-nav');
+    if (!nav) return;
+    const update = () => nav.classList.toggle('is-scrollable', nav.scrollWidth > nav.clientWidth + 1);
+    update();
+    window.addEventListener('resize', update, { passive: true });
+    nav.addEventListener('scroll', () => {
+      nav.classList.toggle('is-scrollable',
+        nav.scrollWidth > nav.clientWidth + 1 && nav.scrollLeft + nav.clientWidth < nav.scrollWidth - 1);
+    }, { passive: true });
+  }
+
   function init() {
     renderBallotSummary();
     renderForums();
@@ -1734,6 +1797,7 @@
     renderTargetGrid();
     initCalculator();
     initFrameMaker();
+    trackNavOverflow();
     renderPlaybook();
     renderSources();
     const importedStep = importDraftFromURL();

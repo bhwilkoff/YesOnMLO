@@ -82,6 +82,11 @@ check(APP.includes('initFrameMaker()'), 'initFrameMaker runs at boot');
 // display:grid would beat the hidden attribute, as it did on first build.
 check(/\.frame-studio\[hidden\][^{]*\{[^}]*display:\s*none/.test(CSS), 'frame-studio[hidden] is forced to display:none');
 check(!/drawCard[\s\S]{0,400}yes-on-4a-logo/.test(APP), 'share cards still avoid the lockup (Decision 058)');
+// The badge uses the tagline-FREE wordmark: at avatar size the tagline
+// is unreadable clutter.
+check(APP.includes("assets/yes-on-4a-wordmark.png"), 'frame badge uses the tagline-free wordmark');
+check(!/frameBadges[\s\S]{0,300}yes-on-4a-logo\.png/.test(APP), 'frame badge does not use the tagline lockup');
+check(APP.includes('trackNavOverflow()'), 'nav scroll affordance is wired');
 
 // Tax model reproduces the district's own example: $600K → "< $13/mo".
 const tc = CAMPAIGN.taxCalc;

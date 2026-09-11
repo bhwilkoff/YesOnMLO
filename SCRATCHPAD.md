@@ -143,6 +143,7 @@ the entry retire when circumstances change).
 | Idea | Why declined | Revisit when |
 |---|---|---|
 | <!-- e.g. Web push notifications | Too-inconsistent UX across browsers; APNs/FCM cover the need on mobile | iOS + Android push ship and a real cross-platform request appears --> | | |
+| **Social listening / mention-tracking hub** (2026-09-11) | Steering-committee idea; the repo owner's call was "it seems like the wrong place to build it." The feasibility also never reached the question: Facebook post search has been closed since ~2015 and CrowdTangle shut down Aug 2024, Instagram and Threads have no public search, and Nextdoor has no API and forbids scraping — so the two highest-value audiences could never be covered, and what remained (Reddit, Bluesky, news RSS) is a fraction of the conversation. A person-centric version would also have published a searchable file of named neighbors' political speech from a deliberately public repo. | A vendor the committee already pays covers it, or the need narrows to one source with a real API (e.g. "watch these 3 Reddit threads") and lands somewhere other than this toolkit |
 
 ---
 

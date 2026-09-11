@@ -98,9 +98,13 @@ def main():
     wrote = []
 
     # Header lockups — trimmed so CSS `height` controls real ink, not padding.
+    # `yes-on-4a-wordmark.png` is the tagline-free lockup: at profile-picture
+    # size the tagline is unreadable and reads as clutter, so the badge uses
+    # this one. Everything else keeps the tagline.
     for src, dest in [
         ("horizontal-tagline-light.png", "yes-on-4a-logo.png"),
         ("horizontal-tagline-dark.png", "yes-on-4a-logo-dark.png"),
+        ("facebook-header.png", "yes-on-4a-wordmark.png"),
     ]:
         im = trim(Image.open(SRC / src).convert("RGBA"))
         im.save(OUT / dest, optimize=True)

@@ -118,6 +118,14 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--ink-soft); text-align: right;
 }
 
+/* Five tabs no longer fit a 375px phone, and the nav was already
+   overflow-x:auto with the scrollbar hidden — so it scrolled with no
+   hint that it could. The mask is applied by JS only when it actually
+   overflows, otherwise it would clip the last tab on a desktop. */
+.site-nav.is-scrollable {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent);
+}
 .site-nav {
   max-width: 720px; margin: var(--s3) auto 0;
   display: flex; gap: var(--s2); overflow-x: auto;
@@ -532,8 +540,10 @@ a:hover { text-decoration-thickness: 2px; }
    platforms that don't crop.
 ================================================================ */
 .frame-picker {
-  border: 2px dashed var(--hairline); border-radius: 14px;
-  padding: var(--s6); text-align: center; margin-top: var(--s6);
+  border: 2px dashed var(--hairline); border-radius: 16px;
+  padding: var(--s8) var(--s6); text-align: center; margin-top: var(--s6);
+  background: var(--surface, transparent);
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 .frame-picker.drag { border-color: var(--green); background: var(--hl-wash); }
 .frame-picker.has-photo { padding: var(--s4); }
@@ -551,14 +561,47 @@ a:hover { text-decoration-thickness: 2px; }
   .frame-studio { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 }
 .frame-canvas {
-  width: 100%; height: auto; max-width: 380px; display: block;
+  width: 100%; height: auto; max-width: 340px; display: block;
   margin: 0 auto; border-radius: 50%; touch-action: none; cursor: grab;
   background: var(--surface, var(--paper-raised));
+  box-shadow: 0 10px 30px rgba(20, 26, 30, 0.16);
 }
 .frame-canvas:active { cursor: grabbing; }
-.frame-nudge { text-align: center; margin-top: var(--s3); }
-.frame-controls { display: flex; flex-direction: column; gap: var(--s4); }
-.frame-range { width: 100%; accent-color: var(--green-deep); }
+.frame-nudge { text-align: center; margin-top: var(--s4); }
+
+/* Real-size proof strip — the badge has to survive 48px. */
+.frame-sizes {
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: var(--s6); margin-top: var(--s5, var(--s4));
+  padding-top: var(--s4); border-top: 1px solid var(--hairline);
+}
+.frame-sizes figure { margin: 0; text-align: center; }
+.frame-sizes canvas { display: block; margin: 0 auto var(--s2); border-radius: 50%; }
+.frame-sizes figcaption { font-size: 0.72rem; color: var(--ink-soft); }
+.frame-sizes-note { text-align: center; margin-top: var(--s3); }
+
+.frame-controls { display: flex; flex-direction: column; gap: var(--s5, var(--s4)); }
+.frame-controls .field-label { margin-bottom: var(--s2); }
+.frame-group { display: flex; flex-direction: column; gap: var(--s2); }
+
+/* Range needs explicit track/thumb rules; accent-color alone leaves a
+   default-looking control next to the custom segmented buttons. */
+.frame-range { width: 100%; -webkit-appearance: none; appearance: none; background: transparent; }
+.frame-range::-webkit-slider-runnable-track {
+  height: 6px; border-radius: 3px; background: var(--hairline);
+}
+.frame-range::-moz-range-track { height: 6px; border-radius: 3px; background: var(--hairline); }
+.frame-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--green-deep); border: 3px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(20, 26, 30, 0.3); margin-top: -8px;
+}
+.frame-range::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--green-deep);
+  border: 3px solid var(--paper); box-shadow: 0 1px 4px rgba(20, 26, 30, 0.3);
+}
+.frame-range:focus-visible { outline: 2px solid var(--green-deep); outline-offset: 4px; }
+
 .check-row { display: flex; align-items: center; gap: var(--s2); font-size: 0.95rem; }
-.check-row input { accent-color: var(--green-deep); }
-.frame-actions { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.check-row input { accent-color: var(--green-deep); width: 18px; height: 18px; }
+.frame-actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s2); }

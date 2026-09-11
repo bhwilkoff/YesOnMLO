@@ -45,7 +45,7 @@
     <nav class="site-nav" aria-label="Main navigation">
       <button class="nav-item active" id="nav-home" data-view="home">Start</button>
       <button class="nav-item" id="nav-studio" data-view="studio">Share studio</button>
-      <button class="nav-item" id="nav-frame" data-view="frame">Profile photo</button>
+      <button class="nav-item" id="nav-frame" data-view="frame">Your photo</button>
       <button class="nav-item" id="nav-cost" data-view="cost">The cost</button>
       <button class="nav-item" id="nav-playbook" data-view="playbook">Playbook</button>
     </nav>
@@ -305,6 +305,12 @@
             <canvas id="frame-canvas" class="frame-canvas" width="1080" height="1080"
                     aria-label="Your profile picture with the Yes on 4A frame"></canvas>
             <p class="fine frame-nudge">Drag the picture to move it.</p>
+            <div class="frame-sizes" id="frame-sizes" hidden>
+              <figure><canvas width="128" height="128"></canvas><figcaption>in a feed</figcaption></figure>
+              <figure><canvas width="48" height="48"></canvas><figcaption>on a comment</figcaption></figure>
+              <figure><canvas width="32" height="32"></canvas><figcaption>smallest</figcaption></figure>
+            </div>
+            <p class="fine frame-sizes-note">This is the size most people will actually see it. If the badge stops reading here, try <em>Corner</em> or <em>Ring only</em>.</p>
           </div>
 
           <div class="frame-controls">
