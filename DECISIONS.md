@@ -1388,6 +1388,30 @@ speaking. The site → lockup. A volunteer → star. If a future version
 ever offers an explicitly committee-sanctioned card, it needs the
 registered agent's sign-off and its own decision entry first.
 
+**Amendment (2026-09-11) — a supporter BADGE is not a post, and wears
+the lockup.** The profile-photo frame carries the official lockup on a
+volunteer's own photo, at the steering committee's request. This does
+not contradict the rule above; it clarifies its axis. A share card is
+the volunteer **speaking**, and letterhead on speech is a false claim
+about who wrote it. A profile frame is the volunteer **declaring**,
+and the whole point of a declaration is to wear the campaign's mark —
+the same act as a yard sign, a button, or a painted car window. Nobody
+reads a neighbor's profile picture as a committee publication.
+
+**Why**: the first amendment nearly blocked a feature it was never
+aimed at. Written as "volunteer → star," it reads as a ban on the
+logo touching anything a volunteer makes, which would have made the
+frame tool impossible or pushed it toward a star-only badge nobody
+asked for. The real distinction is speech vs. identity, and it is
+worth stating because the next borderline case (a printable sign, a
+Zoom background, a yard-sign mockup) resolves instantly once the axis
+is named.
+
+**How to apply**: ask what the artifact IS, not just who made it.
+Something that carries the volunteer's own words → star. Something
+whose entire content is "I support this" → lockup. When both are true
+in one artifact, the words win and it takes the star.
+
 ---
 
 ## 059 — Narrow scope: this is a storytelling toolkit, not a second campaign site

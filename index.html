@@ -45,6 +45,7 @@
     <nav class="site-nav" aria-label="Main navigation">
       <button class="nav-item active" id="nav-home" data-view="home">Start</button>
       <button class="nav-item" id="nav-studio" data-view="studio">Share studio</button>
+      <button class="nav-item" id="nav-frame" data-view="frame">Profile photo</button>
       <button class="nav-item" id="nav-cost" data-view="cost">The cost</button>
       <button class="nav-item" id="nav-playbook" data-view="playbook">Playbook</button>
     </nav>
@@ -273,6 +274,83 @@
             <span></span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- PROFILE PHOTO FRAME -->
+    <section id="view-frame" class="view" aria-label="Profile photo frame" hidden>
+      <div class="view-inner">
+        <p class="eyebrow">Wear it</p>
+        <h1 class="view-heading">Put 4A on your profile picture</h1>
+        <p class="lede">
+          A yard sign your whole feed walks past. Drop in the photo you
+          already use, nudge it into place, and save it. Your photo never
+          leaves this device &mdash; the whole thing is drawn right here
+          in your browser.
+        </p>
+
+        <div class="frame-picker" id="frame-picker">
+          <label class="btn" for="frame-file">Choose a photo</label>
+          <input type="file" id="frame-file" accept="image/*" class="sr-only">
+          <p class="fine" id="frame-hint">
+            On a phone this opens your camera roll. On a computer you can
+            also drag a photo here, or copy your current profile picture
+            and press <kbd>&#8984;V</kbd> / <kbd>Ctrl&nbsp;V</kbd>.
+          </p>
+          <p class="fine" id="frame-status" role="status"></p>
+        </div>
+
+        <div class="frame-studio" id="frame-studio" hidden>
+          <div class="frame-stage">
+            <canvas id="frame-canvas" class="frame-canvas" width="1080" height="1080"
+                    aria-label="Your profile picture with the Yes on 4A frame"></canvas>
+            <p class="fine frame-nudge">Drag the picture to move it.</p>
+          </div>
+
+          <div class="frame-controls">
+            <label class="field-label" for="frame-zoom">Zoom</label>
+            <input type="range" id="frame-zoom" class="frame-range" min="100" max="300" value="100">
+
+            <p class="field-label">Badge</p>
+            <div class="seg" id="frame-badge" role="group" aria-label="Badge style">
+              <button type="button" class="seg-btn selected" data-badge="wordmark-bottom" aria-pressed="true">Bottom</button>
+              <button type="button" class="seg-btn" data-badge="wordmark-top" aria-pressed="false">Top</button>
+              <button type="button" class="seg-btn" data-badge="mark-corner" aria-pressed="false">Corner</button>
+              <button type="button" class="seg-btn" data-badge="none" aria-pressed="false">Ring only</button>
+            </div>
+
+            <label class="check-row">
+              <input type="checkbox" id="frame-ring" checked> Green ring
+            </label>
+
+            <div class="frame-actions">
+              <button class="btn" id="frame-download">Save the picture</button>
+              <button class="btn btn-quiet" id="frame-share" hidden>Send it to an app&hellip;</button>
+            </div>
+            <button class="link-btn" id="frame-reset">Start over with a different photo</button>
+          </div>
+        </div>
+
+        <div id="frame-next" hidden>
+          <div class="rule"></div>
+          <h2 class="section-title">Saved. Now the part that actually moves someone.</h2>
+          <p class="body">
+            Set it as your profile picture on Facebook, Instagram, or
+            wherever you post. Then, because a frame tells people
+            <em>that</em> you're voting yes and nothing about
+            <em>why</em>, put one sentence underneath it.
+          </p>
+          <p class="cta-row">
+            <button class="btn" data-view="studio" data-wstep="1">Write the why &rarr;</button>
+          </p>
+        </div>
+
+        <div class="rule"></div>
+        <p class="fine">
+          Nothing here is uploaded. The picture is drawn on a canvas in
+          your browser and saved straight to your device. No account, no
+          server, no copy kept.
+        </p>
       </div>
     </section>
 

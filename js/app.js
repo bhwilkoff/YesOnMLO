@@ -48,7 +48,7 @@
   /* ================================================================
      VIEW SYSTEM
   ================================================================ */
-  const VIEW_NAMES = ['home', 'studio', 'cost', 'playbook'];
+  const VIEW_NAMES = ['home', 'studio', 'frame', 'cost', 'playbook'];
   // Composed from CAMPAIGN.measure (Decision 062), and the ballot name
   // leads because a narrow tab truncates from the right — "4A" is the
   // half a voter needs to survive the truncation. showView() overwrites
@@ -57,6 +57,7 @@
   const VIEW_TITLES = {
     home: `${CAMPAIGN.measure.campaignName} — Tell the Story of Our Schools`,
     studio: `${CAMPAIGN.measure.campaignName} — Share Studio`,
+    frame: `${CAMPAIGN.measure.campaignName} — Profile Photo`,
     cost: `${CAMPAIGN.measure.campaignName} — What It Costs`,
     playbook: `${CAMPAIGN.measure.campaignName} — Team Playbook`,
   };
@@ -1438,6 +1439,261 @@
   }
 
   /* ================================================================
+     PROFILE PHOTO FRAME
+
+     A supporter badge, not a post — so it wears the official lockup
+     (Decision 058, 2026-09-11 amendment). Everything happens on a
+     canvas in the browser: the photo is never uploaded, which is both
+     the privacy promise printed on the page and the reason this works
+     with no backend at all (Decision 053).
+
+     Facebook has no API to SET a profile picture from a third-party
+     site, and reading the current one would need Facebook Login, a
+     Meta app, and review. So the floor is one save and one set; we
+     remove every OTHER round trip instead — pick, paste, or drop, then
+     hand the file straight to an app via the share sheet.
+  ================================================================ */
+  const FRAME_SIZE = 1080;
+  const frameState = { img: null, zoom: 1, x: 0.5, y: 0.5, badge: 'wordmark-bottom', ring: true };
+  let frameAssets = null;
+
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = reject;
+      i.src = src;
+    });
+  }
+
+  async function frameBadges() {
+    if (!frameAssets) {
+      const [wordmark, mark] = await Promise.all([
+        loadImage('assets/yes-on-4a-logo.png'),
+        loadImage('assets/icon-512.png'),
+      ]);
+      frameAssets = { wordmark, mark };
+    }
+    return frameAssets;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawFrame() {
+    const c = $('frame-canvas');
+    if (!c || !frameState.img) return;
+    const S = FRAME_SIZE;
+    c.width = S; c.height = S;
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, S, S);
+
+    // Photo: cover the square, then honour zoom + drag offset.
+    const img = frameState.img;
+    const base = Math.max(S / img.width, S / img.height);
+    const scale = base * frameState.zoom;
+    const dw = img.width * scale, dh = img.height * scale;
+    const dx = (S - dw) * frameState.x;
+    const dy = (S - dh) * frameState.y;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, S, S); ctx.clip();
+    ctx.drawImage(img, dx, dy, dw, dh);
+    ctx.restore();
+
+    // Ring, inset so a platform's circular crop can't shave it off.
+    const ringW = Math.round(S * 0.045);
+    if (frameState.ring) {
+      ctx.strokeStyle = '#90CA65';
+      ctx.lineWidth = ringW;
+      ctx.beginPath();
+      ctx.arc(S / 2, S / 2, S / 2 - ringW / 2 - 2, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    if (!frameAssets || frameState.badge === 'none') return;
+    const { wordmark, mark } = frameAssets;
+
+    if (frameState.badge === 'mark-corner') {
+      // 45 degrees down-right: the spot a circular crop always keeps.
+      const d = Math.round(S * 0.30);
+      const r = S / 2 - ringW - d / 2;
+      const cx = S / 2 + r * Math.SQRT1_2, cy = S / 2 + r * Math.SQRT1_2;
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.clip();
+      ctx.drawImage(mark, cx - d / 2, cy - d / 2, d, d);
+      ctx.restore();
+      ctx.strokeStyle = '#90CA65';
+      ctx.lineWidth = Math.round(S * 0.018);
+      ctx.beginPath(); ctx.arc(cx, cy, d / 2 - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
+      return;
+    }
+
+    // Wordmark on a paper chip — the lockup is charcoal and would
+    // disappear into a dark photo without a ground behind it.
+    const top = frameState.badge === 'wordmark-top';
+    const lw = Math.round(S * 0.56);
+    const lh = Math.round(lw * (wordmark.height / wordmark.width));
+    const padX = Math.round(S * 0.035), padY = Math.round(S * 0.03);
+    const cw = lw + padX * 2, ch = lh + padY * 2;
+    const cxp = Math.round((S - cw) / 2);
+    const cyp = top ? Math.round(S * 0.085) : Math.round(S - ch - S * 0.085);
+    ctx.fillStyle = '#FBFAF7';
+    roundRect(ctx, cxp, cyp, cw, ch, Math.round(ch / 2));
+    ctx.fill();
+    ctx.drawImage(wordmark, cxp + padX, cyp + padY, lw, lh);
+  }
+
+  async function setFramePhoto(file) {
+    const status = $('frame-status');
+    if (!file || !file.type.startsWith('image/')) {
+      if (status) status.textContent = 'That file is not an image. Try a JPG or PNG.';
+      return;
+    }
+    try {
+      // createImageBitmap honours EXIF rotation; phone photos arrive sideways without it.
+      const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      frameState.img = bmp;
+    } catch {
+      try {
+        frameState.img = await loadImage(URL.createObjectURL(file));
+      } catch {
+        if (status) status.textContent = "That image could not be opened. Try a different one.";
+        return;
+      }
+    }
+    Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5 });
+    $('frame-zoom').value = 100;
+    if (status) status.textContent = '';
+    $('frame-studio').hidden = false;
+    $('frame-picker').classList.add('has-photo');
+    try {
+      await frameBadges();
+    } catch {
+      // The frame still works without the badge art; a ring-only
+      // picture beats a dead screen.
+      if (status) status.textContent = 'The badge art did not load. The ring still works.';
+      frameState.badge = 'none';
+    }
+    drawFrame();
+    $('frame-studio').scrollIntoView({ block: 'nearest' });
+  }
+
+  function initFrameMaker() {
+    const picker = $('frame-picker');
+    const canvas = $('frame-canvas');
+    if (!picker || !canvas) return;
+
+    $('frame-file').addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) setFramePhoto(e.target.files[0]);
+    });
+
+    ['dragenter', 'dragover'].forEach((n) => picker.addEventListener(n, (e) => {
+      e.preventDefault(); picker.classList.add('drag');
+    }));
+    ['dragleave', 'drop'].forEach((n) => picker.addEventListener(n, (e) => {
+      e.preventDefault(); picker.classList.remove('drag');
+    }));
+    picker.addEventListener('drop', (e) => {
+      const f = e.dataTransfer?.files?.[0];
+      if (f) setFramePhoto(f);
+    });
+
+    // Paste only counts while this view is open, or it would hijack the
+    // draft textarea in the studio.
+    document.addEventListener('paste', (e) => {
+      if ($('view-frame').hidden) return;
+      for (const item of e.clipboardData?.items || []) {
+        if (item.type.startsWith('image/')) {
+          const f = item.getAsFile();
+          if (f) { e.preventDefault(); setFramePhoto(f); }
+          return;
+        }
+      }
+    });
+
+    $('frame-zoom').addEventListener('input', (e) => {
+      frameState.zoom = Number(e.target.value) / 100;
+      drawFrame();
+    });
+
+    $('frame-badge').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-badge]');
+      if (!b) return;
+      frameState.badge = b.dataset.badge;
+      [...$('frame-badge').querySelectorAll('.seg-btn')].forEach((el) => {
+        const on = el === b;
+        el.classList.toggle('selected', on);
+        el.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      drawFrame();
+    });
+
+    $('frame-ring').addEventListener('change', (e) => {
+      frameState.ring = e.target.checked;
+      drawFrame();
+    });
+
+    // Drag to reposition, pointer events so it works with touch.
+    let dragging = false, lastX = 0, lastY = 0;
+    canvas.addEventListener('pointerdown', (e) => {
+      if (!frameState.img) return;
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const rect = canvas.getBoundingClientRect();
+      frameState.x = Math.min(1, Math.max(0, frameState.x + (e.clientX - lastX) / rect.width));
+      frameState.y = Math.min(1, Math.max(0, frameState.y + (e.clientY - lastY) / rect.height));
+      lastX = e.clientX; lastY = e.clientY;
+      drawFrame();
+    });
+    ['pointerup', 'pointercancel'].forEach((n) =>
+      canvas.addEventListener(n, () => { dragging = false; }));
+
+    $('frame-download').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.download = 'yes-on-4a-profile.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      $('frame-next').hidden = false;
+      $('frame-next').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    if (canShareFiles) {
+      const share = $('frame-share');
+      share.hidden = false;
+      share.addEventListener('click', async () => {
+        const blob = await new Promise((r) => canvas.toBlob(r, 'image/png'));
+        if (!blob) return;
+        const file = new File([blob], 'yes-on-4a-profile.png', { type: 'image/png' });
+        try {
+          await navigator.share({ files: [file], title: 'My Yes on 4A profile picture' });
+          $('frame-next').hidden = false;
+        } catch (err) {
+          if (err.name !== 'AbortError') $('frame-status').textContent =
+            'That app did not take the picture. Save it instead, then set it from your photos.';
+        }
+      });
+    }
+
+    $('frame-reset').addEventListener('click', () => {
+      frameState.img = null;
+      $('frame-studio').hidden = true;
+      $('frame-next').hidden = true;
+      $('frame-file').value = '';
+      picker.classList.remove('has-photo');
+    });
+  }
+
+  /* ================================================================
      PLAYBOOK + SOURCES
   ================================================================ */
   function renderPlaybook() {
@@ -1477,6 +1733,7 @@
     initCardMaker();
     renderTargetGrid();
     initCalculator();
+    initFrameMaker();
     renderPlaybook();
     renderSources();
     const importedStep = importDraftFromURL();

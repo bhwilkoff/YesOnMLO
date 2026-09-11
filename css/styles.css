@@ -522,3 +522,43 @@ a:hover { text-decoration-thickness: 2px; }
 .review-card-toggle { font-size: 0.85rem; font-weight: 600; display: flex; gap: 6px; align-items: center; cursor: pointer; }
 .card-send-row { margin-top: var(--s3); }
 .card-send-row .fine { margin-top: var(--s2); margin-bottom: 0; }
+
+/* ================================================================
+   Profile photo frame
+
+   The canvas is square because platforms crop to a circle inscribed
+   in it; the preview is rounded so a writer sees what Facebook will
+   actually show, while the exported PNG keeps its corners for the
+   platforms that don't crop.
+================================================================ */
+.frame-picker {
+  border: 2px dashed var(--hairline); border-radius: 14px;
+  padding: var(--s6); text-align: center; margin-top: var(--s6);
+}
+.frame-picker.drag { border-color: var(--green); background: var(--hl-wash); }
+.frame-picker.has-photo { padding: var(--s4); }
+.frame-picker .fine { margin-top: var(--s3); }
+.frame-picker kbd {
+  font: inherit; background: var(--surface, var(--paper-raised));
+  border: 1px solid var(--hairline); border-radius: 4px; padding: 0 4px;
+}
+
+/* `display` here would override the hidden attribute, exactly as
+   .view and .wstep already guard against elsewhere in this file. */
+.frame-studio { margin-top: var(--s6); display: grid; gap: var(--s6); }
+.frame-studio[hidden], #frame-next[hidden] { display: none; }
+@media (min-width: 720px) {
+  .frame-studio { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+}
+.frame-canvas {
+  width: 100%; height: auto; max-width: 380px; display: block;
+  margin: 0 auto; border-radius: 50%; touch-action: none; cursor: grab;
+  background: var(--surface, var(--paper-raised));
+}
+.frame-canvas:active { cursor: grabbing; }
+.frame-nudge { text-align: center; margin-top: var(--s3); }
+.frame-controls { display: flex; flex-direction: column; gap: var(--s4); }
+.frame-range { width: 100%; accent-color: var(--green-deep); }
+.check-row { display: flex; align-items: center; gap: var(--s2); font-size: 0.95rem; }
+.check-row input { accent-color: var(--green-deep); }
+.frame-actions { display: flex; flex-wrap: wrap; gap: var(--s3); }

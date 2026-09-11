@@ -25,6 +25,14 @@
   Citizens for LPS logo files were deleted per the branding
   one-canonical-master rule. Share cards deliberately keep the star,
   NOT the lockup — Decision 058 amendment.
+- **Canvas features cannot be verified in headless Chrome.** The frame
+  maker cost several wasted cycles to this: under
+  `--virtual-time-budget`, `setTimeout` fires instantly in virtual time
+  while real image loads are still in flight, so `await` on badge art
+  looks like a hang and probe reads land before the work finishes. It
+  reported a broken feature that was fine. Drive canvas work through
+  the real browser (claude-in-chrome) against a local server; keep
+  headless for static layout and pixel measurement only.
 - **Active milestone**: M4 = certification updates + team tools
 - **Last session**: 2026-09-02
 - **Next actions**:

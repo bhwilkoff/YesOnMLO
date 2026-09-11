@@ -25,6 +25,10 @@ vm.createContext(ctx);
 vm.runInContext(read('js/data.js') + '\nthis.SOURCES = SOURCES; this.CAMPAIGN = CAMPAIGN;', ctx);
 const { SOURCES, CAMPAIGN } = ctx;
 
+const APP = read('js/app.js');
+const HTML = read('index.html');
+const CSS = read('css/styles.css');
+
 let pass = 0, fail = 0;
 const check = (cond, msg) => { if (cond) pass++; else { fail++; console.error('FAIL:', msg); } };
 
@@ -67,6 +71,17 @@ check(!CAMPAIGN.forums.sessions.some((s) => cm.sessions.some((c) => c.date === s
 // Render-time contract: app.js reads all three of these. A missing key
 // is a blank line on the page, not an exception, so assert them here.
 check(['short', 'long', 'atDistrictForums'].every((k) => typeof CAMPAIGN.carPainting?.[k] === 'string'), 'carPainting carries the strings app.js renders');
+
+// Profile-photo frame. The canvas work can only be proven in a real
+// browser (headless virtual time starves the badge image loads), so
+// these guard the wiring the DOM depends on.
+check(/VIEW_NAMES\s*=\s*\[[^\]]*'frame'/.test(APP), 'frame is a registered view');
+check(APP.includes('initFrameMaker()'), 'initFrameMaker runs at boot');
+['frame-canvas', 'frame-file', 'frame-studio', 'frame-zoom', 'frame-badge', 'frame-ring', 'frame-download']
+  .forEach((id) => check(HTML.includes(`id="${id}"`), `frame markup has #${id}`));
+// display:grid would beat the hidden attribute, as it did on first build.
+check(/\.frame-studio\[hidden\][^{]*\{[^}]*display:\s*none/.test(CSS), 'frame-studio[hidden] is forced to display:none');
+check(!/drawCard[\s\S]{0,400}yes-on-4a-logo/.test(APP), 'share cards still avoid the lockup (Decision 058)');
 
 // Tax model reproduces the district's own example: $600K → "< $13/mo".
 const tc = CAMPAIGN.taxCalc;
