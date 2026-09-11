@@ -16,6 +16,12 @@ python3 tools/render_brand_assets.py
 | `horizontal-tagline-dark.*` | same | green + white | dark grounds |
 | `stacked-light.*` | cap above wordmark | charcoal + green | light grounds |
 | `stacked-dark.*` | same | green + white | dark grounds |
+| `facebook-header.png` | horizontal, **no tagline** | charcoal + green | the Facebook Page cover |
+
+`facebook-header.png` was supplied by the campaign organizer
+(2026-09-11) specifically for the Page cover. It is the only lockup
+here without the "INVEST FOR A STRONG LPS" tagline — do not swap it
+for one of the others on the assumption they are interchangeable.
 
 `.ai` is the vector source; `.png` is the campaign's own transparent
 export at the largest size they supplied (540px wide). **The PNGs cap

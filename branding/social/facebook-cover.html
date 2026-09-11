@@ -8,7 +8,12 @@
 
       python3 tools/render_social_cards.py facebook-cover
 
-  Two things dictate this layout, and the previous cover lost to both:
+  The artwork is the campaign's own supplied header (organizer,
+  2026-09-11) — branding/yes-on-4a/facebook-header.png. Note it carries
+  NO tagline, unlike the other lockups. Nothing is added to it here;
+  this master only positions it so no part is cropped on any screen.
+
+  Two things dictate this layout:
 
   1. Verified on the live Page (2026-09-09, owner view): the profile
      picture sits BELOW the cover on desktop, not overlapping it — so a
@@ -31,16 +36,26 @@ body{width:1640px;height:624px;background:var(--paper);overflow:hidden;
      border-top:14px solid var(--green);
      display:flex;justify-content:center}
 /* Mobile-safe width, and the bottom third reserved for the avatar. */
-.safe{width:78%;height:100%;padding-bottom:70px;
-      display:flex;flex-direction:column;align-items:center;justify-content:center}
-.lockup{height:212px;width:auto}
-.tag{margin-top:22px;font-weight:700;font-size:30px;letter-spacing:.13em;
-     text-transform:uppercase;color:var(--green-deep);
-     background:rgba(144,202,101,.32);padding:8px 20px;text-align:center}
+/* Artwork is placed by WIDTH inside the mobile-safe centre, never
+   scaled to fill: the supplied lockup is aspect ~3.02 and the cover is
+   2.63, so fitting by height would push the ends off the sides. The
+   bottom margin is larger than the top because the mobile app floats
+   the profile picture over the cover's lower centre even though
+   desktop does not. */
+.safe{width:100%;height:100%;
+      padding:0 0 91px;
+      display:flex;align-items:center;justify-content:center}
+/* Sized by WIDTH. An earlier version also set max-height, which made
+   height the binding constraint and shrank the logo to 53% of the
+   canvas while 385px of margin sat unused on each side. The supplied
+   PNG carries its own transparent padding (ink is ~95% of its width,
+   72% of its height), so the visible ink lands near 69% of the cover
+   width — inside the mobile-safe centre with ~160px clear at the
+   bottom for the mobile profile picture. */
+.lockup{width:70%;height:auto}
 </style></head>
 <body>
   <div class="safe">
-    <img class="lockup" src="../../assets/yes-on-4a-logo.png" alt="">
-    <p class="tag">Littleton Public Schools &middot; November 3, 2026</p>
+    <img class="lockup" src="../yes-on-4a/facebook-header.png" alt="">
   </div>
 </body></html>
