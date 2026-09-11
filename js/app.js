@@ -1463,16 +1463,19 @@
   // Ring used to mean "no badge", which read as doing nothing because
   // every design already had a ring — it now carries the name around
   // the edge and leaves the photo completely alone.
+  // Designs say WHAT the badge is. Where it goes is the user's call —
+  // only they know which part of their photo matters. Two attempts at
+  // guessing a safe corner both failed, on opposite sides.
   const FRAME_DESIGNS = {
     badge:  { badge: 'wordmark', chip: 'solid' },
     clean:  { badge: 'wordmark', chip: 'clear' },
-    corner: { badge: 'mark',     chip: 'solid' },
+    icon:   { badge: 'mark',     chip: 'solid' },
     ring:   { badge: 'none',     chip: 'solid', ringText: 'YES ON 4A' },
   };
 
   const frameState = {
     img: null, zoom: 1, x: 0.5, y: 0.5, rot: 0,
-    design: 'badge', url: false, soften: false, cutout: false,
+    design: 'badge', url: false, soften: false, cutout: false, badgePos: null,
   };
   let frameAssets = null;
   let orientedCache = { rot: null, canvas: null };
@@ -1594,6 +1597,23 @@
     ctx.drawImage(masked, 0, 0);
   }
 
+  // Where the badge currently sits, for hit-testing the pointer.
+  let badgeHit = null;
+
+  // Clamp a badge centre so the whole badge stays inside the circle a
+  // platform crops to. Treating it as a disc of half-diagonal radius
+  // means a chip can never poke a corner out, at any position.
+  function clampBadge(cx, cy, w, h, S) {
+    const R = S / 2 - S * 0.012;
+    const reach = Math.hypot(w, h) / 2;
+    const max = Math.max(0, R - reach);
+    const dx = cx - S / 2, dy = cy - S / 2;
+    const dist = Math.hypot(dx, dy);
+    if (dist <= max) return { x: cx, y: cy };
+    const k = max / (dist || 1);
+    return { x: S / 2 + dx * k, y: S / 2 + dy * k };
+  }
+
   function applyCutout(ctx, S) {
     if (!frameState.cutout) return;
     ctx.save();
@@ -1646,7 +1666,7 @@
         Boolean(design.ringText));
     }
 
-    if (!frameAssets || design.badge === 'none') { applyCutout(ctx, S); drawFrameSizes(); return; }
+    if (!frameAssets || design.badge === 'none') { badgeHit = null; applyCutout(ctx, S); drawFrameSizes(); return; }
     const { wordmark, mark } = frameAssets;
     const softShadow = () => {
       ctx.shadowColor = 'rgba(20,26,30,0.28)';
@@ -1665,8 +1685,16 @@
       // lands just inside the crop, which still overlaps the ring band
       // so it reads as part of the frame rather than a sticker.
       const d = S * F.markD;
-      const r = S / 2 - RW * 0.25 - d / 2;
-      const mx = S / 2 + r * Math.SQRT1_2, my = S / 2 + r * Math.SQRT1_2;
+      if (!frameState.badgePos) {
+        const r = S / 2 - RW * 0.25 - d / 2;
+        frameState.badgePos = {
+          x: (S / 2 + r * Math.SQRT1_2) / S,
+          y: (S / 2 + r * Math.SQRT1_2) / S,
+        };
+      }
+      const mc = clampBadge(frameState.badgePos.x * S, frameState.badgePos.y * S, d, d, S);
+      const mx = mc.x, my = mc.y;
+      badgeHit = { x: mx - d / 2, y: my - d / 2, w: d, h: d };
       softShadow();
       ctx.fillStyle = '#FBFAF7';
       ctx.beginPath(); ctx.arc(mx, my, d / 2, 0, Math.PI * 2); ctx.fill();
@@ -1686,8 +1714,16 @@
     const lh = lw * (wordmark.height / wordmark.width);
     const padX = S * F.chipPadX, padY = S * F.chipPadY;
     const cw = lw + padX * 2, ch = lh + padY * 2;
-    const cx = (S - cw) / 2;
-    const cy = S - ch - S * F.chipInset - (frameState.url ? RW * 0.5 : 0);
+    if (!frameState.badgePos) {
+      frameState.badgePos = {
+        x: 0.5,
+        y: (S - ch / 2 - S * F.chipInset - (frameState.url ? RW * 0.5 : 0)) / S,
+      };
+    }
+    const bc = clampBadge(frameState.badgePos.x * S, frameState.badgePos.y * S, cw, ch, S);
+    const cx = bc.x - cw / 2;
+    const cy = bc.y - ch / 2;
+    badgeHit = { x: cx, y: cy, w: cw, h: ch };
     if (design.chip === 'solid') {
       softShadow();
       ctx.fillStyle = '#FBFAF7';
@@ -1742,7 +1778,7 @@
         return;
       }
     }
-    Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5, rot: 0 });
+    Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5, rot: 0, badgePos: null });
     orientedCache = { rot: null, canvas: null };
     $('frame-zoom').value = 100;
     if (status) status.textContent = '';
@@ -1803,6 +1839,7 @@
       const b = e.target.closest('[data-design]');
       if (!b) return;
       frameState.design = b.dataset.design;
+      frameState.badgePos = null;
       [...$('frame-design').querySelectorAll('.seg-btn')].forEach((el) => {
         const on = el === b;
         el.classList.toggle('selected', on);
@@ -1816,7 +1853,7 @@
       drawFrame();
     });
     $('frame-recenter').addEventListener('click', () => {
-      Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5 });
+      Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5, badgePos: null });
       $('frame-zoom').value = 100;
       drawFrame();
     });
@@ -1830,7 +1867,24 @@
 
     // Drag, and pinch when a second finger arrives.
     const pointers = new Map();
-    let pinchStart = 0, pinchZoom = 1;
+    let pinchStart = 0, pinchZoom = 1, grabbing = null;
+
+    // Canvas coordinates from a pointer event; the element is displayed
+    // much smaller than the 1080 backing store.
+    const toCanvas = (e) => {
+      const r = canvas.getBoundingClientRect();
+      return {
+        x: ((e.clientX - r.left) / r.width) * FRAME_SIZE,
+        y: ((e.clientY - r.top) / r.height) * FRAME_SIZE,
+      };
+    };
+    const overBadge = (e) => {
+      if (!badgeHit) return false;
+      const p = toCanvas(e);
+      const pad = FRAME_SIZE * 0.01;
+      return p.x >= badgeHit.x - pad && p.x <= badgeHit.x + badgeHit.w + pad
+          && p.y >= badgeHit.y - pad && p.y <= badgeHit.y + badgeHit.h + pad;
+    };
     const spread = () => {
       const [a, b] = [...pointers.values()];
       return Math.hypot(a.x - b.x, a.y - b.y);
@@ -1839,7 +1893,8 @@
       if (!frameState.img) return;
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       canvas.setPointerCapture(e.pointerId);
-      if (pointers.size === 2) { pinchStart = spread(); pinchZoom = frameState.zoom; }
+      if (pointers.size === 1) grabbing = overBadge(e) ? 'badge' : 'photo';
+      if (pointers.size === 2) { pinchStart = spread(); pinchZoom = frameState.zoom; grabbing = 'photo'; }
     });
     canvas.addEventListener('pointermove', (e) => {
       const prev = pointers.get(e.pointerId);
@@ -1850,14 +1905,29 @@
         return;
       }
       const rect = canvas.getBoundingClientRect();
-      frameState.x = Math.min(1, Math.max(0, frameState.x + (e.clientX - prev.x) / rect.width));
-      frameState.y = Math.min(1, Math.max(0, frameState.y + (e.clientY - prev.y) / rect.height));
+      if (grabbing === 'badge' && frameState.badgePos) {
+        frameState.badgePos = {
+          x: frameState.badgePos.x + (e.clientX - prev.x) / rect.width,
+          y: frameState.badgePos.y + (e.clientY - prev.y) / rect.height,
+        };
+      } else {
+        frameState.x = Math.min(1, Math.max(0, frameState.x + (e.clientX - prev.x) / rect.width));
+        frameState.y = Math.min(1, Math.max(0, frameState.y + (e.clientY - prev.y) / rect.height));
+      }
       drawFrame();
+    });
+
+    // Show which of the two things a drag would move.
+    canvas.addEventListener('pointermove', (e) => {
+      if (pointers.size === 0 && frameState.img) {
+        canvas.style.cursor = overBadge(e) ? 'move' : 'grab';
+      }
     });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach((n) =>
       canvas.addEventListener(n, (e) => {
         pointers.delete(e.pointerId);
         if (pointers.size < 2) pinchStart = 0;
+        if (pointers.size === 0) grabbing = null;
       }));
 
     canvas.addEventListener('wheel', (e) => {

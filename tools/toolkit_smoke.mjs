@@ -94,9 +94,14 @@ check(APP.includes('FRAME_DESIGNS'), 'frame designs are presets, not separate to
 // set where every design has a ring looked like doing nothing.
 check(/ring:\s*\{[^}]*ringText/.test(APP), 'the ring design carries text, not just an empty ring');
 check(!/banner:\s*\{/.test(APP), 'the chord banner design is gone');
+check(!/corner:\s*\{/.test(APP), 'no fixed-corner design; placement is the user\'s');
 // The corner mark is anchored by its OUTER EDGE so it provably lands
 // inside the circular crop. Anchoring by centre put 41% of it outside.
-check(/const r = S \/ 2 - RW \* 0\.25 - d \/ 2;/.test(APP), 'corner mark is anchored by its outer edge');
+// The badge is placed by the user and clamped so it can never be
+// sheared by the circular crop, wherever they put it.
+check(APP.includes('function clampBadge'), 'badge position is clamped inside the crop circle');
+check(/badgePos/.test(APP), 'badge position is user state');
+check(APP.includes("grabbing = overBadge(e) ? 'badge' : 'photo'"), 'dragging routes between badge and photo');
 // .fine caps at 68ch; inside a centred box it needs auto margins.
 check(/\.frame-picker \.fine\s*\{[^}]*margin-inline:\s*auto/.test(CSS), 'picker copy is centred, not just centre-aligned');
 check(/pointers\.size >= 2/.test(APP), 'pinch-to-zoom is handled');
