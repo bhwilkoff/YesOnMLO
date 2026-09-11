@@ -77,7 +77,7 @@ check(['short', 'long', 'atDistrictForums'].every((k) => typeof CAMPAIGN.carPain
 // these guard the wiring the DOM depends on.
 check(/VIEW_NAMES\s*=\s*\[[^\]]*'frame'/.test(APP), 'frame is a registered view');
 check(APP.includes('initFrameMaker()'), 'initFrameMaker runs at boot');
-['frame-canvas', 'frame-file', 'frame-studio', 'frame-zoom', 'frame-badge', 'frame-ring', 'frame-download']
+['frame-canvas', 'frame-file', 'frame-studio', 'frame-zoom', 'frame-download']
   .forEach((id) => check(HTML.includes(`id="${id}"`), `frame markup has #${id}`));
 // display:grid would beat the hidden attribute, as it did on first build.
 check(/\.frame-studio\[hidden\][^{]*\{[^}]*display:\s*none/.test(CSS), 'frame-studio[hidden] is forced to display:none');
@@ -85,9 +85,17 @@ check(!/drawCard[\s\S]{0,400}yes-on-4a-logo/.test(APP), 'share cards still avoid
 // The badge uses the tagline-FREE wordmark: at avatar size the tagline
 // is unreadable clutter.
 check(APP.includes("assets/yes-on-4a-wordmark.png"), 'frame badge uses the tagline-free wordmark');
-check(!/frameBadges[\s\S]{0,300}yes-on-4a-logo\.png/.test(APP), 'frame badge does not use the tagline lockup');
+check(!/frameBadges[\s\S]{0,400}yes-on-4a-logo\.png/.test(APP), 'frame badge does not use the tagline lockup');
 check(APP.includes('trackNavOverflow()'), 'nav scroll affordance is wired');
-['frame-chip', 'frame-cutout'].forEach((id) => check(HTML.includes(`id="${id}"`), `frame markup has #${id}`));
+['frame-design', 'frame-cutout', 'frame-rotate', 'frame-recenter', 'frame-url', 'frame-soften']
+  .forEach((id) => check(HTML.includes(`id="${id}"`), `frame markup has #${id}`));
+check(APP.includes('FRAME_DESIGNS'), 'frame designs are presets, not separate toggles');
+check(/pointers\.size >= 2/.test(APP), 'pinch-to-zoom is handled');
+check(APP.includes("addEventListener('wheel'"), 'wheel zoom is handled');
+// The link on the ring points at the campaign, never this toolkit
+// (Decision 059 amendment).
+check(APP.includes("'citizensforlps.org'"), 'ring link is the campaign site');
+check(!/drawArcText\([^)]*yeson4a/.test(APP), 'ring link is not the toolkit domain');
 check(APP.includes("globalCompositeOperation = 'destination-in'"), 'transparent-corner cutout is implemented');
 
 // Tax model reproduces the district's own example: $600K → "< $13/mo".

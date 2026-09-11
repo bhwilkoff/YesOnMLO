@@ -1454,8 +1454,24 @@
      hand the file straight to an app via the share sheet.
   ================================================================ */
   const FRAME_SIZE = 1080;
-  const frameState = { img: null, zoom: 1, x: 0.5, y: 0.5, badge: 'wordmark-bottom', ring: true, chip: 'solid', cutout: false };
+
+  // One picker instead of four. Each design bundles the decisions that
+  // used to be separate controls (ring, badge, badge background), which
+  // is what keeps this usable for someone who just wants a picture.
+  const FRAME_DESIGNS = {
+    badge:  { badge: 'wordmark', chip: 'solid' },
+    clean:  { badge: 'wordmark', chip: 'clear' },
+    banner: { badge: 'band',     chip: 'solid' },
+    corner: { badge: 'mark',     chip: 'solid' },
+    ring:   { badge: 'none',     chip: 'solid' },
+  };
+
+  const frameState = {
+    img: null, zoom: 1, x: 0.5, y: 0.5, rot: 0,
+    design: 'badge', url: false, soften: false, cutout: false,
+  };
   let frameAssets = null;
+  let orientedCache = { rot: null, canvas: null };
 
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -1468,13 +1484,13 @@
 
   async function frameBadges() {
     if (!frameAssets) {
-      const [wordmark, mark] = await Promise.all([
-        // The tagline-free lockup: at avatar size "INVEST FOR A STRONG
-        // LPS" is unreadable and only adds clutter to a photo.
+      const [wordmark, reversed, mark] = await Promise.all([
+        // Tagline-free: at avatar size the tagline is unreadable clutter.
         loadImage('assets/yes-on-4a-wordmark.png'),
+        loadImage('assets/yes-on-4a-wordmark-reversed.png'),
         loadImage('assets/icon-512.png'),
       ]);
-      frameAssets = { wordmark, mark };
+      frameAssets = { wordmark, reversed, mark };
     }
     return frameAssets;
   }
@@ -1489,113 +1505,88 @@
     ctx.closePath();
   }
 
-  // Proportions, all as fractions of the 1080 canvas so the art scales
-  // with any export size.
+  // Proportions as fractions of the 1080 canvas so the art scales with
+  // any export size.
   const F = {
-    ring: 0.034,        // green ring thickness
-    gap: 0.009,         // paper hairline that separates ring from photo
-    chipW: 0.46,        // wordmark width inside the chip
-    chipPadX: 0.026,    // tight padding: the pill should hug the mark,
-    chipPadY: 0.022,    // not add a slab of white over the photo
-    chipInset: 0.072,   // distance from the canvas edge to the chip
-    markD: 0.245,       // corner mark diameter
+    ring: 0.034, ringUrl: 0.062, gap: 0.009,
+    chipW: 0.46, chipPadX: 0.026, chipPadY: 0.022, chipInset: 0.072,
+    markD: 0.245, bandH: 0.20, bandW: 0.50,
   };
 
-  function drawFrame() {
-    const c = $('frame-canvas');
-    if (!c || !frameState.img) return;
-    const S = FRAME_SIZE;
-    c.width = S; c.height = S;
-    const ctx = c.getContext('2d');
-    ctx.clearRect(0, 0, S, S);
-
-    // Photo: cover the square, then honour zoom + drag offset.
+  // Rotation is baked into an offscreen copy so the cover maths below
+  // never has to care which way up the photo is.
+  function orientedPhoto() {
     const img = frameState.img;
-    const base = Math.max(S / img.width, S / img.height);
-    const scale = base * frameState.zoom;
-    const dw = img.width * scale, dh = img.height * scale;
-    ctx.drawImage(img, (S - dw) * frameState.x, (S - dh) * frameState.y, dw, dh);
-
-    const RW = S * F.ring, GAP = S * F.gap;
-    if (frameState.ring) {
-      // Ring sits inside the circle a platform will crop to, with a
-      // paper hairline under it so the green never muddies into a
-      // photo that happens to be green.
-      const rg = S / 2 - RW / 2 - 2;
-      ctx.strokeStyle = '#90CA65';
-      ctx.lineWidth = RW;
-      ctx.beginPath(); ctx.arc(S / 2, S / 2, rg, 0, Math.PI * 2); ctx.stroke();
-      ctx.strokeStyle = '#FBFAF7';
-      ctx.lineWidth = GAP;
-      ctx.beginPath(); ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP / 2, 0, Math.PI * 2); ctx.stroke();
-    }
-
-    if (!frameAssets || frameState.badge === 'none') { applyCutout(ctx, S); drawFrameSizes(); return; }
-    const { wordmark, mark } = frameAssets;
-    const softShadow = () => {
-      ctx.shadowColor = 'rgba(20,26,30,0.28)';
-      ctx.shadowBlur = S * 0.020;
-      ctx.shadowOffsetY = S * 0.005;
-    };
-    const clearShadow = () => {
-      ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-    };
-
-    if (frameState.badge === 'mark-corner') {
-      // 45 degrees down-right: the part of the square a circular crop
-      // always keeps, and clear of where a face usually sits.
-      const d = S * F.markD;
-      const r = S / 2 - RW - d / 2 - GAP;
-      const cx = S / 2 + r * Math.SQRT1_2, cy = S / 2 + r * Math.SQRT1_2;
-      softShadow();
-      ctx.fillStyle = '#FBFAF7';
-      ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.fill();
-      clearShadow();
-      ctx.save();
-      ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.clip();
-      ctx.drawImage(mark, cx - d / 2, cy - d / 2, d, d);
-      ctx.restore();
-      ctx.strokeStyle = '#90CA65';
-      ctx.lineWidth = S * 0.014;
-      ctx.beginPath(); ctx.arc(cx, cy, d / 2 - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
-      applyCutout(ctx, S);
-      drawFrameSizes();
-      return;
-    }
-
-    // Wordmark on a paper chip. The lockup is charcoal and would sink
-    // into a dark photo without a ground behind it.
-    const top = frameState.badge === 'wordmark-top';
-    const lw = S * F.chipW;
-    const lh = lw * (wordmark.height / wordmark.width);
-    const padX = S * F.chipPadX, padY = S * F.chipPadY;
-    const cw = lw + padX * 2, ch = lh + padY * 2;
-    const cx = (S - cw) / 2;
-    const cy = top ? S * F.chipInset : S - ch - S * F.chipInset;
-    if (frameState.chip === 'solid') {
-      softShadow();
-      ctx.fillStyle = '#FBFAF7';
-      roundRect(ctx, cx, cy, cw, ch, ch / 2);
-      ctx.fill();
-      clearShadow();
-      ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
-    } else {
-      // No pill: build a white halo by stacking the shadow, so the
-      // charcoal lockup still separates from a dark photo without
-      // recolouring brand art.
-      ctx.shadowColor = 'rgba(255,255,255,0.95)';
-      ctx.shadowBlur = S * 0.014;
-      for (let i = 0; i < 3; i++) ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
-      clearShadow();
-      ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
-    }
-    applyCutout(ctx, S);
-    drawFrameSizes();
+    if (!img) return null;
+    if (orientedCache.rot === frameState.rot && orientedCache.canvas) return orientedCache.canvas;
+    const quarter = frameState.rot % 180 !== 0;
+    const c = document.createElement('canvas');
+    c.width = quarter ? img.height : img.width;
+    c.height = quarter ? img.width : img.height;
+    const g = c.getContext('2d');
+    g.translate(c.width / 2, c.height / 2);
+    g.rotate((frameState.rot * Math.PI) / 180);
+    g.drawImage(img, -img.width / 2, -img.height / 2);
+    orientedCache = { rot: frameState.rot, canvas: c };
+    return c;
   }
 
-  // Optional round PNG: everything outside the circle becomes
-  // transparent. Platforms that crop to a circle look identical either
-  // way; this is for the ones that don't, and for reuse elsewhere.
+  // Text that rides the ring. Drawn per character around the bottom
+  // arc, flipped so it reads upright from outside the circle.
+  function drawArcText(ctx, text, cx, cy, radius, fontPx, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.font = `700 ${fontPx}px "Source Sans Pro", "Source Sans 3", system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const chars = [...text];
+    const widths = chars.map((ch) => ctx.measureText(ch).width + fontPx * 0.06);
+    const total = widths.reduce((a, b) => a + b, 0);
+    // Bottom arc: rotate by (a - PI/2) so each glyph's up-vector points
+    // inward (which is up, at the bottom of a circle), and sweep with a
+    // DECREASING angle because cos(a) moves left past PI/2. Getting
+    // either wrong renders the line upside down and mirrored.
+    let angle = Math.PI / 2 + total / radius / 2;
+    chars.forEach((ch, i) => {
+      const step = widths[i] / radius;
+      const a = angle - step / 2;
+      ctx.save();
+      ctx.translate(cx + Math.cos(a) * radius, cy + Math.sin(a) * radius);
+      ctx.rotate(a - Math.PI / 2);
+      ctx.fillText(ch, 0, 0);
+      ctx.restore();
+      angle -= step;
+    });
+    ctx.restore();
+  }
+
+  // Blur everything, then lay the sharp centre back on through a
+  // feathered mask. No subject detection: the rule is "the middle stays
+  // sharp", which is predictable and true of nearly every portrait.
+  function drawSoftened(ctx, src, dx, dy, dw, dh, S) {
+    const sharp = document.createElement('canvas');
+    sharp.width = sharp.height = S;
+    sharp.getContext('2d').drawImage(src, dx, dy, dw, dh);
+
+    ctx.save();
+    ctx.filter = `blur(${Math.round(S * 0.022)}px)`;
+    ctx.drawImage(sharp, 0, 0);
+    ctx.restore();
+
+    const masked = document.createElement('canvas');
+    masked.width = masked.height = S;
+    const mg = masked.getContext('2d');
+    mg.drawImage(sharp, 0, 0);
+    mg.globalCompositeOperation = 'destination-in';
+    const grad = mg.createRadialGradient(S / 2, S * 0.44, S * 0.16, S / 2, S * 0.44, S * 0.42);
+    grad.addColorStop(0, 'rgba(0,0,0,1)');
+    grad.addColorStop(0.72, 'rgba(0,0,0,1)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    mg.fillStyle = grad;
+    mg.fillRect(0, 0, S, S);
+    ctx.drawImage(masked, 0, 0);
+  }
+
   function applyCutout(ctx, S) {
     if (!frameState.cutout) return;
     ctx.save();
@@ -1606,9 +1597,113 @@
     ctx.restore();
   }
 
+  function drawFrame() {
+    const c = $('frame-canvas');
+    const src = orientedPhoto();
+    if (!c || !src) return;
+    const S = FRAME_SIZE;
+    c.width = S; c.height = S;
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, S, S);
+
+    const base = Math.max(S / src.width, S / src.height);
+    const scale = base * frameState.zoom;
+    const dw = src.width * scale, dh = src.height * scale;
+    const dx = (S - dw) * frameState.x, dy = (S - dh) * frameState.y;
+    if (frameState.soften) drawSoftened(ctx, src, dx, dy, dw, dh, S);
+    else ctx.drawImage(src, dx, dy, dw, dh);
+
+    const design = FRAME_DESIGNS[frameState.design] || FRAME_DESIGNS.badge;
+    // The link rides the ring, so it needs a thicker one to sit in.
+    const RW = S * (frameState.url ? F.ringUrl : F.ring);
+    const GAP = S * F.gap;
+    const rg = S / 2 - RW / 2 - 2;
+    ctx.strokeStyle = '#90CA65';
+    ctx.lineWidth = RW;
+    ctx.beginPath(); ctx.arc(S / 2, S / 2, rg, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = '#FBFAF7';
+    ctx.lineWidth = GAP;
+    ctx.beginPath(); ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP / 2, 0, Math.PI * 2); ctx.stroke();
+    if (frameState.url) {
+      drawArcText(ctx, 'citizensforlps.org', S / 2, S / 2, rg, RW * 0.62, '#FBFAF7');
+    }
+
+    if (!frameAssets || design.badge === 'none') { applyCutout(ctx, S); drawFrameSizes(); return; }
+    const { wordmark, reversed, mark } = frameAssets;
+    const softShadow = () => {
+      ctx.shadowColor = 'rgba(20,26,30,0.28)';
+      ctx.shadowBlur = S * 0.020;
+      ctx.shadowOffsetY = S * 0.005;
+    };
+    const clearShadow = () => {
+      ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    };
+
+    if (design.badge === 'mark') {
+      const d = S * F.markD;
+      const r = S / 2 - RW - d / 2 - GAP;
+      const mx = S / 2 + r * Math.SQRT1_2, my = S / 2 + r * Math.SQRT1_2;
+      softShadow();
+      ctx.fillStyle = '#FBFAF7';
+      ctx.beginPath(); ctx.arc(mx, my, d / 2, 0, Math.PI * 2); ctx.fill();
+      clearShadow();
+      ctx.save();
+      ctx.beginPath(); ctx.arc(mx, my, d / 2, 0, Math.PI * 2); ctx.clip();
+      ctx.drawImage(mark, mx - d / 2, my - d / 2, d, d);
+      ctx.restore();
+      ctx.strokeStyle = '#90CA65';
+      ctx.lineWidth = S * 0.014;
+      ctx.beginPath(); ctx.arc(mx, my, d / 2 - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
+      applyCutout(ctx, S); drawFrameSizes(); return;
+    }
+
+    if (design.badge === 'band') {
+      // Green band clipped to the circle, reversed lockup on top.
+      const bh = S * F.bandH;
+      const by = S - bh - RW - GAP * 2;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(S / 2, S / 2, rg - RW / 2 - GAP, 0, Math.PI * 2);
+      ctx.clip();
+      // Ink, not green: the reversed lockup is green-and-white, which
+      // the designer drew FOR a dark ground. On a green band the green
+      // letters sit on green and the whole thing mushes.
+      ctx.fillStyle = '#323F49';
+      ctx.fillRect(0, by, S, S);
+      ctx.restore();
+      const lw = S * F.bandW;
+      const lh = lw * (reversed.height / reversed.width);
+      ctx.drawImage(reversed, (S - lw) / 2, by + (bh - lh) / 2, lw, lh);
+      applyCutout(ctx, S); drawFrameSizes(); return;
+    }
+
+    const lw = S * F.chipW;
+    const lh = lw * (wordmark.height / wordmark.width);
+    const padX = S * F.chipPadX, padY = S * F.chipPadY;
+    const cw = lw + padX * 2, ch = lh + padY * 2;
+    const cx = (S - cw) / 2;
+    const cy = S - ch - S * F.chipInset - (frameState.url ? RW * 0.5 : 0);
+    if (design.chip === 'solid') {
+      softShadow();
+      ctx.fillStyle = '#FBFAF7';
+      roundRect(ctx, cx, cy, cw, ch, ch / 2);
+      ctx.fill();
+      clearShadow();
+      ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+    } else {
+      ctx.shadowColor = 'rgba(255,255,255,0.95)';
+      ctx.shadowBlur = S * 0.014;
+      for (let i = 0; i < 3; i++) ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+      clearShadow();
+      ctx.drawImage(wordmark, cx + padX, cy + padY, lw, lh);
+    }
+    applyCutout(ctx, S);
+    drawFrameSizes();
+  }
+
   // A profile picture is met at 40-50px far more often than at full
-  // size. Showing the real sizes is the whole reason the badge got
-  // smaller: it is the only way a writer can see what actually survives.
+  // size. Showing the real sizes is why the badge is proportioned the
+  // way it is, and the only way a user can judge their own photo.
   function drawFrameSizes() {
     const src = $('frame-canvas');
     const wrap = $('frame-sizes');
@@ -1633,17 +1728,17 @@
     }
     try {
       // createImageBitmap honours EXIF rotation; phone photos arrive sideways without it.
-      const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
-      frameState.img = bmp;
+      frameState.img = await createImageBitmap(file, { imageOrientation: 'from-image' });
     } catch {
       try {
         frameState.img = await loadImage(URL.createObjectURL(file));
       } catch {
-        if (status) status.textContent = "That image could not be opened. Try a different one.";
+        if (status) status.textContent = 'That image could not be opened. Try a different one.';
         return;
       }
     }
-    Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5 });
+    Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5, rot: 0 });
+    orientedCache = { rot: null, canvas: null };
     $('frame-zoom').value = 100;
     if (status) status.textContent = '';
     $('frame-studio').hidden = false;
@@ -1651,13 +1746,17 @@
     try {
       await frameBadges();
     } catch {
-      // The frame still works without the badge art; a ring-only
-      // picture beats a dead screen.
       if (status) status.textContent = 'The badge art did not load. The ring still works.';
-      frameState.badge = 'none';
+      frameState.design = 'ring';
     }
     drawFrame();
     $('frame-studio').scrollIntoView({ block: 'nearest' });
+  }
+
+  function setFrameZoom(z) {
+    frameState.zoom = Math.min(3, Math.max(1, z));
+    $('frame-zoom').value = Math.round(frameState.zoom * 100);
+    drawFrame();
   }
 
   function initFrameMaker() {
@@ -1680,7 +1779,7 @@
       if (f) setFramePhoto(f);
     });
 
-    // Paste only counts while this view is open, or it would hijack the
+    // Paste only counts while this view is open, or it hijacks the
     // draft textarea in the studio.
     document.addEventListener('paste', (e) => {
       if ($('view-frame').hidden) return;
@@ -1693,16 +1792,13 @@
       }
     });
 
-    $('frame-zoom').addEventListener('input', (e) => {
-      frameState.zoom = Number(e.target.value) / 100;
-      drawFrame();
-    });
+    $('frame-zoom').addEventListener('input', (e) => setFrameZoom(Number(e.target.value) / 100));
 
-    $('frame-badge').addEventListener('click', (e) => {
-      const b = e.target.closest('[data-badge]');
+    $('frame-design').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-design]');
       if (!b) return;
-      frameState.badge = b.dataset.badge;
-      [...$('frame-badge').querySelectorAll('.seg-btn')].forEach((el) => {
+      frameState.design = b.dataset.design;
+      [...$('frame-design').querySelectorAll('.seg-btn')].forEach((el) => {
         const on = el === b;
         el.classList.toggle('selected', on);
         el.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -1710,45 +1806,60 @@
       drawFrame();
     });
 
-    $('frame-ring').addEventListener('change', (e) => {
-      frameState.ring = e.target.checked;
+    $('frame-rotate').addEventListener('click', () => {
+      frameState.rot = (frameState.rot + 90) % 360;
+      drawFrame();
+    });
+    $('frame-recenter').addEventListener('click', () => {
+      Object.assign(frameState, { zoom: 1, x: 0.5, y: 0.5 });
+      $('frame-zoom').value = 100;
       drawFrame();
     });
 
-    $('frame-cutout').addEventListener('change', (e) => {
-      frameState.cutout = e.target.checked;
-      drawFrame();
-    });
-
-    $('frame-chip').addEventListener('click', (e) => {
-      const b = e.target.closest('[data-chip]');
-      if (!b) return;
-      frameState.chip = b.dataset.chip;
-      [...$('frame-chip').querySelectorAll('.seg-btn')].forEach((el) => {
-        const on = el === b;
-        el.classList.toggle('selected', on);
-        el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    [['frame-url', 'url'], ['frame-soften', 'soften'], ['frame-cutout', 'cutout']].forEach(([id, key]) => {
+      $(id).addEventListener('change', (e) => {
+        frameState[key] = e.target.checked;
+        drawFrame();
       });
-      drawFrame();
     });
 
-    // Drag to reposition, pointer events so it works with touch.
-    let dragging = false, lastX = 0, lastY = 0;
+    // Drag, and pinch when a second finger arrives.
+    const pointers = new Map();
+    let pinchStart = 0, pinchZoom = 1;
+    const spread = () => {
+      const [a, b] = [...pointers.values()];
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    };
     canvas.addEventListener('pointerdown', (e) => {
       if (!frameState.img) return;
-      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       canvas.setPointerCapture(e.pointerId);
+      if (pointers.size === 2) { pinchStart = spread(); pinchZoom = frameState.zoom; }
     });
     canvas.addEventListener('pointermove', (e) => {
-      if (!dragging) return;
+      const prev = pointers.get(e.pointerId);
+      if (!prev) return;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pointers.size >= 2) {
+        if (pinchStart > 0) setFrameZoom(pinchZoom * (spread() / pinchStart));
+        return;
+      }
       const rect = canvas.getBoundingClientRect();
-      frameState.x = Math.min(1, Math.max(0, frameState.x + (e.clientX - lastX) / rect.width));
-      frameState.y = Math.min(1, Math.max(0, frameState.y + (e.clientY - lastY) / rect.height));
-      lastX = e.clientX; lastY = e.clientY;
+      frameState.x = Math.min(1, Math.max(0, frameState.x + (e.clientX - prev.x) / rect.width));
+      frameState.y = Math.min(1, Math.max(0, frameState.y + (e.clientY - prev.y) / rect.height));
       drawFrame();
     });
-    ['pointerup', 'pointercancel'].forEach((n) =>
-      canvas.addEventListener(n, () => { dragging = false; }));
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach((n) =>
+      canvas.addEventListener(n, (e) => {
+        pointers.delete(e.pointerId);
+        if (pointers.size < 2) pinchStart = 0;
+      }));
+
+    canvas.addEventListener('wheel', (e) => {
+      if (!frameState.img) return;
+      e.preventDefault();
+      setFrameZoom(frameState.zoom * (e.deltaY < 0 ? 1.06 : 1 / 1.06));
+    }, { passive: false });
 
     $('frame-download').addEventListener('click', () => {
       const a = document.createElement('a');
@@ -1778,6 +1889,7 @@
 
     $('frame-reset').addEventListener('click', () => {
       frameState.img = null;
+      orientedCache = { rot: null, canvas: null };
       $('frame-studio').hidden = true;
       $('frame-next').hidden = true;
       $('frame-file').value = '';

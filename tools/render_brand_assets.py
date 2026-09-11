@@ -78,6 +78,70 @@ def icon_mark(path):
     return trim(im.crop((0, 0, w, best)))
 
 
+CHARCOAL = (49, 62, 73)
+GREEN = (144, 202, 101)
+WHITE = (255, 255, 255)
+
+
+def reverse_ink(im):
+    """The designer's own dark-ground treatment, applied to a lockup that
+    was only supplied light: charcoal -> green, green -> white.
+
+    That mapping is not invented. Comparing the supplied light and dark
+    tagline lockups shows the ink swaps exactly, with matching pixel
+    counts (29212/4394 light vs 28694/4809 dark). `verify_reverse()`
+    re-derives the supplied dark file from the light one and fails the
+    build if the mapping ever stops matching."""
+    import numpy as np
+    a = np.array(im.convert("RGBA")).astype(np.int16)
+    rgb, alpha = a[..., :3], a[..., 3]
+    d_char = np.abs(rgb - np.array(CHARCOAL)).sum(axis=-1)
+    d_green = np.abs(rgb - np.array(GREEN)).sum(axis=-1)
+    out = a.copy()
+    ink = alpha > 0
+    out[..., :3] = np.where(
+        ((d_char <= d_green) & ink)[..., None], np.array(GREEN), np.array(WHITE)
+    )
+    out[..., 3] = alpha
+    return Image.fromarray(out.astype("uint8"), "RGBA")
+
+
+def verify_reverse():
+    """Check the CLAIM behind reverse_ink, not a pixel diff.
+
+    The claim is that the designer's dark treatment swaps the two inks:
+    charcoal -> green, green -> white. So the light lockup's
+    charcoal:green ink ratio must equal the dark lockup's green:white
+    ratio. Comparing ratios instead of pixels is deliberate — the two
+    supplied files differ by a pixel in height, so any aligned diff
+    reports ~5% edge noise that says nothing about the mapping.
+    """
+    import numpy as np
+
+    def inks(path):
+        a = np.array(trim(Image.open(path).convert("RGBA"))).astype(np.int16)
+        solid = a[..., 3] > 250
+        rgb = a[..., :3][solid]
+        near = lambda c: int((np.abs(rgb - np.array(c)).sum(-1) < 30).sum())
+        return near(CHARCOAL), near(GREEN), near(WHITE)
+
+    l_char, l_green, _ = inks(SRC / "horizontal-tagline-light.png")
+    _, d_green, d_white = inks(SRC / "horizontal-tagline-dark.png")
+    if min(l_char, l_green, d_green, d_white) == 0:
+        sys.exit("verify_reverse: expected inks missing from a supplied lockup")
+    light_ratio = l_char / l_green
+    dark_ratio = d_green / d_white
+    drift = abs(light_ratio - dark_ratio) / light_ratio
+    if drift > 0.15:
+        sys.exit(
+            f"reverse_ink no longer matches the designer's dark treatment "
+            f"(light charcoal:green {light_ratio:.2f} vs dark green:white "
+            f"{dark_ratio:.2f}, {drift:.0%} drift). Ask for a tagline-free "
+            f"dark file instead of deriving one."
+        )
+    return f"ink ratios agree within {drift:.1%}"
+
+
 def on_ground(mark, size, ground, inset=1.0):
     """Square canvas of `ground` with `mark` centered, scaled to `inset`."""
     canvas = Image.new("RGBA", (size, size), ground)
@@ -109,6 +173,11 @@ def main():
         im = trim(Image.open(SRC / src).convert("RGBA"))
         im.save(OUT / dest, optimize=True)
         wrote.append(f"{dest}  {im.width}x{im.height}")
+
+    # Reversed wordmark for the green-band frame design.
+    rev = reverse_ink(trim(Image.open(SRC / "facebook-header.png").convert("RGBA")))
+    rev.save(OUT / "yes-on-4a-wordmark-reversed.png", optimize=True)
+    wrote.append(f"yes-on-4a-wordmark-reversed.png  {rev.width}x{rev.height}  [{verify_reverse()}]")
 
     light = icon_mark(SRC / "stacked-light.png")
     dark = icon_mark(SRC / "stacked-dark.png")

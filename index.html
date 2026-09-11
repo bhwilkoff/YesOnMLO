@@ -314,38 +314,50 @@
           </div>
 
           <div class="frame-controls">
-            <label class="field-label" for="frame-zoom">Zoom</label>
-            <input type="range" id="frame-zoom" class="frame-range" min="100" max="300" value="100">
-
-            <p class="field-label">Badge</p>
-            <div class="seg" id="frame-badge" role="group" aria-label="Badge style">
-              <button type="button" class="seg-btn selected" data-badge="wordmark-bottom" aria-pressed="true">Bottom</button>
-              <button type="button" class="seg-btn" data-badge="wordmark-top" aria-pressed="false">Top</button>
-              <button type="button" class="seg-btn" data-badge="mark-corner" aria-pressed="false">Corner</button>
-              <button type="button" class="seg-btn" data-badge="none" aria-pressed="false">Ring only</button>
+            <div class="frame-group">
+              <p class="field-label">Design</p>
+              <div class="seg seg-wrap" id="frame-design" role="group" aria-label="Frame design">
+                <button type="button" class="seg-btn selected" data-design="badge" aria-pressed="true">Badge</button>
+                <button type="button" class="seg-btn" data-design="clean" aria-pressed="false">Clean</button>
+                <button type="button" class="seg-btn" data-design="banner" aria-pressed="false">Banner</button>
+                <button type="button" class="seg-btn" data-design="corner" aria-pressed="false">Corner</button>
+                <button type="button" class="seg-btn" data-design="ring" aria-pressed="false">Ring</button>
+              </div>
             </div>
 
             <div class="frame-group">
-              <p class="field-label">Badge background</p>
-              <div class="seg" id="frame-chip" role="group" aria-label="Badge background">
-                <button type="button" class="seg-btn selected" data-chip="solid" aria-pressed="true">Solid</button>
-                <button type="button" class="seg-btn" data-chip="clear" aria-pressed="false">Clear</button>
+              <label class="field-label" for="frame-zoom">Your photo</label>
+              <input type="range" id="frame-zoom" class="frame-range" min="100" max="300" value="100"
+                     aria-label="Zoom">
+              <div class="frame-photo-actions">
+                <button type="button" class="btn btn-quiet btn-small" id="frame-rotate">Rotate</button>
+                <button type="button" class="btn btn-quiet btn-small" id="frame-recenter">Re-centre</button>
               </div>
-              <p class="fine">Clear drops the white pill and sets the logo straight on your photo. Check the small sizes above &mdash; on a busy or dark photo, Solid holds up better.</p>
+              <p class="fine">Drag, pinch, or scroll on the picture to move and zoom it.</p>
             </div>
 
-            <label class="check-row">
-              <input type="checkbox" id="frame-ring" checked> Green ring
-            </label>
-            <label class="check-row">
-              <input type="checkbox" id="frame-cutout"> Transparent corners (round PNG)
-            </label>
+            <div class="frame-group">
+              <label class="check-row">
+                <input type="checkbox" id="frame-url"> Add citizensforlps.org around the edge
+              </label>
+              <label class="check-row">
+                <input type="checkbox" id="frame-soften"> Soften the background
+              </label>
+            </div>
 
             <div class="frame-actions">
               <button class="btn" id="frame-download">Save the picture</button>
               <button class="btn btn-quiet" id="frame-share" hidden>Send it to an app&hellip;</button>
             </div>
-            <button class="link-btn" id="frame-reset">Start over with a different photo</button>
+
+            <details class="helper-details">
+              <summary>More options</summary>
+              <label class="check-row">
+                <input type="checkbox" id="frame-cutout"> Transparent corners (round PNG)
+              </label>
+              <p class="fine">Only matters where a site shows profile pictures as squares. Facebook and Instagram crop to a circle either way.</p>
+              <button class="link-btn" id="frame-reset">Start over with a different photo</button>
+            </details>
           </div>
         </div>
 
