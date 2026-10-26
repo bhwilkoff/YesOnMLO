@@ -1,4 +1,4 @@
-# [APP NAME] — Architecture & Technology Decisions
+# Yes on 4A — Architecture & Technology Decisions
 
 Entries capture the *why* behind choices — not the *what* (the code
 already shows that). Each entry should answer: **"what would the next

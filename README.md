@@ -31,6 +31,10 @@ and get it in front of the neighbors who can vote.
   generator (canvas → PNG in feed, story, and link-preview sizes)
   and person-to-person tools for texting people you actually know in
   the district.
+- **Profile Frame** — wear 4A without posting about it. Upload
+  your photo, pick a design (Badge, Clean, Icon, Around the edge),
+  drag/zoom/rotate the badge, and save a framed profile picture.
+  Nothing is uploaded — everything stays on your device.
 - **The Cost** — a calculator that shows the county assessor's
   actual three-step math, with every assumption adjustable and every
   source linked on the page. Estimates are labeled as estimates

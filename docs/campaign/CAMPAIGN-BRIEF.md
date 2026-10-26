@@ -216,6 +216,44 @@ once) mean the campaign treats that floor as earned, not guaranteed.
   and do not infer hosting from a sentence like "the campaign is adding
   meetings."
 
+- **One-stop-shop events: the ballot-mail push** (co-chairs Amy Clark
+  and Briana McCrumb, email to volunteers, 2026-09-28). The committee's
+  table outside the last four district forums is now a "one-stop shop"
+  with four things to pick up in one visit: **car painting**, **yard
+  signs**, **postcards and notecards to write**, and **turfs for lit
+  drops, with no door-knocking required**. No RSVP. The co-chairs frame
+  the week as "our big push," the last chance to reach voters before
+  ballots land on Oct 2, and they ask volunteers to bring a neighbor
+  with questions, since the forum is happening inside. The two-track
+  rule above still holds: the forum inside is the district's, and the
+  table outside is ours.
+
+  | Date | Time | Place | Track |
+  |---|---|---|---|
+  | Mon Sept 28 | 5:30–6:30 p.m. | Heritage High School | outside the district forum |
+  | Tue Sept 29 | 5:00–6:00 p.m. | Littleton High School | outside the district forum |
+  | Wed Sept 30 | 5:30–6:30 p.m. | Arapahoe High School | outside the district forum |
+  | Thu Oct 1 | 6:00–7:00 p.m. | Euclid Middle School | outside the district forum |
+  | Sat Oct 3 | 9:30 a.m. | Arapahoe High School | campaign only |
+  | Sun Oct 4 | 9:30 a.m. | Arapahoe High School | campaign only |
+
+  The two weekend times were added by the social media lead on
+  2026-09-29. They have **no district forum** attached, and no end time
+  was given. They are shown as one-stop-shop pickups. ⚠️ Confirm with
+  the co-chairs that the full offer (signs, postcards, turfs, painting)
+  is at those two as well.
+
+  **Update, co-chair email to volunteers, 2026-10-09.** Two more
+  one-stop shops: **Sat Oct 10 and Sun Oct 11, 9:00–10:30 a.m.,
+  Arapahoe High School, southwest parking lot**: walk-lit kickoffs, car
+  painting, yard signs, and "all other campaign material." Lit-drop
+  turfs are 30 homes each, no door-knocking, and must be done by
+  **Oct 12**; six turfs were left as of the email. Yard signs go only on
+  private property with the owner's explicit permission. The same email
+  reports that the **City of Littleton council unanimously approved a
+  resolution of formal support on Oct 6** (⚠️ link the council's
+  resolution before citing it in a post).
+
 ## Key dates (researched Aug 2026 — see docs/research/colorado-compliance.md §7 for the full table with statutes)
 
 | Date | Event | Status |
@@ -223,6 +261,8 @@ once) mean the campaign treats that floor as earned, not guaranteed.
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
 | 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
 | 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; district-hosted; campaign outside with car painting) | scheduled |
+| 2026-09-28 → 10-04 | One-stop-shop events: car painting, yard signs, postcards, lit-drop turfs (outside the last four forums, plus Arapahoe HS Sat + Sun 9:30 a.m.) | scheduled |
+| 2026-10-10, 10-11 | One-stop shops, Arapahoe HS southwest lot, 9:00–10:30 a.m.; lit-drop turfs due 10-12 | scheduled |
 | 2026-10-08, 10-09 | Campaign information meetings — Koelbel Library, Bemis Library (committee-hosted) | scheduled |
 | ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done (campaign-reported 2026-09-08; county link pending) |
 | **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |

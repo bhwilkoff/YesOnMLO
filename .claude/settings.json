@@ -1,18 +1,8 @@
 {
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/session-start.sh"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
+      "Bash(sqlite3 *)",
+      "Bash(cp /Users/bhwilkoff/Pictures/*)",
       "Bash(ls *)",
       "Bash(cat *)",
       "Bash(grep *)",
@@ -23,7 +13,6 @@
       "Bash(tail *)",
       "Bash(awk *)",
       "Bash(sed *)",
-
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)",
@@ -32,16 +21,13 @@
       "Bash(git ls-files*)",
       "Bash(git add *)",
       "Bash(git restore*)",
-
       "Bash(python3 -m http.server *)",
       "Bash(node js/*)",
       "Bash(npm test*)",
       "Bash(npx *)",
-
       "Bash(./gradlew *)",
       "Bash(cd android && ./gradlew *)",
       "Bash(gradle *)",
-
       "Bash(xcrun simctl list*)",
       "Bash(xcrun simctl boot *)",
       "Bash(xcrun simctl install *)",
@@ -51,7 +37,6 @@
       "Bash(xcodebuild -showBuildSettings*)",
       "Bash(xcodebuild test *)",
       "Bash(xcodebuild build *)",
-
       "Bash(adb devices*)",
       "Bash(adb shell *)",
       "Bash(adb logcat*)",
@@ -59,11 +44,22 @@
       "Bash(adb uninstall *)",
       "Bash(adb push *)",
       "Bash(adb pull *)",
-
       "Bash(open *)",
       "Bash(./tools/refresh-skills.sh)",
       "Bash(./tools/install-android-skills.sh)",
       "Bash(bash ./android/scripts/sync_shared_assets.sh)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/session-start.sh"
+          }
+        ]
+      }
     ]
   }
 }

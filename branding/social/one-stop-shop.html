@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>Yes on 4A — one-stop-shop card</title>
+<!--
+  Master for the forum-week "one-stop shop" graphic (co-chairs' email to
+  volunteers, 2026-09-28). Same layout system as forums-card.html; see
+  that file for the format notes and the re-measure warning.
+
+  Two tracks, one card: Tue-Thu the district's forum is INSIDE and our
+  table is outside; the weekend pickups are ours alone. The group labels
+  carry that line -- never merge them into one list.
+
+  Content mirrors docs/campaign/CAMPAIGN-BRIEF.md -- update the brief first.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#90CA65; --green-deep:#4E7B2C; --ink:#323F49;
+  --ink-soft:#5A6772; --paper:#FBFAF7; --hairline:#E3E2DC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);font-family:'Source Sans Pro',system-ui,sans-serif;
+     border-top:var(--bar) solid var(--green);overflow:hidden}
+.sheet{width:100%;height:100%;padding:var(--padY) var(--padX);
+       display:flex;flex-direction:column}
+.lockup{height:var(--logo);width:auto;align-self:flex-start}
+h1{font-family:'Lora',Georgia,serif;font-weight:700;font-size:var(--h1);
+   line-height:1.05;color:var(--ink);margin-top:var(--gap1);letter-spacing:-.01em}
+.sub{font-size:var(--sub);line-height:1.35;color:var(--ink-soft);
+     margin-top:var(--gap2);max-width:30ch}
+.sub b{color:var(--ink);font-weight:700}
+.sched{margin-top:var(--gap3)}
+ul{list-style:none;border-top:2px solid var(--hairline)}
+/* Who hosts what is the load-bearing fact on this card: the district's
+   forums and the committee's meetings are different tracks and must
+   never read as one list. */
+.group{font-size:var(--group);font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--green-deep);
+  margin-bottom:var(--groupGap);line-height:1.25}
+.group.ours{margin-top:var(--groupTop)}
+.group span{display:block;text-transform:none;letter-spacing:0;
+  font-weight:400;font-size:var(--groupSub);color:var(--ink-soft)}
+li{display:flex;align-items:baseline;gap:var(--colGap);
+   padding:var(--row) 0;border-bottom:2px solid var(--hairline)}
+.when{font-weight:700;font-size:var(--list);color:var(--ink);
+      flex:0 0 var(--wWhen);font-variant-numeric:tabular-nums}
+.time{font-weight:600;font-size:var(--listSm);color:var(--green-deep);
+      flex:0 0 var(--wTime);font-variant-numeric:tabular-nums}
+.place{font-size:var(--list);color:var(--ink-soft)}
+.foot{margin-top:auto;padding-top:var(--gap2)}
+.note{font-size:var(--note);color:var(--ink);font-weight:700;line-height:1.35}
+.note span{color:var(--green-deep)}
+.fine{font-size:var(--fine);color:var(--ink-soft);margin-top:.5em;line-height:1.4}
+
+/* ---- 1080x1350 — Facebook + Instagram feed (the default placement) ---- */
+body.portrait{width:1080px;height:1350px;
+  --bar:16px; --padX:72px; --padY:52px; --logo:104px;
+  --h1:76px; --sub:33px; --list:29px; --listSm:27px; --note:29px; --fine:24px;
+  --group:25px; --groupSub:23px; --groupGap:12px; --groupTop:30px;
+  --gap1:26px; --gap2:16px; --gap3:30px; --row:9px;
+  --wWhen:200px; --wTime:210px; --colGap:18px}
+
+/* ---- 1080x1080 — square feed / profile grid ---- */
+body.square{width:1080px;height:1080px;
+  --bar:14px; --padX:66px; --padY:44px; --logo:88px;
+  --h1:58px; --sub:27px; --list:25px; --listSm:23px; --note:25px; --fine:21px;
+  --group:22px; --groupSub:20px; --groupGap:9px; --groupTop:22px;
+  --gap1:18px; --gap2:12px; --gap3:20px; --row:8px;
+  --wWhen:186px; --wTime:196px; --colGap:16px}
+
+/* ---- 1080x1920 — Stories / Reels. Platform UI eats the top and bottom,
+       so the sheet is inset by a safe area and the type goes big. ---- */
+body.story{width:1080px;height:1920px;
+  --bar:18px; --padX:78px; --padY:200px; --logo:124px;
+  --h1:92px; --sub:38px; --list:34px; --listSm:31px; --note:36px; --fine:27px;
+  --group:30px; --groupSub:27px; --groupGap:14px; --groupTop:34px;
+  --gap1:34px; --gap2:22px; --gap3:34px; --row:16px;
+  --wWhen:230px; --wTime:245px; --colGap:22px}
+
+/* ---- 1200x630 — link previews and shared-link cards. Too short to stack,
+       so headline and schedule sit side by side. ---- */
+body.wide{width:1200px;height:630px;
+  --bar:12px; --padX:56px; --padY:38px; --logo:74px;
+  --h1:47px; --sub:24px; --list:23px; --listSm:21px; --note:22px; --fine:19px;
+  --group:20px; --groupSub:18px; --groupGap:6px; --groupTop:16px;
+  --gap1:14px; --gap2:10px; --gap3:0px; --row:6px;
+  --wWhen:160px; --wTime:0px; --colGap:16px}
+body.wide .sheet{display:grid;column-gap:46px;
+  grid-template-columns:44% 1fr;
+  grid-template-rows:auto auto auto 1fr}
+body.wide .lockup{grid-column:1;grid-row:1}
+body.wide h1{grid-column:1;grid-row:2}
+body.wide .sub{grid-column:1;grid-row:3}
+body.wide .foot{grid-column:1;grid-row:4;align-self:end;margin-top:0}
+body.wide .sched{grid-column:2;grid-row:1/5;align-self:center;margin-top:0}
+body.wide ul{border-top:none}
+body.wide li:last-child{border-bottom:none}
+/* The wide card is a teaser, not a reference: times would force a third
+   column and shrink everything below thumbnail legibility. */
+body.wide .time{display:none}
+body.wide .sub{max-width:24ch}
+
+.offer{list-style:none;border:none;margin-top:var(--gap3);display:grid;
+  grid-template-columns:1fr 1fr;gap:var(--row) var(--colGap)}
+.offer li{border:none;padding:0;font-size:var(--list);font-weight:700;color:var(--ink);
+  display:block}
+.offer li i{display:block;font-style:normal;font-weight:400;font-size:var(--listSm);color:var(--ink-soft)}
+body.wide .offer{grid-column:1;grid-row:3;margin-top:var(--gap2)}
+body.wide .sub{display:none}
+</style>
+</head>
+<body>
+<script>
+  const f = new URLSearchParams(location.search).get('format') || 'portrait';
+  document.body.className = ['square','portrait','story','wide'].includes(f) ? f : 'portrait';
+</script>
+
+<div class="sheet">
+  <img class="lockup" src="../../assets/yes-on-4a-logo.png" alt="">
+  <h1>One stop.<br>Everything you need.</h1>
+  <ul class="offer">
+    <li>Car painting<i>#YesOn4A on your windows</i></li>
+    <li>Yard signs<i>take one home</i></li>
+    <li>Postcards<i>and notecards to write</i></li>
+    <li>Lit-drop turfs<i>no door-knocking</i></li>
+  </ul>
+
+  <div class="sched">
+    <p class="group">Outside the district&rsquo;s forums<span>Their meeting is inside. Bring a neighbor who has questions.</span></p>
+    <ul>
+      <li><span class="when">Tue Sept 29</span><span class="time">5:00–6:00 p.m.</span><span class="place">Littleton High School</span></li>
+      <li><span class="when">Wed Sept 30</span><span class="time">5:30–6:30 p.m.</span><span class="place">Arapahoe High School</span></li>
+      <li><span class="when">Thu Oct 1</span><span class="time">6:00–7:00 p.m.</span><span class="place">Euclid Middle School</span></li>
+    </ul>
+
+    <p class="group ours">And the weekend<span>Citizens for LPS &middot; ballots are in mailboxes</span></p>
+    <ul>
+      <li><span class="when">Sat Oct 3</span><span class="time">9:30 a.m.</span><span class="place">Arapahoe High School</span></li>
+      <li><span class="when">Sun Oct 4</span><span class="time">9:30 a.m.</span><span class="place">Arapahoe High School</span></li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    <p class="note">No RSVP. <span>Come to whichever one fits.</span></p>
+    <p class="fine">Ballot Issue 4A, the LPS mill levy override. Ballots mail October 2. Paid for by Citizens for LPS.</p>
+  </div>
+</div>
+</body></html>
