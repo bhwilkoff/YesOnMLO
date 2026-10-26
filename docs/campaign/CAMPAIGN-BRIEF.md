@@ -260,18 +260,18 @@ once) mean the campaign treats that floor as earned, not guaranteed.
 |---|---|---|
 | 2026-08-13 | Board places MLO on ballot | ✅ done |
 | 2026-09-01 | District community email announces the measure, the tax example, and the seven forums | ✅ done |
-| 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; district-hosted; campaign outside with car painting) | scheduled |
-| 2026-09-28 → 10-04 | One-stop-shop events: car painting, yard signs, postcards, lit-drop turfs (outside the last four forums, plus Arapahoe HS Sat + Sun 9:30 a.m.) | scheduled |
-| 2026-10-10, 10-11 | One-stop shops, Arapahoe HS southwest lot, 9:00–10:30 a.m.; lit-drop turfs due 10-12 | scheduled |
-| 2026-10-08, 10-09 | Campaign information meetings — Koelbel Library, Bemis Library (committee-hosted) | scheduled |
-| ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done (campaign-reported 2026-09-08; county link pending) |
-| **2026-09-18 (likely noon)** | **TABOR notice pro/con comments due to LPS DEO — hard, unrecoverable deadline; the FOR statement reaches every voter household free** | ⚠️ VERIFY exact date/time NOW |
-| ~2026-10-02 | TABOR notice mailed to voters (30 days) | ⚠️ VERIFY |
-| **2026-10-02** | Ballots begin mailing to active eligible voters (Arapahoe County's own election calendar, read 2026-09-02; UOCAVA ballots Sept 18) | ✅ verified |
-| 2026-10-19 | Arapahoe Phase 1 Voter Service and Polling Centers open | verified (county calendar) |
-| ~2026-10-20 | Last safe day to return by mail — drop boxes after | guidance |
-| 2026-10-26 | Last day to register and still be mailed a ballot | verified rule |
-| ~2026-10-27 | Meta new-ad blackout begins (final-week ads must already be serving) | platform policy |
+| 2026-09-14 → 10-01 | Dollars and Sense Community Forums (seven; district-hosted; campaign outside with car painting) | ✅ done |
+| 2026-09-28 → 10-04 | One-stop-shop events: car painting, yard signs, postcards, lit-drop turfs (outside the last four forums, plus Arapahoe HS Sat + Sun 9:30 a.m.) | ✅ done |
+| 2026-10-10, 10-11 | One-stop shops, Arapahoe HS southwest lot, 9:00–10:30 a.m.; lit-drop turfs due 10-12 | ✅ done |
+| 2026-10-08, 10-09 | Campaign information meetings — Koelbel Library, Bemis Library (committee-hosted) | ✅ done |
+| ~2026-09-04 | Ballot content certified to county (60 days) — **the measure is Ballot Issue 4A** | ✅ done |
+| **2026-09-18** | **TABOR notice pro/con comments due to LPS DEO — FOR statement submitted** | ✅ done |
+| ~2026-10-02 | TABOR notice mailed to voters (30 days) | ✅ done |
+| **2026-10-02** | Ballots begin mailing to active eligible voters (Arapahoe County's own election calendar, read 2026-09-02; UOCAVA ballots Sept 18) | ✅ done |
+| 2026-10-19 | Arapahoe Phase 1 Voter Service and Polling Centers open | ✅ done |
+| ~2026-10-20 | Last safe day to return by mail — drop boxes after | passed (use drop boxes) |
+| 2026-10-26 | Last day to register and still be mailed a ballot | today |
+| ~2026-10-27 | Meta new-ad blackout begins (final-week ads must already be serving) | tomorrow |
 | 2026-10-28 | LRPC Meeting #7 (East Community Center) | scheduled |
 | 2026-11-03 | Election Day — ballots must be RECEIVED by 7:00 p.m. | fixed |
 

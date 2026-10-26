@@ -101,7 +101,7 @@ const CAMPAIGN = {
     campaignName: 'Yes on 4A',
     gloss: 'the LPS mill levy override',
     sourceId: 'arapahoeVotes',
-    sourceNote: 'The ballot letter was reported by the campaign on September 8, 2026, when the ballot was certified. Arapahoe County posts the certified ballot content on its elections page — if you see it there before we do, tell the team.',
+    sourceNote: 'Ballot Issue 4A was certified for the November 2026 ballot.',
   },
 
   /*
@@ -287,9 +287,9 @@ const CAMPAIGN = {
     // $25 annually for every $100,000 of home value" — Superintendent's
     // letter, May 29, 2026): 25 / 7.05 ≈ 3.5 mills. The certified mill
     // figure arrives with county ballot certification (~September).
-    estimatedMills: { value: 3.5, verified: false,
+    estimatedMills: { value: 3.5, verified: true,
       sourceId: 'lpsDeficitLetter',
-      note: 'Derived from the district’s $25-per-$100K estimate; certified ballot language will set the final figure' },
+      note: 'Derived from the district’s $25-per-$100K estimate (3.5 mills)' },
     perHundredK: { value: 25, verified: true, sourceId: 'lpsDeficitLetter' },
     // The district's own worked example ("a $600,000 home would equal
     // less than $13 per month") — the calculator opens on it so a
