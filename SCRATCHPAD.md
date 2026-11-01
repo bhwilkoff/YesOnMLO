@@ -22,7 +22,7 @@
   "Invest for a strong LPS." Header lockup swaps light/dark; favicon +
   PWA icons in place.
 - **Active milestone**: Final GOTV push (8 days to Nov 3 Election Day)
-- **Last session**: 2026-10-26
+- **Last session**: 2026-11-01
 - **Next actions**:
   1. **GOTV ballot return push**: Ballots are in voters' hands (mailed
      Oct 2). Mail return deadline passed (~Oct 20); remind voters to use
@@ -423,3 +423,8 @@ sheet with file). Left: green; pushed.
   - `js/data.js` updated to verify 3.5 mills in `estimatedMills` and streamline ballot certification note.
   - `SCRATCHPAD.md` Current State brought up to date for the 8-day GOTV sprint.
 - **Left:** clean working tree; ready for final push to Nov 3.
+
+### 2026-11-01: Skippy Reel, "Every kid has a bike"
+- **Found:** Ben asked for a Yes on 4A video for FB + IG from archivewatch.org/item/6050_Skippy_and_the_3_Rs_01_01_01_03 (a 28-min Prelinger classroom film; no prior Reel scripts in this container, since `private/` doesn't travel).
+- **Done:** transcribed the narration (faster-whisper small.en, word timestamps) and cut 7 clips on word gaps so the film's own narrator carries it: a parent's first-day hope, Miss Temple teaching to what Skippy wants, the bike, "Miss Temple's plan really does work," "other teachers... will be there," then the 4A bridge (wage freeze, lifts the freeze; 4A glossed on first use) and the GOTV end card (received by 7 p.m. Tue Nov 3, too late to mail, drop box). Star motif, no lockup, no Paid-for line (organic volunteer post, Decision 058). `private/instagram-launch/source-files/skippy-reel/make_skippy_reel.py` + `render_states.mjs` (Chromium, local Lora/Source Sans, asserts every text block inside its safe band). Outputs: 9x16 + 4x5, 68.5 s, -16 LUFS; post copy + alt text in `captions.txt`.
+- **Left:** verified by frame samples of all 21 text states and by re-transcribing the final audio, which matches the captions word for word. Not watched on a phone, and the audio was never actually listened to. "1950s" is inferred from the footage; archive.org gives no date.
