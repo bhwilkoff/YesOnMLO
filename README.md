@@ -24,6 +24,7 @@ This branch has no shared history with `main`, so the toolkit stays small to dow
 | `media/volunteer-letters/` | Handwritten letters to neighbors, with names blurred |
 | `media/yard-signs/` | Yard sign close-ups |
 | `media/ballot-text/` | The "your ballot is on its way" post |
+| `media/throwback/` | The '90s Reels from Arapahoe, Heritage and Littleton High, the yearbook posts, and the pages they came from |
 | `build-scripts/` | The Python scripts that made the images and video, for reading and adapting |
 | `campaign-docs/` | Posting plans, captions and the throwback research. Source links are in `docs/campaign/VIDEO-SOURCES.md` on `main` |
 
@@ -38,21 +39,22 @@ of their sources were left out on purpose. Read them as worked examples.
 
 ## What's not here, and why
 
-We kept our rule simple: **adults are fine, no children's faces, and no personal
-information about anyone.** Everything was checked by a person before it went in, and
+We kept our rule simple: **adults are fine, no faces of anyone who is a child today,
+and no personal information about anyone.** People in old yearbooks are adults now. Everything was checked by a person before it went in, and
 every file was rebuilt with its metadata removed, including GPS locations.
 
 | Left out | Why |
 |---|---|
-| School yearbooks, old school videos, and the throwback Reels made from them | They show students, and the rights belong to others |
+| Full video yearbooks and yearbook scans | Too large for GitHub, and they belong to others. Every one is linked in `docs/campaign/VIDEO-SOURCES.md` on `main` |
+| Yearbook pages with handwritten notes | Handwriting can hold personal details that a scan can't catch |
 | A table photo and its clip with a child in view | Child's face. The posted version covered it with an emoji, and that's left out too |
 | Raw postcard and ballot-packet photos | Voters' names and home addresses |
 | Yard sign photos, Reels and the Halloween Reel showing homes | They show where supporters live, and in one case a house number |
 | A clip with a readable license plate | Personal information |
-| Old-movie supercuts | Child actors in some, and we didn't confirm the rights to the films. Captions are in `campaign-docs/`, and every film is linked in `docs/campaign/VIDEO-SOURCES.md` on `main` |
+| Old-movie supercuts | We didn't confirm the rights to the films. Captions are in `campaign-docs/`, and every film is linked in `docs/campaign/VIDEO-SOURCES.md` on `main` |
 | CBS Colorado and district podcast clips | We had permission to use them in the campaign, not to republish them |
 | Steering committee documents and email | Contact details and private deliberation |
-| Transcripts of CBS, the district podcast and the video yearbooks | Other people's work, and the yearbook transcripts name students |
+| Transcripts of CBS, the district podcast and the video yearbooks | Other people's work |
 
 A few source photos used in the finished posts are among these. So you'll see a
 finished post whose raw files aren't here.

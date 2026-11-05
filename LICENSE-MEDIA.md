@@ -12,5 +12,8 @@ promote anything. Your own neighbors will do a better job anyway.
 
 The Yes on 4A logo is the campaign's, and the Citizens for LPS name is the committee's.
 
+The throwback Reels and yearbook posts are cut from material that belongs to others,
+including the alumni who saved it. See `docs/campaign/VIDEO-SOURCES.md` on `main`.
+
 If you're in one of these pictures and want it taken down, open an issue on this
 repository and we'll remove it.
