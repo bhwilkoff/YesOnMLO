@@ -25,7 +25,7 @@ This branch has no shared history with `main`, so the toolkit stays small to dow
 | `media/yard-signs/` | Yard sign close-ups |
 | `media/ballot-text/` | The "your ballot is on its way" post |
 | `build-scripts/` | The Python scripts that made the images and video, for reading and adapting |
-| `campaign-docs/` | Posting plans, captions and the throwback research |
+| `campaign-docs/` | Posting plans, captions and the throwback research. Source links are in `docs/campaign/VIDEO-SOURCES.md` on `main` |
 
 For how all this was made, read `docs/campaign/MEDIA-PLAYBOOK.md` and
 `docs/campaign/RETROSPECTIVE.md` on `main`.
@@ -49,9 +49,10 @@ every file was rebuilt with its metadata removed, including GPS locations.
 | Raw postcard and ballot-packet photos | Voters' names and home addresses |
 | Yard sign photos, Reels and the Halloween Reel showing homes | They show where supporters live, and in one case a house number |
 | A clip with a readable license plate | Personal information |
-| Old-movie supercuts | Child actors in some, and we didn't confirm the rights to the films. The captions are in `campaign-docs/` |
+| Old-movie supercuts | Child actors in some, and we didn't confirm the rights to the films. Captions are in `campaign-docs/`, and every film is linked in `docs/campaign/VIDEO-SOURCES.md` on `main` |
 | CBS Colorado and district podcast clips | We had permission to use them in the campaign, not to republish them |
 | Steering committee documents and email | Contact details and private deliberation |
+| Transcripts of CBS, the district podcast and the video yearbooks | Other people's work, and the yearbook transcripts name students |
 
 A few source photos used in the finished posts are among these. So you'll see a
 finished post whose raw files aren't here.

@@ -1,0 +1,31 @@
+LITTLETON HIGH SCHOOL IN THE '90s (33s)
+Cut from the LHS 96-97 video yearbook, uploaded to YouTube by Brandon Duncan.
+Silent (the upload has no sound): add a song in the Reels editor before you post.
+Song idea, from the yearbook's own soundtrack: "Closer to Free" (BoDeans). Or "I Go Blind" (Hootie & the Blowfish), also in its credits.
+Rebuild: python3 private/instagram-launch/source-files/lhs-yearbook/tools/make_montage.py
+
+
+Instagram:
+
+If you went to school in the '90s, this will look familiar.
+
+Somebody bought those computers. Somebody taught every harmony and paid for the band uniforms. That somebody was the whole town.
+
+Now it's our turn.
+
+Lions, tag a classmate.
+
+Yes on 4A, the LPS mill levy override. Ballots due by 7 p.m. Tuesday, Nov. 3. #YesOn4A #YesOnLPS
+
+
+Facebook:
+
+Littleton High School in the '90s . . . look familiar?
+
+Somebody bought those computers. Somebody taught every harmony. Somebody got all those kids across the stage . . . and that somebody was the whole town.
+
+Now it's our turn.
+
+Lions, tag a classmate!
+
+Yes on 4A, the LPS mill levy override. Ballots due by 7 p.m. Tuesday, Nov. 3. Find your nearest drop box: https://www.arapahoevotes.gov/Find-My-Nearest #YesOn4A
