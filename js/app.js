@@ -122,6 +122,17 @@
   /* ================================================================
      HOME — the sourced ballot summary + the forums
   ================================================================ */
+  function renderOutcome() {
+    const o = CAMPAIGN.outcome;
+    if (!o) return;
+    const el = $('outcome-note');
+    el.innerHTML = `
+      <p class="outcome-headline">${escHtml(o.headline)}</p>
+      <p>${escHtml(o.body)} ${srcLink(o.sourceId)}
+        <a href="${o.repoUrl}" target="_blank" rel="noopener">Get the toolkit</a></p>`;
+    el.hidden = false;
+  }
+
   function renderBallotSummary() {
     $('ballot-summary').innerHTML = CAMPAIGN.ballotSummary.map((item) => `
       <div class="ballot-item">
@@ -2029,6 +2040,7 @@
   }
 
   function init() {
+    renderOutcome();
     renderBallotSummary();
     renderForums();
     renderCampaignMeetings();

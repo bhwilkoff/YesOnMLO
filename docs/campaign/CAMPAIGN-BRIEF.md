@@ -9,6 +9,11 @@
 > by the district or on the public record. Campaign-internal strategy
 > lives in `private/` (gitignored) and is never committed.
 
+> **Outcome:** 4A passed. The superintendent's Nov 4, 2026 message announced "the
+> passage of Ballot Issue 4A." Last count we saw: 23,846 yes, 19,429 no (55.1%),
+> unofficial, Nov 4 at 5:26 p.m. The facts below are as they stood during the
+> campaign. Starting a new campaign? See `docs/RUN-IT-AGAIN.md`.
+
 ---
 
 ## The measure

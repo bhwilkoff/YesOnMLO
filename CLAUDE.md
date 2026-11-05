@@ -12,6 +12,12 @@
 > it — pair it with what it is ("4A, the LPS mill levy override"), and
 > compose `CAMPAIGN.measure` from `js/data.js` rather than hardcoding
 > the string. Never commit anything from `git ignore/` or `private/`.
+>
+> **4A passed in November 2026, and the campaign is over.** This repo now serves
+> as a template for future elections. If you are helping a new campaign, start
+> with `docs/RUN-IT-AGAIN.md`. Decision 063 governs what is public. Media lives
+> on the `campaign-archive` branch, which only takes files that pass the privacy
+> process in `docs/campaign/MEDIA-PLAYBOOK.md`.
 
 ## Why we build
 

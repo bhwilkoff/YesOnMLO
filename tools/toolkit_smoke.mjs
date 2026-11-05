@@ -124,8 +124,9 @@ check(monthly < 13 && monthly > 11, `district example: $600K → $${monthly.toFi
 check(Math.abs(100000 * tc.residentialAssessmentRate.value * tc.estimatedMills.value / 1000 - tc.perHundredK.value) < 1, '$25 per $100K reproduces');
 check(tc.defaultHomeValue === tc.districtExample.homeValue, 'calculator opens on the district example');
 
-// Unverified figures stay flagged until certification.
-check(tc.estimatedMills.verified === false, 'mills remain unverified until ballot certification');
+// The mill rate was verified at certification on 2026-10-26. A new campaign
+// starts this at false and flips it only when the certified ballot says so.
+check(typeof tc.estimatedMills.verified === 'boolean', 'mill rate says whether it is verified');
 
 // The page carries every id the app reaches for.
 const html = read('index.html');

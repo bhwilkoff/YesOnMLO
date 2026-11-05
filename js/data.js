@@ -57,6 +57,10 @@ const SOURCES = {
     label: 'Arapahoe County official election results archive',
     url: 'https://www.arapahoeco.gov/your_county/arapahoevotes/records_data/past_elections_file_library.php',
   },
+  arapahoeResults2026: {
+    label: 'Arapahoe County 2026 general election results',
+    url: 'https://results.enr.clarityelections.com/CO/Arapahoe/127409/web.345435/#/detail/79',
+  },
   arapahoeVotes: {
     label: 'Arapahoe County Elections',
     url: 'https://www.arapahoeco.gov/your_county/arapahoevotes/index.php',
@@ -82,6 +86,18 @@ const SOURCES = {
 const CAMPAIGN = {
   officialSite: 'https://citizensforlps.org',
   toolkitUrl: 'https://yeson4a.org/',
+
+  /*
+   * Set this once the election is called, and the home page shows it
+   * above everything else. Leave it null for the whole campaign.
+   * Decision 063.
+   */
+  outcome: {
+    headline: '4A, the LPS mill levy override, passed. Thank you.',
+    body: 'The campaign is over. The tools below stay up so you can see how they worked, and the whole toolkit is free to reuse for a future election.',
+    sourceId: 'arapahoeResults2026',
+    repoUrl: 'https://github.com/bhwilkoff/YesOnMLO',
+  },
 
   /*
    * The measure's identity. `label` is the ballot letter; `gloss` is

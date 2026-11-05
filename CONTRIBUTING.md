@@ -10,7 +10,7 @@ scaffolding and receive no campaign work.
 
 The most valuable contributions are **true stories**, real questions
 you've heard from neighbors, and corrections. Open an issue or email
-citizens4lps@gmail.com.
+the issues page on GitHub. The 2026 campaign is over, so we are not watching the old campaign inbox.
 
 ## For developers
 

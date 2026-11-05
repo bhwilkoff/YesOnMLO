@@ -163,6 +163,13 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.12em; color: var(--green-deep); margin-bottom: var(--s3);
 }
+.outcome-note {
+  margin-top: var(--s6);
+  padding: var(--s4);
+  border-left: 4px solid var(--green);
+  background: var(--paper-raised);
+}
+.outcome-headline { font-weight: 700; margin-bottom: var(--s2); }
 .hero { padding-top: var(--s6); }
 .hero-title, .view-heading {
   font-family: var(--serif); font-weight: 700; color: var(--ink);

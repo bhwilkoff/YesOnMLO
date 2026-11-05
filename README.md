@@ -1,21 +1,46 @@
 # Tell the Story of Our Schools
 
-**A storytelling toolkit for volunteers supporting 4A — the Littleton
-Public Schools mill levy override on the November 3, 2026 ballot.**
+**A free storytelling toolkit for volunteer school-funding campaigns.**
 
-Live at **https://yeson4a.org**
+Volunteers built this for Ballot Issue 4A, the $10 million Littleton Public Schools
+mill levy override. **4A passed in November 2026.** Now it's yours to reuse.
 
-The campaign's official home is
-[citizensforlps.org](https://citizensforlps.org) — join, volunteer,
-donate, and events all live there. This toolkit does one narrower
-thing: it helps supporters tell their own story about these schools
-and get it in front of the neighbors who can vote.
+- **Want to run it for your own election?** Start with
+  [`docs/RUN-IT-AGAIN.md`](docs/RUN-IT-AGAIN.md).
+- **Want to know what worked?** Read
+  [`docs/campaign/RETROSPECTIVE.md`](docs/campaign/RETROSPECTIVE.md).
+- **See it live:** https://yeson4a.org
 
-> Made by volunteers. Nobody paid for this site and it costs nothing
-> to run. It is not published by any campaign committee and was not
-> produced with school district resources.
+> Made by volunteers. Nobody paid for this site and it costs nothing to run. It is
+> not published by any campaign committee and was not produced with school district
+> resources.
 
 ---
+
+## Get started
+
+```sh
+git clone --single-branch --branch main https://github.com/bhwilkoff/YesOnMLO.git my-campaign
+cd my-campaign
+python3 -m http.server 8080     # then open http://localhost:8080
+node tools/toolkit_smoke.mjs    # checks every fact has a source
+```
+
+No framework, no build step, no backend and no hosting bill. It's plain HTML, CSS and
+JavaScript on free GitHub Pages. Every campaign fact lives in `docs/campaign/CAMPAIGN-BRIEF.md`
+and `js/data.js`, so that's most of what you change.
+
+## What's in here
+
+| You want | Go to |
+|---|---|
+| The step-by-step guide for a new election | `docs/RUN-IT-AGAIN.md` |
+| What we learned, including our strategy | `docs/campaign/RETROSPECTIVE.md` |
+| The week-by-week social media plan | `docs/campaign/SOCIAL-MEDIA-PLAYBOOK.md` |
+| How the images and videos got made, and how to protect people in them | `docs/campaign/MEDIA-PLAYBOOK.md` |
+| How to read election night in a vote-by-mail state | `docs/campaign/ELECTION-NIGHT.md` |
+| Election-night and media-review tools | `tools/campaign/` |
+| Every photo, video and finished post we can share | the [`campaign-archive`](https://github.com/bhwilkoff/YesOnMLO/tree/campaign-archive) branch |
 
 ## What the toolkit does
 
@@ -77,22 +102,20 @@ and get it in front of the neighbors who can vote.
 
 ## Contributing
 
-Volunteers first, developers welcome:
+If you use this, we'd love to hear about it:
 
-- **Not a developer?** The best contributions are true stories, real
-  questions you've heard from neighbors, and corrections. Open an
-  issue or email citizens4lps@gmail.com.
+- **Not a developer?** Tell us how your campaign went, what confused you, and
+  what we got wrong. Open an issue.
 - **Developer?** Vanilla HTML/CSS/JS, no build step, mobile-first,
   WCAG AA. Read `CLAUDE.md`. Facts only enter through
   `docs/campaign/CAMPAIGN-BRIEF.md` → `js/data.js`, with sources.
 - Run locally: `python3 -m http.server 8080`.
 
-## For other communities
+## License
 
-Fork it. Everything except the LPS facts is reusable: the sourced
-data plane, the share studio and its verified intent templates, the
-card generator, the research. If your district is fighting for
-funding too, replace `js/data.js` and `docs/campaign/` and go.
+The code is MIT licensed, so fork it and change anything. The photos and videos on the
+`campaign-archive` branch are not, and the logo and committee name belong to the
+campaign. Replace them with your own.
 
 ---
 

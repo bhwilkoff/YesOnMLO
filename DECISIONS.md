@@ -1594,3 +1594,28 @@ content will appear, and it invites the reader to tell the team if
 they find it first. **When the county posts it**: repoint
 `measure.sourceId`, delete `sourceNote`, and delete the paragraph it
 renders — in one commit, with the brief updated first.
+
+---
+
+## 063 — After the election, the repo becomes a template and the archive goes public under a privacy rule
+
+*Date: 2026-11-05*
+
+Adults may appear in the public archive. Children's faces and personal information
+may not. Media lives on an orphan `campaign-archive` branch, built from an allowlist,
+with metadata removed. `private/` and `git ignore/` stay gitignored. This amends
+Decision 056: strategy that was private during the campaign is now published in
+`docs/campaign/RETROSPECTIVE.md`, while steering-committee documents stay private.
+
+**Why:** the repo owner: "The only thing that I don't want to put into the full
+repository is personally identifiable information or the faces of any children in our
+images. All of the adults are fine to include." Targeting needed to stay private only
+while there was an opponent. Now the next campaign gets more from it than anyone loses.
+Publishing can't really be undone, so the rule has to be checked before anything is
+pushed. An orphan branch keeps a 300 MB archive out of every template clone and off
+GitHub Pages.
+
+**How to apply:** treat a home, a license plate, or a voter's name as personal
+information, even when the campaign already posted it. Permission to post isn't
+permission to republish, so third-party footage stays out. When unsure, leave it out.
+A new campaign sets `CAMPAIGN.outcome` to `null` and follows `docs/RUN-IT-AGAIN.md`.
