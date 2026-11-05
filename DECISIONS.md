@@ -1619,3 +1619,8 @@ GitHub Pages.
 information, even when the campaign already posted it. Permission to post isn't
 permission to republish, so third-party footage stays out. When unsure, leave it out.
 A new campaign sets `CAMPAIGN.outcome` to `null` and follows `docs/RUN-IT-AGAIN.md`.
+
+**Amendment, 2026-11-05.** "Children" means people who are children today. The repo owner:
+"The yearbook stuff is from the 1990s. Those people aren't students. They are parents and
+grandparents now." Throwback Reels and yearbook posts belong in the archive. Rights and
+personal information still apply to them.

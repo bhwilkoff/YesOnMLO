@@ -70,8 +70,9 @@ These were our best performers. They also went wrong the most.
   Our first try, cafeteria pages from the 1950s to '70s, went nowhere.
 - **Montage beats a single scene.** Many short shots under building text.
 - **Never tell alumni their age**, and don't aim at one graduating class.
-- **Ask first.** Yearbooks, school videos and museum scans belong to someone, and they
-  show students. We've left all of that source material out of the public archive.
+- **Ask first.** Yearbooks, school videos and museum scans belong to someone. The
+  finished Reels are in the public archive, and the sources are linked in
+  `VIDEO-SOURCES.md`.
 
 ## Old-movie supercuts
 
@@ -106,12 +107,15 @@ That script is `build_days.py` on the archive branch.
 
 This is the part that can't be undone, so it comes before anything is published.
 
-**Decide your rule first.** Ours: adults are fine, no children's faces, and no
-personal information about anyone.
+**Decide your rule first.** Ours: adults are fine, no faces of anyone who is a child
+today, and no personal information about anyone. Go by how old someone is now. A student
+in a 1993 yearbook is an adult, and may be a grandparent.
 
 **What to look for:**
 
-- **Kids.** Including in the background, in reflections, and in old yearbook photos.
+- **Kids.** Including in the background and in reflections.
+- **Handwriting.** Signed yearbook pages can hold names and phone numbers that text
+  scanning misses.
 - **Home addresses:** envelopes, postcards, house numbers, a yard sign in front of a
   recognizable house.
 - **Names:** on letters, name tags, envelopes.
@@ -123,8 +127,8 @@ personal information about anyone.
 
 **How we checked our archive:**
 
-1. Listed every file, and set aside whole groups that couldn't be cleared, like
-   yearbooks.
+1. Listed every file, and set aside groups we couldn't publish, like third-party news
+   clips.
 2. Ran `tools/campaign/media_scan.swift`, which uses Apple's Vision framework to find
    faces and read any text in each image and in frames sampled from each video.
 3. Looked at every remaining file on contact sheets. A person made the final call.

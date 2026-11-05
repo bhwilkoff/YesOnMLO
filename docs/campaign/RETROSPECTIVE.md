@@ -138,6 +138,9 @@ all caught by looking:
 - It read the countywide vote gap as if it were ours, until a volunteer pointed out
   that most of the county can't vote on our measure.
 
+- It kept our 1990s throwback Reels out of the public archive as "children," though
+  those students are parents and grandparents now.
+
 So, if you use one, a person has to look at everything before it goes out. It's
 a fast helper and a poor judge of what's true about your community.
 

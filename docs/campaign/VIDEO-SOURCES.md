@@ -25,7 +25,7 @@ usually can't be used, so we made silent cuts and added sound in the Reels edito
 More footage we found and didn't use is in `campaign-docs/throwback-research.md` on
 the `campaign-archive` branch: Sandburg Halloween parades, Arapahoe video yearbooks,
 marching band, soccer, and a reunion montage, along with a request message you can
-adapt.
+adapt. Our finished Reels are in `media/throwback/` on the `campaign-archive` branch.
 
 **The Arapahoe 1993 Reel:** a volunteer shared the source file with us, and that file
 is no longer on hand. Mike Curtis's YouTube upload of the Arapahoe '93 video yearbook
@@ -34,8 +34,9 @@ is the likely original, but we never confirmed it.
 ## Scanned yearbooks on archive.org
 
 These are Classmates.com scans. Most same-name items are other schools in other
-states, so use these exact links. Good for picking years and researching. They show
-students, so think hard before posting anything from them.
+states, so use these exact links. Good for picking years and researching. Ask before
+posting. The posts we made from them are in `media/throwback/` on the `campaign-archive`
+branch.
 
 | School | Year | Link |
 |---|---|---|
