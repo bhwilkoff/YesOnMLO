@@ -1,0 +1,76 @@
+# What to post: the 4A celebration
+
+Everything is in `by-day/`. The files are numbered in the order you post them, and `captions.txt` has the text ready to copy.
+
+Post the same files natively to each platform. Don't share a post from one into the other.
+
+---
+
+## 01 It passed - final set
+
+Everything in posting order, about an hour apart. The same files go to Instagram and Facebook, posted natively to each.
+
+**1. First: Carousel**  `1a - Carousel - First.jpg`, `1b - Carousel - First.jpg`, `1c - Carousel - First.jpg`, `1d - Carousel - First.jpg`, `1e - Carousel - First.jpg`, `1f - Carousel - First.jpg`, `1g - Carousel - First.jpg`, `1h - Carousel - First.jpg`
+
+> Instagram:
+>
+> It took paint pens. It took yard signs. It took folding tables in parking lots and kitchen tables at home. It took all of us.
+>
+> 4A, the LPS mill levy override, passed. The wage freeze lifts, LPS staff get a 2% average raise, and March 19 goes back to being a school day.
+>
+> To everyone who said yes: thank you. To everyone who said no: LPS is still your district. Keep asking good questions. #YesOn4A #YesOnLPS
+>
+>
+> Facebook:
+>
+> 4A, the LPS mill levy override, passed!!!
+>
+> It took paint pens, yard signs, folding tables, kitchen tables & a whole lot of neighbors . . . thank you!!
+>
+> The wage freeze lifts, LPS staff get a 2% average raise & March 19 goes back to being a school day. #YesOn4A
+
+**2. Second: Reel**  `2 - Reel - Second.mp4`
+
+Silent on purpose. Add a sound in the Reels editor before you post.
+
+> Instagram:
+>
+> This is what it looks like when neighbors do the work.
+>
+> 4A, the LPS mill levy override, passed. Thank you. #YesOn4A #YesOnLPS
+>
+>
+> Facebook:
+>
+> This is what it looks like when neighbors do the work . . .
+>
+> 4A, the LPS mill levy override, passed. Thank you, thank you, thank you! #YesOn4A
+
+**3. Third: Photo post**  `3 - Photo post - Third.jpg`
+
+> Instagram:
+>
+> You can wash your car now. (Or don't. We won't tell.)
+>
+> Thank you for driving around with 4A, the LPS mill levy override, on your back window all fall. #YesOn4A #YesOnLPS
+>
+>
+> Facebook:
+>
+> You can wash your car now . . . or don't. We won't tell!
+>
+> Thank you for driving around with 4A, the LPS mill levy override, on your back window all fall. #YesOn4A
+
+**4. Fourth: Photo post**  `4 - Photo post - Fourth.jpg`
+
+> Instagram and Facebook:
+>
+> Neighbors did this. Thank you for everything you gave to 4A, the LPS mill levy override. #YesOn4A #YesOnLPS
+
+**5. Through the day: Instagram Stories**  `5a - Instagram Stories - Through the day.jpg`, `5b - Instagram Stories - Through the day.jpg`, `5c - Instagram Stories - Through the day.jpg`, `5d - Instagram Stories - Through the day.jpg`
+
+One after each feed post. Also share the Reel to your Story.
+
+**6. Any time: Facebook cover**  `6 - Facebook cover - Any time.jpg`
+
+Everything sits in the middle so it survives the phone crop.
