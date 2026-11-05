@@ -15,7 +15,8 @@ That was a harder year than the number looks:
 - Next door, Jeffco's two overrides and Douglas County's were all trailing on
   November 4. Mesa County Valley District 51's measure was far behind.
 - Of 37 school questions we found on Colorado ballots, 23 were ahead on
-  November 4. So a strong district couldn't assume anything.
+  November 4. So a strong district couldn't assume anything. The full table is in
+  `docs/research/2026-colorado-school-measures.md`.
 
 ## What we built
 
@@ -26,7 +27,9 @@ voters. We ran the social team from a single posting document.
 ## Strategy
 
 These were private until the election ended. Decision 063 explains why we're
-publishing them now.
+publishing them now. The original notes are in
+`docs/research/2026-internal-strategy-notes.md`, and
+`docs/research/facebook-page-voice.md` has what we learned from our page's history.
 
 **Who we were talking to**
 

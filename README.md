@@ -39,6 +39,10 @@ and `js/data.js`, so that's most of what you change.
 | The week-by-week social media plan | `docs/campaign/SOCIAL-MEDIA-PLAYBOOK.md` |
 | How the images and videos got made, and how to protect people in them | `docs/campaign/MEDIA-PLAYBOOK.md` |
 | How to read election night in a vote-by-mail state | `docs/campaign/ELECTION-NIGHT.md` |
+| Every outside video and archival source, with links | `docs/campaign/VIDEO-SOURCES.md` |
+| How other Colorado school measures did in 2026 | `docs/research/2026-colorado-school-measures.md` |
+| Why the count took so long | `docs/research/2026-why-the-count-took-so-long.md` |
+| Our original strategy notes and Facebook research | `docs/research/` |
 | Election-night and media-review tools | `tools/campaign/` |
 | Every photo, video and finished post we can share | the [`campaign-archive`](https://github.com/bhwilkoff/YesOnMLO/tree/campaign-archive) branch |
 

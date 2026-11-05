@@ -37,7 +37,9 @@ was never our gap. Our Social Media lead caught this.
 Compare what's counted with what was received, then scale that to your district.
 
 1. **Ballots received:** the Secretary of State's daily "Ballots Returned" news
-   release links a spreadsheet with a row for each county.
+   release links a spreadsheet with a row for each county. Use the newest one, since
+   this number keeps climbing for a day or two as ballots get logged. Arapahoe went
+   from 269,853 to 275,291.
 2. **Ballots counted:** your county's results page, or the `ballotscast` value in
    its feed. Many counties don't publish that. For those, use the total votes for
    Governor, since nearly everyone votes that race. Counties that are nearly done
@@ -86,3 +88,6 @@ yes, and counting." Once it's called, use a number that can't go stale, like
 
 Results are unofficial until the county canvass board certifies them, and
 remember that margins can shift a little until then.
+
+For why the 2026 count took as long as it did, see
+`docs/research/2026-why-the-count-took-so-long.md`.

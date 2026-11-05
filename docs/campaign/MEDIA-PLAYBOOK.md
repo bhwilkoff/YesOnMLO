@@ -148,6 +148,8 @@ look.
 
 ## Rights
 
+Every outside source we used is listed in `VIDEO-SOURCES.md`.
+
 Being allowed to post something isn't the same as being allowed to republish it.
 CBS Colorado gave us permission to use its segment in the campaign, and the district
 let us edit its podcast. Neither is the same as permission to put the files in a public

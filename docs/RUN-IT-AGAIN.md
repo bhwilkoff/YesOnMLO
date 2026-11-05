@@ -107,6 +107,8 @@ depends on them.
 - **What we'd do again and what we wouldn't:** `docs/campaign/RETROSPECTIVE.md`.
   Read this one first.
 - **How the images and videos got made:** `docs/campaign/MEDIA-PLAYBOOK.md`.
+- **Where our footage came from:** `docs/campaign/VIDEO-SOURCES.md`, with links and rights
+  notes.
 - **The research:** `docs/research/campaign-strategy.md` for why these measures
   pass or fail, and `docs/research/share-intents.md` for what each social network
   actually allows.
